@@ -1,0 +1,29 @@
+root = true
+
+[*]
+charset = utf-8
+indent_style = space
+insert_final_newline = false
+trim_trailing_whitespace = false
+
+[*.json]
+indent_size = 2
+
+[*.md]
+indent_size = 2
+insert_final_newline = true
+max_line_length = 80
+
+[*.{ps1,psd1,psm1}]
+charset = utf-8-bom
+indent_size = 4
+insert_final_newline = true
+trim_trailing_whitespace = true
+
+# Xml files
+[*.xml]
+indent_size = 2
+
+# Poweershell xml files
+[*.{cdxml,ps1xml}]
+indent_size = 2
