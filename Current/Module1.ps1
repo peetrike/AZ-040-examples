@@ -9,13 +9,10 @@
 throw "You're not supposed to run the entire script"
 
 <#
-
     The code in this region was stolen, I mean borrowed from Thomas Rayner (@MrThomasRayner).
 
     For more information, see:
-
     http://mikefrobbins.com/2017/11/02/safety-to-prevent-entire-script-from-running-in-the-powershell-ise/
-
 #>
 
 #endregion
@@ -36,7 +33,7 @@ Get-Command | more
 
     #Powershell version
 $PSVersionTable
-# look alsu https://peterwawa.wordpress.com/2017/09/22/mis-keskkonnas-mu-skript-jookseb/
+# look also https://peterwawa.wordpress.com/2017/09/22/mis-keskkonnas-mu-skript-jookseb/
 
 Get-Help Start-Transcript -ShowWindow
 Start-Transcript -Path c:/transcript.txt
