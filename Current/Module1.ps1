@@ -17,9 +17,11 @@ throw "You're not supposed to run the entire script"
 
 #endregion
 
+
 # Module 1 - Getting started with Windows PowerShell
 
-    # Lesson 1 - Overview and background of Windows PowerShell
+
+#region Lesson 1 - Overview and background of Windows PowerShell
 
 # https://docs.microsoft.com/en-us/powershell/scripting/setup/starting-windows-powershell
 
@@ -68,9 +70,10 @@ Get-Process powers*, smartscreen
 
 Get-Process
 
+#endregion
 
 
-    # Lesson 2: Understanding command syntax
+#region Lesson 2: Understanding command syntax
 
 get-command Get-VM
 get-command get-mailbox
@@ -94,8 +97,10 @@ get-help about_
 Get-Help about_quoting -ShowWindow
 get-help quoting
 
+#endregion
 
-    # Lesson 3: Finding commands
+
+#region Lesson 3: Finding commands
 
 Get-Module
 Get-Module -ListAvailable
@@ -107,8 +112,8 @@ Get-ADUser
 Import-Module ActiveDirectory
 Get-ADUser
 
-get-command -Module VpnClient
-get-command -Module VpnClient | Measure-Object
+Get-Command -Module VpnClient
+Get-Command -Module VpnClient | Measure-Object
 Get-Command -Noun VpnConnection
 Get-VpnConnection
 
@@ -133,3 +138,5 @@ ipconfig.exe
 
 
 Show-Command Get-Process
+
+#endregion

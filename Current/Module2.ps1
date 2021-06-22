@@ -11,9 +11,11 @@ throw "You're not supposed to run the entire script"
 
 #endregion
 
+
 # Module 2 - Cmdlets for administration
 
-    # Lesson 1: Active Directory administration cmdlets
+
+#region Lesson 1: Active Directory administration cmdlets
 
 Get-Command -Module ActiveDirectory | Measure-Object
 
@@ -73,8 +75,10 @@ Get-Command -Noun ADOrganizationalUnit
 Get-ADOrganizationalUnit -Filter * |
     Set-ADOrganizationalUnit -ProtectedFromAccidentalDeletion $false
 
+#endregion
 
-    # Lesson 2: Network configuration cmdlets
+
+#region Lesson 2: Network configuration cmdlets
 
 Get-Module Net*
 Get-Command -Module NetTCPIP
@@ -92,7 +96,10 @@ Test-NetConnection -ComputerName www.ee -CommonTCPPort HTTP
 
 Get-NetTCPConnection -LocalPort 80
 
-    # Lesson 3: Other server administration cmdlets
+#endregion
+
+
+#region Lesson 3: Other server administration cmdlets
 
 Get-Command -Module GPO
 
@@ -104,3 +111,5 @@ Get-WindowsOptionalFeature -Online
 Get-WindowsCapability -Online -Name *ssh*
 
 Get-Command -Module Hyper-V
+
+#endregion
