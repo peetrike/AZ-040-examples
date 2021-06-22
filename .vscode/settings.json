@@ -1,12 +1,11 @@
 {
+  "files.associations": {
+    "*.ps1xml": "xml" // PowerShell format files
+  },
   "files.defaultLanguage": "powershell",
 
   "search.exclude": {
     "Release": true
-  },
-
-  "[markdown]": {
-    "editor.rulers": [ 80 ]
   },
 
   "powershell.codeFormatting.preset": "OTBS",

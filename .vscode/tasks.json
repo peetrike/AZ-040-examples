@@ -1,32 +1,16 @@
-// A task runner that invokes Pester to run all Pester tests under the
-// current workspace folder.
-// NOTE: This Test task runner requires an updated version of Pester (>=4.0.3)
-// in order for the problemMatcher to find failed test information (message, line, file).
-// If you don't have that version, you can update Pester from the PowerShell Gallery
-// with this command:
-//
-// PS C:\> Update-Module Pester
-//
-// If that gives an error like:
-// "Module 'Pester' was not installed by using Install-Module, so it cannot be updated."
-// then execute:
-//
-// PS C:\> Install-Module Pester -Scope CurrentUser -Force
-//
-//
-// Available variables which can be used inside of strings:
-// ${workspaceFolder} the path of the workspace folder that contains the tasks.json file
-// ${workspaceFolderBasename} the name of the workspace folder that contains the tasks.json file without any slashes (/)
-// ${file} the current opened file
-// ${relativeFile} the current opened file relative to the workspace folder containing the file
-// ${fileBasename} the current opened file's basename
-// ${fileBasenameNoExtension} the current opened file's basename without the extension
-// ${fileDirname} the current opened file's dirname
-// ${fileExtname} the current opened file's extension
-// ${cwd} the task runner's current working directory on startup
-// ${lineNumber} the current selected line number in the active file
+// Available variables which can be used inside of strings.
+// ${workspaceRoot}: the root folder of the team
+// ${file}: the current opened file
+// ${relativeFile}: the current opened file relative to workspaceRoot
+// ${fileBasename}: the current opened file's basename
+// ${fileDirname}: the current opened file's dirname
+// ${fileExtname}: the current opened file's extension
+// ${cwd}: the current working directory of the spawned process
 {
+  // See https://go.microsoft.com/fwlink/?LinkId=733558
+  // for the documentation about the tasks.json format
   "version": "2.0.0",
+  // Start PowerShell
   "windows": {
     "options": {
       "shell": {
@@ -62,6 +46,7 @@
       }
     }
   },
+  // Associate with test task runner
   "tasks": [
     {
       "label": "Test",
@@ -104,7 +89,7 @@
     {
       "label": "Add script",
       "type": "shell",
-      "command": "Invoke-Plaster -TemplatePath ${workspaceFolder}\\..\\plaster.template.pw\\AddPWScript -DestinationPath ${input:Folder}",
+      "command": "Invoke-PSMDTemplate -TemplateName PWScript -OutPath ${input:Folder}",
       "problemMatcher": [
       {
         "owner": "powershell",
@@ -130,7 +115,7 @@
     {
       "label": "Add function",
       "type": "shell",
-      "command": "Invoke-Plaster -TemplatePath ${workspaceFolder}\\..\\plaster.template.pw\\AddPWFunction -DestinationPath ${input:Folder}",
+      "command": "Invoke-PSMDTemplate -TemplateName PWFunction -OutPath ${input:Folder}",
       "problemMatcher": [
       {
         "owner": "powershell",
