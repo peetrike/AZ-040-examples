@@ -10,7 +10,7 @@
     .LINK
         https://github.com/peetrike/10961-examples
     .LINK
-        https://diigo.com/profile/peetrike/?query=%23MOC-10961
+        https://diigo.com/profile/peetrike/?query=%23MOC-10961+%23M1
     .LINK
         https://peterwawa.wordpress.com/tag/powershell/
 #>
