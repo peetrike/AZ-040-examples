@@ -1,75 +1,90 @@
-#region Safety to prevent the entire script from being run instead of a selection
-
-throw "You're not supposed to run the entire script"
-
 <#
-    The code in this region was stolen, I mean borrowed from Thomas Rayner (@MrThomasRayner).
-
-    For more information, see:
-    http://mikefrobbins.com/2017/11/02/safety-to-prevent-entire-script-from-running-in-the-powershell-ise/
+    .SYNOPSIS
+        Module 02 samples
+    .DESCRIPTION
+        This file contains sample commands from course 10961 for
+        Module 02 - Cmdlets for administration
+    .LINK
+        https://github.com/peetrike/10961-examples
+    .LINK
+        https://diigo.com/profile/peetrike/?query=%23MOC-10961+%23M2
 #>
 
+#region Safety to prevent the entire script from being run instead of a selection
+    # The code in this region was stolen, I mean borrowed from Thomas Rayner (@MrThomasRayner).
+
+    throw "You're not supposed to run the entire script"
 #endregion
-
-
-# Module 2 - Cmdlets for administration
 
 
 #region Lesson 1: Active Directory administration cmdlets
 
 Get-Command -Module ActiveDirectory | Measure-Object
 
+
+    # User management cmdlets
 Get-Command -noun ADUser
 
 Get-ADUser -Identity Administrator
 Get-ADUser -Filter *
 
 Get-ADUser -Identity Administrator -Properties *
-Get-ADUser -Filter {Department -like 'IT'}
+Get-ADUser -Filter { Department -like 'IT' }
 
 $longAgo = (Get-Date).AddDays(-90)
-Get-ADUser -Filter {logonCount -ge 1 -and LastLogonDate -le $longAgo} |
-    Move-ADObject -TargetPath "ou=lost souls"
+Get-ADUser -Filter { logonCount -ge 1 -and LastLogonDate -le $longAgo } |
+    Move-ADObject -TargetPath 'ou=lost souls'
 
 
-$new = Get-ADUser "Mihkel Metsik"
-Get-ADUser -Filter {Department -like 'IT'} |
+$new = Get-ADUser 'Mihkel Metsik'
+Get-ADUser -Filter { Department -like 'IT' } |
     Set-ADUser -Manager $new
 
 Get-ADUser -filter * -Properties PasswordLastSet
 
     # https://peterwawa.wordpress.com/2013/04/09/kasutajakontode-loomine-domeenis/
-
 $userParams = @{
-    Name = "Kati Kallike"
-    SamAccountName = "Kati"
-    GivenName = "Kati"
-    SurName = "Kallike"
+    GivenName = 'Kati'
+    SurName   = 'Kallike'
 }
+$userParams.Name = $userParams.GivenName, $userParams.SurName -join ' '
+$userParams.SamAccountName = $userParams.GivenName.Substring(0, 4) +
+    $userParams.SurName.Substring(0, 2)
 New-ADUser @userParams
 
-$userParams | export-csv -UseCulture -Encoding Default -Path ./users.csv
+$userParams | Export-Csv -UseCulture -Encoding Default -Path ./users.csv
 
 Import-Csv -UseCulture -Encoding Default -Path .\users.csv |
-    New-ADUser -AccountPassword (Get-Credential -Message 'Enter password for user').Password -Enabled $true
+    New-ADUser -Enabled $true -AccountPassword (
+        Get-Credential -Message 'Enter password for user'
+    ).Password
 
 Import-Csv .\modify.csv | ForEach-Object {
-    Set-ADUser -Identity $_.id -Add @{mail=$_.email}
+    Set-ADUser -Identity $_.id -Add @{ mail = $_.email }
 }
 
+
+    # Group management cmdlets
 Get-Command -Noun ADGroup*
 
 New-ADGroup -Name 'IT' -GroupScope Global
-Get-ADUser -Filter {Department -like 'IT'} |
+Get-ADUser -Filter { Department -like 'IT' } |
     Add-ADPrincipalGroupMembership -MemberOf 'IT'
 
 Get-ADGroup IT | Add-ADGroupMember -Members 'Mati'
 
 
+    # Computer object management cmdlets
 Get-Command -Noun ADComputer
+
+#$longAgo = (Get-Date).AddDays(-90)
 Get-ADComputer -Filter (PasswordLastSet -lt $longAgo) | Disable-ADAccount
 
+    # not part of ActiveDirectory module
+Get-Command Test-ComputerSecureChannel
+Get-Command Reset-ComputerMachinePassword
 
+    # OU management cmdlets
 Get-Command -Noun ADOrganizationalUnit
 
 Get-ADOrganizationalUnit -Filter * |
