@@ -103,21 +103,44 @@ Search-ADAccount -AccountDisabled -UsersOnly
 
 #region Lesson 2: Network configuration cmdlets
 
+    # Managing IP addresses
 Get-Module Net*
 Get-Command -Module NetTCPIP
 Get-Command -Module NetAdapter
 
 Get-NetIPAddress -AddressFamily IPv4
+Get-NetIPConfiguration -InterfaceAlias 'Wi-fi'
+Get-NetIPInterface -Dhcp Enabled -ConnectionState Connected
 
+
+    # Managing routing
+Get-Command -Noun NetRoute
+
+    # Managing DNS Client
+Get-Command -Module DnsClient
 Resolve-DnsName -Name www.ee
 Resolve-DnsName -Name ttu.ee -Type mx
 
+Get-DnsClientCache
+Clear-DnsClientCache
+Get-DnsClient -InterfaceAlias 'Wi-Fi'
+Get-DnsClientServerAddress -AddressFamily IPv4
+Get-DnsClientGlobalSetting
+
+
+    # Managing Windows Firewall
+Get-Command -Module NetSecurity
+
+get-command -Module NetConnection
 Get-NetConnectionProfile
 
-Test-Connection -ComputerName www.ee
+
+    # extra networking commands
+Test-Connection -ComputerName www.ee -Count 1
 Test-NetConnection -ComputerName www.ee -CommonTCPPort HTTP
 
-Get-NetTCPConnection -LocalPort 80
+Get-NetTCPConnection -State Listen
+Get-NetUDPEndpoint -LocalPort 3389
 
 #endregion
 
