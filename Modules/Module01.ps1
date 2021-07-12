@@ -1,101 +1,121 @@
-# Meelis Nigols, e-mail meelisn@outlook.com , skype: meelis.nigols
-# https://github.com/peetrike/10961-examples
-# additional links: https://diigo.com/profile/peetrike/?query=%23MOC-10961
-# look also https://peterwawa.wordpress.com/tag/powershell/
+<#
+    .SYNOPSIS
+        Module 01 samples
+    .DESCRIPTION
+        This file contains sample commands from course 10961 for
+        Module 01 - Getting started with Windows PowerShell
+    .NOTES
+        Contact: Meelis Nigols
+        e-mai/skype: meelisn@outlook.com
+    .LINK
+        https://github.com/peetrike/10961-examples
+    .LINK
+        https://diigo.com/profile/peetrike/?query=%23MOC-10961
+    .LINK
+        https://peterwawa.wordpress.com/tag/powershell/
+#>
 
 
 #region Safety to prevent the entire script from being run instead of a selection
+    # The code in this region was stolen, I mean borrowed from Thomas Rayner (@MrThomasRayner).
 
-throw "You're not supposed to run the entire script"
-
-<#
-    The code in this region was stolen, I mean borrowed from Thomas Rayner (@MrThomasRayner).
-
-    For more information, see:
-    http://mikefrobbins.com/2017/11/02/safety-to-prevent-entire-script-from-running-in-the-powershell-ise/
-#>
-
+    throw "You're not supposed to run the entire script"
 #endregion
-
-
-# Module 1 - Getting started with Windows PowerShell
 
 
 #region Lesson 1 - Overview and background of Windows PowerShell
 
-# https://docs.microsoft.com/en-us/powershell/scripting/setup/starting-windows-powershell
+# https://docs.microsoft.com/powershell/scripting/setup/starting-windows-powershell
+Get-Help PowerShell_exe
+Get-Help pwsh
 
-# https://docs.microsoft.com/en-us/powershell/scripting/getting-started/fundamental/windows-powershell-integrated-scripting-environment--ise-
-# Powershell ISE difference: next line doesn't show one screen at time
+    # PowerShell vs. OS
+Get-Command Get-NetAdapter
+Get-Command Get-VpnConnection
+Get-Module ActiveDirectory
+
+
+    # PowerShell hosts
+# https://docs.microsoft.com/powershell/scripting/getting-started/fundamental/windows-powershell-integrated-scripting-environment--ise-
+
+    # Powershell ISE difference: next line doesn't show one screen at time
 Get-Command | more
 
 # Visual Studio Code: http://code.visualstudio.com
-# https://docs.microsoft.com/en-us/powershell/scripting/core-powershell/vscode/using-vscode
+# https://docs.microsoft.com/powershell/scripting/core-powershell/vscode/using-vscode
+
+    # Windows Terminal
+# https://github.com/microsoft/terminal
+# https://aka.ms/terminal
 
 
-    #Powershell version
+    #Powershell version (PowerShell 2+)
 $PSVersionTable
+    # only works with Windows PowerShell ( < 6 )
+$PSVersionTable.BuildVersion
+    # only works with PowerShell 5.1+
+$PSVersionTable.PSEdition
+    # only works with PowerShell Core
+$PSVersionTable.OS
+get-help PowerShell_Editions
+
 # look also https://peterwawa.wordpress.com/2017/09/22/mis-keskkonnas-mu-skript-jookseb/
 
-Get-Help Start-Transcript -ShowWindow
-Start-Transcript -Path c:/transcript.txt
-Get-History
-Stop-Transcript
 
-Get-Service p*
-Get-ADUser -Filter {name -like "*m"} -ResultSetSize 10000
-
-    # if you need to hide command line components from Powershell
-bcdedit.exe --% -default {current}
-icacls.exe --%
-
-
-# This is comment
-<# this is
-multi-line
-comment
-#>
-
-
-$PSVersionTable
-Get-Command
-Get-Command | Measure-Object
-Get-Command Get-Help
-
-Get-Service
-Get-Process
-get-process powershell
-Get-Process powers*
-Get-Process powers*, smartscreen
-
-Get-Process
+    # starting PowerShell in version 2 mode
+Start-Process -FilePath powershell.exe -ArgumentList '-version 2'
 
 #endregion
 
 
 #region Lesson 2: Understanding command syntax
 
-get-command Get-VM
-get-command get-mailbox
-get-command get-aduser
+Get-Command Get-VM
+Get-Command get-mailbox
+Get-Command Get-ADUser
+
 
 Get-help Get-Process
 
-get-help Get-Process -ShowWindow
-get-help get-help -ShowWindow
-get-help Get-Process -Examples
-get-help Get-Process -Online
+Get-Help Get-Process -ShowWindow
+Get-Help Get-Help -ShowWindow
+Get-Help Get-Process -Examples
+Get-Help Get-Process -Online
+Get-Help Get-Process -Parameter Id
+
+    # Understanding help syntax
+Get-Help Get-WinEvent
+Get-WinEvent Application -MaxEvents 5
+Get-WinEvent -LogName Application -MaxEvents 5
+
+Get-Help dir
+Get-ChildItem . *.ps1
+Get-ChildItem -Path . -Filter *.ps1
+
+Get-Help Test-Connection -ShowWindow
+    # up to PowerShell 5.1
+Test-Connection .
+    # PowerShell 6+
+Test-Connection -TargetName $env:COMPUTERNAME
+
+Test-Connection -ComputerName $env:COMPUTERNAME
+Test-Connection $env:COMPUTERNAME -cou 1
+Test-Connection $env:COMPUTERNAME -Quiet
+Get-Help Test-Connection -Parameter Quiet
+
 
     # to update local help
+# Requires -RunAsAdministrator
 Update-Help -Module VPNClient
 
-Get-EventLog Application -Newest 5
-Get-EventLog -LogName Application -Newest 5
+# PowerShell 6+ allows to specify scope for Update-Help
+Get-Help Update-Help
 
-get-help Get-Content -ShowWindow
-get-help about_
+
+    # About topics
+Get-Help about_
 Get-Help about_quoting -ShowWindow
-get-help quoting
+Get-Help quoting
 
 #endregion
 
@@ -105,12 +125,12 @@ get-help quoting
 Get-Module
 Get-Module -ListAvailable
 
-#powershell 3+
+    # PowerShell 3+
 Get-ADUser
-
-# powershell 2.0
+    # PowerShell 2.0
 Import-Module ActiveDirectory
 Get-ADUser
+
 
 Get-Command -Module VpnClient
 Get-Command -Module VpnClient | Measure-Object
@@ -124,17 +144,24 @@ Stop-Service BITS
 Get-Command -Noun *user
 
 
-# aliases
-
+    # aliases
 dir
 ls
 
-get-alias dir
+Get-Command -Noun Alias
+get-help Get-Alias -ShowWindow
+
+Get-Alias dir
 Get-Alias -Definition Get-ChildItem
 Get-Alias -Definition Get-Alias
 Get-Alias
 Get-Command -CommandType Alias
-ipconfig.exe
+
+    # command parameter aliases
+Get-Help dir -Parameter Recurse
+(Get-Command Get-ChildItem).Parameters.Recurse
+(Get-Command Get-ChildItem).Parameters.Recurse.aliases
+dir -s
 
 
 Show-Command Get-Process
