@@ -56,8 +56,8 @@ $userParams | Export-Csv -UseCulture -Encoding Default -Path ./users.csv
 
 Import-Csv -UseCulture -Encoding Default -Path .\users.csv |
     New-ADUser -Enabled $true -AccountPassword (
-        Get-Credential -Message 'Enter password for user'
-    ).Password
+        Read-Host -Prompt 'Enter password for user' -AsSecureString
+    )
 
 Import-Csv .\modify.csv | ForEach-Object {
     Set-ADUser -Identity $_.id -Add @{ mail = $_.email }
@@ -90,6 +90,14 @@ Get-Command -Noun ADOrganizationalUnit
 Get-ADOrganizationalUnit -Filter * |
     Set-ADOrganizationalUnit -ProtectedFromAccidentalDeletion $false
 
+
+    # Active Directory object cmdlets
+Get-Command -Noun ADObject
+
+New-ADObject -Type Contact -Name 'MatiKontakt'
+
+Get-Command -Noun AdAccount*
+Search-ADAccount -AccountDisabled -UsersOnly
 #endregion
 
 
