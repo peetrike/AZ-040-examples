@@ -3,7 +3,7 @@
         Module 03 samples
     .DESCRIPTION
         This file contains sample commands from course 10961 for
-        Module 03 - Working with the Windows PowerShell pipeline
+        Module 03 - Working with the PowerShell pipeline
     .LINK
         https://github.com/peetrike/10961-examples
     .LINK
