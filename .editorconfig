@@ -24,6 +24,6 @@ trim_trailing_whitespace = true
 [*.xml]
 indent_size = 2
 
-# Poweershell xml files
+# PowerShell xml files
 [*.{cdxml,ps1xml}]
 indent_size = 2
