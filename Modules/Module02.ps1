@@ -147,15 +147,26 @@ Get-NetUDPEndpoint -LocalPort 3389
 
 #region Lesson 3: Other server administration cmdlets
 
-Get-Command -Module GPO
+    # Group Policy Management cmdlets
+Get-Command -Module GroupPolicy
 
-#Requires -Modules ServerManager
+    # Server Manager cmdlets
+# Requires -Modules ServerManager
 Get-WindowsFeature
 Install-WindowsFeature -Name Telnet-Client -ComputerName myserver
-#Requires -RunAsAdministrator
+# Requires -RunAsAdministrator
 Get-WindowsOptionalFeature -Online
 Get-WindowsCapability -Online -Name *ssh*
 
+    # Hyper-V cmdlets
 Get-Command -Module Hyper-V
+
+Get-VM -Name 10961*
+
+
+    # IIS management cmdlets
+Get-Module *Administration -ListAvailable
+Get-Command -Module WebAdministration
+Get-Command -Module IISAdministration
 
 #endregion
