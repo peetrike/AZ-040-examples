@@ -35,6 +35,8 @@
 # https://docs.microsoft.com/powershell/scripting/windows-powershell/wmf/overview
 # https://docs.microsoft.com/powershell/scripting/windows-powershell/whats-new/what-s-new-in-windows-powershell-50
 
+Get-Help PowerShell -Category HelpFile
+
 # https://docs.microsoft.com/powershell/scripting/whats-new/what-s-new-in-powershell-71
 
 #endregion
@@ -64,7 +66,6 @@ Get-Command | more
 # Visual Studio Code: http://code.visualstudio.com
 # https://docs.microsoft.com/powershell/scripting/dev-cross-plat/vscode/using-vscode
 
-
 #endregion
 
 #region Working in mixed-version environments
@@ -75,9 +76,11 @@ $PSVersionTable
 $PSVersionTable.BuildVersion
     # PowerShell 5.1+
 $PSVersionTable.PSEdition
+$PSEdition
+    # PowerShell 6+
+Get-Help Editions -Category HelpFile -ShowWindow
     # PowerShell Core
 $PSVersionTable.OS
-get-help PowerShell_Editions -ShowWindow
 
 # look also https://peterwawa.wordpress.com/2017/09/22/mis-keskkonnas-mu-skript-jookseb/
 
@@ -122,20 +125,54 @@ Start-Process -Verb RunAs -FilePath pwsh
 
 #region Lesson 2: Understanding command syntax
 
+#region Cmdlet structure
+
+Get-Command -CommandType Cmdlet -TotalCount 20
+Get-Command | Measure-Object
+
+Get-Verb
+
 Get-Command Get-VM
-Get-Command get-mailbox
+Get-Command Get-Mailbox
 Get-Command Get-ADUser
 
+#endregion
 
-Get-help Get-Process
+#region Parameters
+
+Get-Help about_Parameters -ShowWindow
+
+Get-Command Get-Command | Get-Member
+(Get-Command Get-Command).Parameters
+Get-Help Get-Command -Parameter * | Select-Object Name, Required, Type
 
 Get-Help Get-Process -ShowWindow
-Get-Help Get-Help -ShowWindow
-Get-Help Get-Process -Examples
-Get-Help Get-Process -Online
+Get-Help Get-Process -Parameter *
 Get-Help Get-Process -Parameter Id
 
-    # Understanding help syntax
+#endregion
+
+#region Using Get-Help
+
+Get-Help Get-Help
+
+Get-Help Get-Help -Examples
+Get-Help Get-Help -Parameter *
+Get-Help Get-Help -Detailed
+Get-Help Get-Help -Full
+Get-Help Get-Process -ShowWindow
+Get-Help Get-Process -Online
+
+#endregion
+
+#region Interpreting the help syntax
+
+Get-Help Command_Syntax -Category HelpFile -ShowWindow
+# https://docs.microsoft.com/powershell/module/microsoft.powershell.core/about/about_command_syntax#parameters
+
+Get-Help Get-Command | Select-Object -ExpandProperty Syntax
+Get-Command Get-Command | Select-Object -ExpandProperty ParameterSets | Format-Table
+
 Get-Help Get-WinEvent
 Get-WinEvent Application -MaxEvents 5
 Get-WinEvent -LogName Application -MaxEvents 5
@@ -155,19 +192,29 @@ Test-Connection $env:COMPUTERNAME -cou 1
 Test-Connection $env:COMPUTERNAME -Quiet
 Get-Help Test-Connection -Parameter Quiet
 
+#endregion
 
-    # to update local help
+#region Updating help
+
+Get-Command -Noun help
+Get-Help Update-Help
+
 # Requires -RunAsAdministrator
 Update-Help -Module VPNClient
 
 # PowerShell 6+ allows to specify scope for Update-Help
-Get-Help Update-Help
+Get-Help Update-Help -Parameter Scope
 
+#endregion
 
-    # About topics
+#region About files
+
+Get-Help -Category HelpFile
 Get-Help about_
 Get-Help about_quoting -ShowWindow
 Get-Help quoting
+
+#endregion
 
 #endregion
 
