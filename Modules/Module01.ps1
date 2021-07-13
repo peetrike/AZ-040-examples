@@ -39,6 +39,8 @@ Get-Help PowerShell -Category HelpFile
 
 # https://docs.microsoft.com/powershell/scripting/whats-new/what-s-new-in-powershell-71
 
+# https://docs.microsoft.com/powershell/scripting/install/powershell-in-docker
+
 #endregion
 
 #region PowerShell vs. operating system
@@ -152,6 +154,21 @@ Get-Help Get-Process -Parameter Id
 
 #endregion
 
+#region Tab completion
+
+# https://docs.microsoft.com/powershell/scripting/learn/using-tab-expansion
+
+Get-Help PSReadLine -Category HelpFile -ShowWindow
+Get-Command -Module PSReadLine
+
+Get-PSReadLineKeyHandler -Chord 'tab'
+Get-PSReadLineKeyHandler -Chord 'ctrl- '
+
+Get-Module PSReadLine
+Find-Module PSReadLine -AllowPrerelease
+
+#endregion
+
 #region Using Get-Help
 
 Get-Help Get-Help
@@ -221,8 +238,15 @@ Get-Help quoting
 
 #region Lesson 3: Finding commands
 
+#region What are modules?
+
+Get-Help modules -Category HelpFile
+
 Get-Module
 Get-Module -ListAvailable
+
+$env:PSModulePath
+$env:PSModulePath -split [io.path]::PathSeparator
 
     # PowerShell 3+
 Get-ADUser
@@ -230,20 +254,27 @@ Get-ADUser
 Import-Module ActiveDirectory
 Get-ADUser
 
+#endregion
+
+#region Finding cmdlets
 
 Get-Command -Module VpnClient
 Get-Command -Module VpnClient | Measure-Object
 Get-Command -Noun VpnConnection
 Get-VpnConnection
 
-Get-Command -Noun Service
+Get-Command -noun Service
 Get-Service BITS
 Stop-Service BITS
 
-Get-Command -Noun *user
+Get-Command -Noun *user -Verb Get -CommandType Cmdlet
 
+#endregion
 
-    # aliases
+#region What are aliases?
+
+Get-Help aliases -Category HelpFile
+
 dir
 ls
 
@@ -262,7 +293,15 @@ Get-Help dir -Parameter Recurse
 (Get-Command Get-ChildItem).Parameters.Recurse.aliases
 dir -s
 
+#endregion
 
-Show-Command Get-Process
+#region Using Show-Command
+
+Get-Help Show-Command -ShowWindow
+
+Show-Command -Name Get-Process
+Show-Command
+
+#endregion
 
 #endregion
