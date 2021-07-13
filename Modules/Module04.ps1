@@ -23,7 +23,7 @@ Get-ADUser -filter { Name -like "meelis*" } | Set-ADUser -City "Tallinn"
 Get-Help Set-ADUser -Parameter Identity
 Get-Help Sort-Object -Parameter InputObject
 
-    #see teeb sama, mida 5. rida
+    #see teeb sama, mida 20. rida
 {
     set-aduser -identity meelis -city "Tallinn"
     set-aduser -identity meelisadm -city "tallinn"
