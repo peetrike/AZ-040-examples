@@ -137,6 +137,9 @@ Get-Verb
 Get-Command Get-VM
 Get-Command Get-Mailbox
 Get-Command Get-ADUser
+Get-Command -Noun *User -Verb Get
+
+Find-Module -Command Get-User -Repository PSGallery
 
 #endregion
 
