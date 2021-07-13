@@ -17,53 +17,105 @@
 
 
 #region Safety to prevent the entire script from being run instead of a selection
-    # The code in this region was stolen, I mean borrowed from Thomas Rayner (@MrThomasRayner).
-
     throw "You're not supposed to run the entire script"
 #endregion
 
 
 #region Lesson 1 - Overview and background of Windows PowerShell
 
-# https://docs.microsoft.com/powershell/scripting/setup/starting-windows-powershell
-Get-Help PowerShell_exe
-Get-Help pwsh
+#region PowerShell overview
 
-    # PowerShell vs. OS
+# https://docs.microsoft.com/powershell/scripting/overview
+
+#endregion
+
+#region PowerShell versions
+
+# https://docs.microsoft.com/previous-versions/powershell/scripting/overview
+# https://docs.microsoft.com/powershell/scripting/windows-powershell/wmf/overview
+# https://docs.microsoft.com/powershell/scripting/windows-powershell/whats-new/what-s-new-in-windows-powershell-50
+
+# https://docs.microsoft.com/powershell/scripting/whats-new/what-s-new-in-powershell-71
+
+#endregion
+
+#region PowerShell vs. operating system
+
+# https://docs.microsoft.com/powershell/windows/get-started
+Get-Command Resolve-DnsName
+Get-Command Get-ScheduledTask
 Get-Command Get-NetAdapter
 Get-Command Get-VpnConnection
-Get-Module ActiveDirectory
+Get-Module ActiveDirectory -ListAvailable
+Get-Module Dism -ListAvailable
 
+$PSHOME
+Get-ChildItem (Join-Path $PSHOME Modules)
 
-    # PowerShell hosts
+#endregion
+
+#region Two host applications
+
 # https://docs.microsoft.com/powershell/scripting/getting-started/fundamental/windows-powershell-integrated-scripting-environment--ise-
 
     # Powershell ISE difference: next line doesn't show one screen at time
 Get-Command | more
 
 # Visual Studio Code: http://code.visualstudio.com
-# https://docs.microsoft.com/powershell/scripting/core-powershell/vscode/using-vscode
-
-    # Windows Terminal
-# https://github.com/microsoft/terminal
-# https://aka.ms/terminal
+# https://docs.microsoft.com/powershell/scripting/dev-cross-plat/vscode/using-vscode
 
 
-    #Powershell version (PowerShell 2+)
+#endregion
+
+#region Working in mixed-version environments
+
+    # Powershell 2+
 $PSVersionTable
-    # only works with Windows PowerShell ( < 6 )
+    # Windows PowerShell ( < 6 )
 $PSVersionTable.BuildVersion
-    # only works with PowerShell 5.1+
+    # PowerShell 5.1+
 $PSVersionTable.PSEdition
-    # only works with PowerShell Core
+    # PowerShell Core
 $PSVersionTable.OS
-get-help PowerShell_Editions
+get-help PowerShell_Editions -ShowWindow
 
 # look also https://peterwawa.wordpress.com/2017/09/22/mis-keskkonnas-mu-skript-jookseb/
 
-
-    # starting PowerShell in version 2 mode
+# https://docs.microsoft.com/powershell/scripting/windows-powershell/starting-the-windows-powershell-2.0-engine
 Start-Process -FilePath powershell.exe -ArgumentList '-version 2'
+
+#endregion
+
+#region Precautions when opening Windows PowerShell
+
+# https://docs.microsoft.com/powershell/scripting/setup/starting-windows-powershell
+# https://docs.microsoft.com/powershell/scripting/learn/ps101/01-getting-started
+
+    # PowerShell < 6
+Get-Help PowerShell_exe -ShowWindow
+    # PowerShell 6+
+Get-Help pwsh -ShowWindow
+
+Start-Process -Verb RunAs -FilePath powershell.exe
+Start-Process -Verb RunAs -FilePath pwsh
+
+#endregion
+
+#region Configuring the console
+
+    # Windows Terminal
+# https://docs.microsoft.com/windows/terminal/
+# https://github.com/microsoft/terminal
+
+# https://docs.microsoft.com/typography/font-list/consolas
+# https://www.programmingfonts.org/
+#endregion
+
+#region Configuring the ISE
+
+# https://docs.microsoft.com/powershell/scripting/dev-cross-plat/vscode/how-to-replicate-the-ise-experience-in-vscode
+
+#endregion
 
 #endregion
 
