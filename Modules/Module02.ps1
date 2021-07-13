@@ -19,8 +19,8 @@ throw "You're not supposed to run the entire script"
 
 Get-Command -Module ActiveDirectory | Measure-Object
 
+#region User management cmdlets
 
-    # User management cmdlets
 Get-Command -noun ADUser
 
 Get-ADUser -Identity Administrator
@@ -61,8 +61,10 @@ Import-Csv .\modify.csv | ForEach-Object {
     Set-ADUser -Identity $_.id -Add @{ mail = $_.email }
 }
 
+#endregion
 
-    # Group management cmdlets
+#region Group management cmdlets
+
 Get-Command -Noun ADGroup*
 
 New-ADGroup -Name 'IT' -GroupScope Global
@@ -71,8 +73,9 @@ Get-ADUser -Filter { Department -like 'IT' } |
 
 Get-ADGroup IT | Add-ADGroupMember -Members 'Mati'
 
+#endregion
 
-    # Computer object management cmdlets
+#region Computer object management cmdlets
 Get-Command -Noun ADComputer
 
 #$longAgo = (Get-Date).AddDays(-90)
@@ -82,26 +85,35 @@ Get-ADComputer -Filter (PasswordLastSet -lt $longAgo) | Disable-ADAccount
 Get-Command Test-ComputerSecureChannel
 Get-Command Reset-ComputerMachinePassword
 
-    # OU management cmdlets
+#endregion
+
+#region OU management cmdlets
+
 Get-Command -Noun ADOrganizationalUnit
 
 Get-ADOrganizationalUnit -Filter * |
     Set-ADOrganizationalUnit -ProtectedFromAccidentalDeletion $false
 
+#endregion
 
-    # Active Directory object cmdlets
+#region Active Directory object cmdlets
+
 Get-Command -Noun ADObject
 
 New-ADObject -Type Contact -Name 'MatiKontakt'
 
 Get-Command -Noun AdAccount*
 Search-ADAccount -AccountDisabled -UsersOnly
+
+#endregion
+
 #endregion
 
 
 #region Lesson 2: Network configuration cmdlets
 
-    # Managing IP addresses
+#region Managing IP addresses
+
 Get-Module Net*
 Get-Command -Module NetTCPIP
 Get-Command -Module NetAdapter
@@ -110,12 +122,20 @@ Get-NetIPAddress -AddressFamily IPv4
 Get-NetIPConfiguration -InterfaceAlias 'Wi-fi'
 Get-NetIPInterface -Dhcp Enabled -ConnectionState Connected
 
+#endregion
 
-    # Managing routing
+#region Managing routing
+
 Get-Command -Noun NetRoute
 
-    # Managing DNS Client
+Get-NetRoute -AddressFamily IPv4  -DestinationPrefix '0.0.0.0/0'
+
+#endregion
+
+#region Managing DNS Client
+
 Get-Command -Module DnsClient
+
 Resolve-DnsName -Name www.ee
 Resolve-DnsName -Name ttu.ee -Type mx
 
@@ -125,15 +145,28 @@ Get-DnsClient -InterfaceAlias 'Wi-Fi'
 Get-DnsClientServerAddress -AddressFamily IPv4
 Get-DnsClientGlobalSetting
 
+#endregion
 
-    # Managing Windows Firewall
+#region Managing Windows Firewall
 Get-Command -Module NetSecurity
 
-get-command -Module NetConnection
+Get-NetFirewallRule -Name WINRM-HTTP-In-TCP*
+Get-NetFirewallRule -Group '@FirewallAPI.dll,-30267'
+
+$AddressFilter = Get-NetFirewallRule -Name WINRM-HTTP-In-TCP | Get-NetFirewallAddressFilter
+$AddressFilter
+$AddressFilter.RemoteAddress
+
+$AddressFilter |
+    Set-NetFirewallAddressFilter -RemoteAddress @($AddressFilter.RemoteAddress) + '172.20.160./24'
+
+Get-Command -Module NetConnection
+
 Get-NetConnectionProfile
 
+#endregion
 
-    # extra networking commands
+#region extra networking commands
 Test-Connection -ComputerName www.ee -Count 1
 Test-NetConnection -ComputerName www.ee -CommonTCPPort HTTP
 
@@ -142,29 +175,46 @@ Get-NetUDPEndpoint -LocalPort 3389
 
 #endregion
 
+#endregion
+
 
 #region Lesson 3: Other server administration cmdlets
 
-    # Group Policy Management cmdlets
+#region Group Policy Management cmdlets
 Get-Command -Module GroupPolicy
 
-    # Server Manager cmdlets
+Get-Help Get-GPO
+
+Get-Help Invoke-GPUpdate
+
+#endregion
+
+#region Server Manager cmdlets
 # Requires -Modules ServerManager
 Get-WindowsFeature
 Install-WindowsFeature -Name Telnet-Client -ComputerName myserver
+
 # Requires -RunAsAdministrator
-Get-WindowsOptionalFeature -Online
+Get-WindowsOptionalFeature -Online -FeatureName SMB1Protocol*
 Get-WindowsCapability -Online -Name *ssh*
 
-    # Hyper-V cmdlets
+#endregion
+
+#region Hyper-V cmdlets
 Get-Command -Module Hyper-V
 
 Get-VM -Name 10961*
 
+Enter-PSSession -VMName MyVM -Credential 'computer\user'
 
-    # IIS management cmdlets
+#endregion
+
+#region IIS management cmdlets
+
 Get-Module *Administration -ListAvailable
 Get-Command -Module WebAdministration
 Get-Command -Module IISAdministration
+
+#endregion
 
 #endregion
