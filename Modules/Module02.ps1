@@ -11,9 +11,7 @@
 #>
 
 #region Safety to prevent the entire script from being run instead of a selection
-    # The code in this region was stolen, I mean borrowed from Thomas Rayner (@MrThomasRayner).
-
-    throw "You're not supposed to run the entire script"
+throw "You're not supposed to run the entire script"
 #endregion
 
 
