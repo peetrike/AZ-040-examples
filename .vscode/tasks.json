@@ -51,13 +51,34 @@
     {
       "label": "Test",
       "type": "shell",
-      "command": "Invoke-Pester -PesterOption @{IncludeVSCodeMarker=$true}",
+      "command": "Invoke-Pester -Path ${fileDirname}",
       "group": {
         "kind": "test",
         "isDefault": true
       },
       "problemMatcher": [
-        "$pester"
+        {
+          "owner": "powershell",
+          "fileLocation": [
+            "absolute"
+          ],
+          "severity": "error",
+          "pattern": [
+            {
+              "regexp": "^\\s*(\\[-\\]\\s*.*?)(\\d+)ms\\s*$",
+              "message": 1
+            },
+            {
+              "regexp": "(.*)",
+              "code": 1
+            },
+            {
+              "regexp": "^.*,\\s*(.*):(\\s*line\\s*)?(\\d+).*",
+              "file": 1,
+              "line": 3
+            }
+          ]
+        }
       ]
     },
     {
@@ -81,6 +102,10 @@
             "file": 1,
             "line": 2,
             "column": 3
+          },
+          {
+            "regexp": "\\+ (.*)",
+            "code": 1
           }
         ]
       }
@@ -107,6 +132,10 @@
             "file": 1,
             "line": 2,
             "column": 3
+          },
+          {
+            "regexp": "\\+ (.*)",
+            "code": 1
           }
         ]
       }
@@ -133,6 +162,10 @@
             "file": 1,
             "line": 2,
             "column": 3
+          },
+          {
+            "regexp": "\\+ (.*)",
+            "code": 1
           }
         ]
       }
