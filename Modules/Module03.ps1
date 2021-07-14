@@ -14,18 +14,47 @@
     throw "You're not supposed to run the entire script"
 #endregion
 
+#region Lesson 1: Understanding the pipeline
 
-#region Lesson 1: what is pipeline
+#region What is the pipeline?
 
-1..3 | foreach { start notepad }
+Get-Help Pipelines -Category HelpFile
+
+1..3 | ForEach-Object { Start-Process notepad.exe }
 Get-Process notepad | Stop-Process
 
 Get-ChildItem | Sort-Object Length -Descending | Select-Object -First 3 | Remove-Item -WhatIf
 
 Get-ChildItem |
-    Sort-Object length -Descending |
+    Sort-Object Length -Descending |
     Select-Object -First 3 |
     Remove-Item -WhatIf
+
+# https://get-powershellblog.blogspot.com/2017/07/bye-bye-backtick-natural-line.html
+
+#endregion
+
+#region Pipeline output
+
+Get-Help Objects -Category HelpFile
+
+#endregion
+
+#region Discovering object members
+
+Get-Help Get-Member -ShowWindow
+
+Get-Command | Get-Member
+
+#endregion
+
+#region Formatting pipeline output
+
+Get-Command -Verb Format -Module Microsoft.PowerShell.Utility
+
+# https://peterwawa.wordpress.com/2021/06/10/objektide-kuvamisest/
+
+#endregion
 
 #endregion
 
