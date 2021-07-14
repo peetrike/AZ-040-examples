@@ -272,6 +272,10 @@ Stop-Service BITS
 
 Get-Command -Noun *user -Verb Get -CommandType Cmdlet
 
+Get-Help Command_Precedence -ShowWindow
+
+Get-Command | Group-Object -Property CommandType
+
 #endregion
 
 #region What are aliases?
