@@ -322,14 +322,115 @@ Measure-Command {
 
 #region Lesson 4: Enumerating objects in the pipeline
 
+#region Basic enumeration syntax
+
+Get-Help Simplified_Syntax -ShowWindow
+
 Get-Help ForEach-Object -ShowWindow
+Get-Alias -Definition ForEach-Object
+
+dir | ForEach-Object Name | get-member
+    #see teeb sama asja
+dir | Select-Object -ExpandProperty Name
+    # PowerShell 3+
+(Get-ChildItem).Name
+
+dir | foreach -MemberName Encrypt -WhatIf
+
+#endregion
+
+#region Advanced enumeration syntax
+
+dir | ForEach-Object -Process { $_.Name }
+dir | % { $_.Name }
+
+Get-Service BITS | ForEach-Object { stop-service $_ }
+Get-Service BITS | Stop-Service
+
+#endregion
 
 #endregion
 
 
 #region Lesson 5: Sending pipeline data as output
 
+Get-Help Encoding -Category HelpFile -ShowWindow
+
+#region Writing output to a file
+
 Get-Help Out-File -ShowWindow
-Get-Help redirect -ShowWindow
+Get-Help Redirect -Category HelpFile -ShowWindow
+
+dir | Out-File -FilePath failid.txt -Encoding utf8
+dir > kaustad.txt
+
+Get-Help Add-Content -ShowWindow
+Get-Help Set-Content -ShowWindow
+
+#endregion
+
+#region Converting output to CSV
+
+Get-Help ConvertTo-Csv -ShowWindow
+Get-Help Export-Csv -ShowWindow
+
+dir | Export-Csv -Path failid.csv -Encoding Default -UseCulture
+Get-ChildItem |
+    ConvertTo-Csv -UseCulture -NoTypeInformation |
+    Out-File -Encoding utf8 -FilePath failid.csv
+
+# https://peterwawa.wordpress.com/2014/05/13/excel-csv-ja-powershell/
+
+Get-Help Export-Csv -Parameter Encoding
+Get-Help ConvertTo-Csv -Parameter UseCulture
+Get-Help Export-Csv -Parameter Delimiter
+
+#endregion
+
+#region Converting output to XML
+
+Get-Command -Noun *xml -Module Microsoft.PowerShell.Utility
+Get-Help Export-Clixml -ShowWindow
+Get-Help ConvertTo-Xml -ShowWindow
+
+dir | ConvertTo-Xml
+dir | ConvertTo-Xml -As Stream | Out-File files.xml -Encoding utf8
+dir | Export-Clixml -Path failid.xml
+
+#endregion
+
+#region Converting output to JSON
+
+Get-Help ConvertTo-Json -ShowWindow
+Get-ChildItem | Select-Object Name, Length, LastWriteTime | ConvertTo-Json
+
+Get-Help ConvertTo-Json -Parameter Depth
+
+#endregion
+
+#region Converting output to HTML
+
+Get-Help ConvertTo-Html -ShowWindow
+Get-ChildItem |
+    ConvertTo-Html -PreContent 'siin on mõned failid' -Property Name, Length |
+    Out-File -FilePath failid.htm
+
+# https://github.com/EvotecIT/PSWriteHTML
+# https://github.com/Stephanevg/PSHTML
+
+#endregion
+
+#region Additional output options
+
+Get-Command -Verb Out
+
+Get-Help Out-Host -Parameter Paging
+
+Get-Help Out-Printer -ShowWindow
+Get-Help Out-String -ShowWindow
+Get-Help Out-GridView -ShowWindow
+Get-ChildItem | Out-GridView
+
+#endregion
 
 #endregion
