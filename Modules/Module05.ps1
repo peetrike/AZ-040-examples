@@ -23,19 +23,51 @@ Get-PSProvider
 Import-Module ActiveDirectory
 Get-PSProvider
 
-Get-Help FileSystem
-Get-Help WSMan
+Get-Help about*Provider
+
+Get-Help FileSystem -Category HelpFile -ShowWindow
+Get-Help WSMan -Category HelpFile -ShowWindow
 
 #endregion
 
 
 #region Lesson 2: Using PSDrives
 
+#region Cmdlets for using PSDrives
+
 Get-Command -Noun PSDrive
 Get-PSDrive
 
 Get-Command -Noun Item, ItemProperty*, Content, Location
-Get-Command -noun ChildItem
+Get-Command -Noun ChildItem
 Get-Alias -Definition Get-ChildItem
+
+    #Requires -Version 3
+New-PSDrive -Name 's' -Root '\\server\share\folder' -Persist -Credential 'domain\user' -PSProvider FileSystem
+New-SmbMapping -LocalPath 'p:' -RemotePath '\\server\share\folder' -Persistent $true -UserName 'domain\user' -SaveCredentials
+Get-Help New-SmbMapping -Parameter Password
+
+#endregion
+
+#region Working with the file system
+
+New-PSDrive –Name WINDIR –Root C:\Windows –PSProvider FileSystem
+Set-Location Windir:\System32
+
+Get-Help FileSystem -Category HelpFile -ShowWindow
+
+New-Item -ItemType Directory -Name uus
+New-Item -ItemType File -Name minufail.txt -Path uus
+
+Set-Location uus
+    #Requires -Version 5
+New-Item -ItemType HardLink -Name teinefail.txt -Value minufail.txt
+
+    #Requires -RunAsAdministrator
+New-Item -ItemType SymbolicLink -Name link.txt -Value minufail.txt
+
+
+#endregion
+
 
 #endregion
