@@ -59,21 +59,23 @@ if (-not (Test-Path -Path temp:\)) {
 }
 Get-ChildItem temp:\
 
-New-PSDrive –Name WINDIR –Root C:\Windows –PSProvider FileSystem
-Set-Location Windir:\System32
 
 New-Item -ItemType Directory -Name uus
 New-Item -ItemType File -Name minufail.txt -Path uus
 
-Set-Location uus
-    #Requires -Version 5
-New-Item -ItemType HardLink -Name teinefail.txt -Value minufail.txt
+    #Requires -Version 5.0
+New-Item -Name kaust -ItemType Junction -Target uus
 
+Set-Location kaust
+New-Item -ItemType HardLink -Name teinefail.txt -Value minufail.txt
     #Requires -RunAsAdministrator
 New-Item -ItemType SymbolicLink -Name link.txt -Value minufail.txt
 
 # https://peterwawa.wordpress.com/2013/04/10/ntfs-alternate-data-stream/
 Get-ChildItem -Recurse | Unblock-File
+
+    #Requires -Version 5.0
+Get-Command -Noun Archive
 
 #endregion
 
