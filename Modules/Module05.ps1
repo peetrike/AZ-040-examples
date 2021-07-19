@@ -17,16 +17,16 @@
 
 #region Lesson 1: Using PSProviders
 
+Get-Help Providers -Category HelpFile -ShowWindow
+
 Get-Command -Noun PSProvider
 
 Get-PSProvider
 Import-Module ActiveDirectory
 Get-PSProvider
 
-Get-Help about*Provider
-
-Get-Help FileSystem -Category HelpFile -ShowWindow
-Get-Help WSMan -Category HelpFile -ShowWindow
+Get-Help Function_ -Category HelpFile -ShowWindow
+Get-Help Variable_ -Category HelpFile -ShowWindow
 
 #endregion
 
@@ -44,17 +44,23 @@ Get-Alias -Definition Get-ChildItem
 
     #Requires -Version 3
 New-PSDrive -Name 's' -Root '\\server\share\folder' -Persist -Credential 'domain\user' -PSProvider FileSystem
-New-SmbMapping -LocalPath 'p:' -RemotePath '\\server\share\folder' -Persistent $true -UserName 'domain\user' -SaveCredentials
+     #Requires -Modules SmbShare
+New-SmbMapping -LocalPath 's:' -RemotePath '\\server\share\folder' -Persistent $true -UserName 'domain\user'
 Get-Help New-SmbMapping -Parameter Password
 
 #endregion
 
 #region Working with the file system
 
+Get-Help FileSystem -Category HelpFile -ShowWindow
+
+if (-not (Test-Path -Path temp:\)) {
+    New-PSDrive -Name Temp -Root $env:TEMP -PSProvider FileSystem -Persist
+}
+Get-ChildItem temp:\
+
 New-PSDrive –Name WINDIR –Root C:\Windows –PSProvider FileSystem
 Set-Location Windir:\System32
-
-Get-Help FileSystem -Category HelpFile -ShowWindow
 
 New-Item -ItemType Directory -Name uus
 New-Item -ItemType File -Name minufail.txt -Path uus
@@ -66,8 +72,69 @@ New-Item -ItemType HardLink -Name teinefail.txt -Value minufail.txt
     #Requires -RunAsAdministrator
 New-Item -ItemType SymbolicLink -Name link.txt -Value minufail.txt
 
+# https://peterwawa.wordpress.com/2013/04/10/ntfs-alternate-data-stream/
+Get-ChildItem -Recurse | Unblock-File
 
 #endregion
 
+#region Working with the registry
+
+Get-Help Registry -Category HelpFile -ShowWindow
+
+$regPath = 'HKLM:\SOFTWARE\Microsoft\Windows\CurrentVersion'
+
+Test-Path -Path $regPath
+Set-Location -Path $regPath
+Get-ChildItem
+
+Get-ItemProperty HKLM:\SOFTWARE\Microsoft\Windows\CurrentVersion\Run
+    #Requires -Version 5
+Get-ItemPropertyValue HKLM:\SOFTWARE\Microsoft\Windows\CurrentVersion\Run -Name SecurityHealth
+
+
+#endregion
+
+#region Working with certificates
+
+Get-Help Certificate -Category HelpFile -ShowWindow
+
+Get-ChildItem -Path Cert:\LocalMachine\My
+Get-ChildItem -Path Cert:\CurrentUser\My\ -CodeSigningCert
+
+Get-Command Test-Certificate
+Get-Command -Module pki
+
+Set-Location Cert:\LocalMachine\My
+    #Requires -Version 3.0
+Get-ChildItem -ExpiringInDays 60 | Test-Certificate -User
+# https://docs.microsoft.com/previous-versions/powershell/module/microsoft.powershell.security/about/about_certificate_provider?view=powershell-3.0#dynamic-parameters
+
+Get-ChildItem -SSLServerAuthentication
+Get-ChildItem -Path Cert:\ -CodeSigningCert -Recurse
+
+#endregion
+
+#region Working with other PSDrives
+
+Get-PSDrive
+
+Get-Help wsman -Category HelpFile -ShowWindow
+
+Get-Service WinRM # must be running
+Get-ChildItem WSMan:\localhost\Client\
+Get-Item WSMan:\localhost\Client\TrustedHosts
+    #Requires -RunAsAdministrator
+Set-Item WSMan:\localhost\Client\TrustedHosts -Value 'server1,server2'
+
+Get-Command -Noun Alias
+Get-Help Alias_ -Category HelpFile -ShowWindow
+New-Alias -Name minu -Value 'miski asi'
+Get-ChildItem Alias:\minu | Remove-Item
+
+Get-Help Environment -Category HelpFile
+Get-ChildItem Env:
+$env:COMPUTERNAME
+
+#endregion
 
 #endregion
