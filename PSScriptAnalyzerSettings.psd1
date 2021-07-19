@@ -75,7 +75,7 @@
         }
 
         # Check if your script uses cmdlets that are compatible
-        PSUseCompatibleCmdlets                    = @{
+        <# PSUseCompatibleCmdlets                    = @{
             # https://github.com/PowerShell/PSScriptAnalyzer/blob/master/RuleDocumentation/UseCompatibleCmdlets.md
             Compatibility = @(
                 #'desktop-2.0-windows'
@@ -84,7 +84,7 @@
                 'desktop-5.1.14393.206-windows'
                 'core-6.1.0-windows'
             )
-        }
+        } #>
 
         PSUseCompatibleCommands                   = @{
             # https://github.com/PowerShell/PSScriptAnalyzer/blob/master/RuleDocumentation/UseCompatibleCommands.md
@@ -148,7 +148,7 @@
             CheckOperator                   = $false  # doesn't work with PSAlignAssignmentStatement enabled
             #IgnoreAssignmentOperatorInsideHashTable = $true
             CheckPipeForRedundantWhitespace = $true
-            #CheckParameter                  = $true
+            CheckParameter                  = $true
         }
     }
 }
