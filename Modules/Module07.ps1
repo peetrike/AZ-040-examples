@@ -173,7 +173,7 @@ $numbrid.Count
 
 #endregion
 
-#region Working with arraylists
+#region Working with ArrayLists
 
 # https://docs.microsoft.com/dotnet/api/system.collections.arraylist
 
