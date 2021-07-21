@@ -58,6 +58,9 @@ Get-Module Dism -ListAvailable
 $PSHOME
 Get-ChildItem (Join-Path $PSHOME Modules)
 
+# https://docs.microsoft.com/powershell/module/microsoft.powershell.core/about/about_special_characters#stop-parsing-token---
+bcdedit.exe --% /enum {current}
+
 #endregion
 
 #region Two host applications
