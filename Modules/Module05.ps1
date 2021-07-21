@@ -59,6 +59,10 @@ if (-not (Test-Path -Path temp:\)) {
 }
 Get-ChildItem temp:\
 
+Get-ChildItem | Where-Object { $_.PSIsContainer }
+    #Requires -Version 3.0
+Get-ChildItem -Directory
+Get-ChildItem -File
 
 New-Item -ItemType Directory -Name uus
 New-Item -ItemType File -Name minufail.txt -Path uus
