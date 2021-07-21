@@ -245,6 +245,8 @@ $computers.'lon-svr3'
 $computers.Keys -contains 'Server2'
 $computers.ContainsKey('Lon-svr1')
 
+Get-Help splatting -ShowWindow
+
 #endregion
 
 #endregion
