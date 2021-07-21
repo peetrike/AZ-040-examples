@@ -92,12 +92,15 @@ Get-Help Get-WmiObject -ShowWindow
 
 Get-WmiObject -Class Win32_LogicalDisk
 Get-CimInstance -ClassName Win32_LogicalDisk
-Get-CimInstance Win32_LogicalDisk –Filter "DriveType=3" -Property DeviceId, Size, FreeSpace -Verbose
+
+Get-Help wql -Category HelpFile -ShowWindow
+# https://docs.microsoft.com/powershell/module/microsoft.powershell.core/about/about_wql?view=powershell-5.1
 Get-CimInstance -Query @'
 SELECT DeviceId,Size,FreeSpace
 FROM Win32_LogicalDisk
 WHERE DriveType=3
 '@
+Get-CimInstance Win32_LogicalDisk –Filter "DriveType=3" -Property DeviceId, Size, FreeSpace -Verbose
 
 Get-CimInstance -ClassName Win32_ComputerSystem
 Get-CimInstance -ClassName Win32_OperatingSystem
@@ -116,6 +119,9 @@ Get-WmiObject Win32_OperatingSystem -ComputerName 'LON-DC1'
 #endregion
 
 #region Using CIM sessions
+
+    #Requires -Version 3
+Get-Help CimSession -Category HelpFile -ShowWindow
 
 Get-Command -Noun CimSession
 Get-Command -ParameterName 'CimSession' | Measure-Object
