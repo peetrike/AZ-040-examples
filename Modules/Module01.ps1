@@ -15,6 +15,8 @@
         https://peterwawa.wordpress.com/tag/powershell/
     .LINK
         https://aka.ms/pskoans
+    .LINK
+        https://docs.microsoft.com/powershell/#community-resources
 #>
 
 
