@@ -38,6 +38,8 @@ Get-Help Variable_ -Category HelpFile -ShowWindow
 Get-Command -Noun PSDrive
 Get-PSDrive
 
+Get-Help Locations -Category HelpFile -ShowWindow
+
 Get-Command -Noun Item, ItemProperty*, Content, Location
 Get-Command -Noun ChildItem
 Get-Alias -Definition Get-ChildItem
