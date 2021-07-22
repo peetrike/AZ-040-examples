@@ -31,6 +31,8 @@
 
 # https://docs.microsoft.com/powershell/scripting/overview
 
+get-help Parsing -ShowWindow
+
 #endregion
 
 #region PowerShell versions
@@ -250,7 +252,7 @@ Get-Help quoting
 
 #region What are modules?
 
-Get-Help modules -Category HelpFile
+Get-Help Modules -Category HelpFile -ShowWindow
 
 Get-Module
 Get-Module -ListAvailable
