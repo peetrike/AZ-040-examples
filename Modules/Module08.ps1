@@ -17,27 +17,127 @@
 
 #region Lesson 1: Introduction to scripting
 
-Get-Help scripts -ShowWindow
+#region Overview of Windows PowerShell scripts
 
-'get-date
-get-location
-get-childitem
-' > minuskript.txt
+Get-Help Scripts -Category HelpFile -ShowWindow
 
-Get-Content .\minuskript.txt
+get-date
+whoami
+
+'get-date; whoami' | Set-Content -Path käsud.txt -Encoding utf8BOM
+Start-Process cmd.exe -ArgumentList '/k powershell < käsud.txt'
+Invoke-Expression (gc .\käsud.txt)
+Invoke-Item .\käsud.txt
+
+Get-Content .\käsud.txt | powershell -command -
+pwsh -c (gc .\käsud.txt)
+
+#endregion
+
+#region Modifying scripts
+
+# https://github.com/janikvonrotz/awesome-powershell#editors-and-ides
+
+# https://code.visualstudio.com
+# https://docs.microsoft.com/powershell/scripting/windows-powershell/ise/how-to-write-and-run-scripts-in-the-windows-powershell-ise
+# https://www.sapien.com/software/powershell_studio
+# https://visualstudio.microsoft.com/vs/community/
+
+# https://www.sublimetext.com/
+# https://atom.io/
+# https://github.com/neoclide/coc.nvim
+# https://emacs-lsp.github.io/lsp-mode/
+# https://plugins.jetbrains.com/plugin/10249
+
+# https://code.labstack.com/powershell
+# https://poshgui.com/
+# https://docs.github.com/en/codespaces
+
+# https://notepad-plus-plus.org/
+
+#endregion
+
+#region What is the PowerShellGet module?
+
+# https://www.powershellgallery.com/
+# https://docs.microsoft.com/powershell/scripting/gallery/getting-started
+
+Get-Module PowerShellGet -ListAvailable
+
+if ($PSVersionTable.PSVersion.Major -lt 6) {
+    if (-not ([Net.ServicePointManager]::SecurityProtocol -band [Net.SecurityProtocolType]::Tls12)) {
+        [Net.ServicePointManager]::SecurityProtocol =
+            [Net.ServicePointManager]::SecurityProtocol -bor [Net.SecurityProtocolType]::Tls12
+    }
+}
+
+Find-Script Send-PasswordNotification -Repository PSGallery
+find-module UserProfile -Repository PSGallery
+Find-Module -Command get-user -Repository PSGallery
+
+Get-InstalledScript
+Get-InstalledModule
+
+#endregion
+
+#region Running scripts
 
 powershell.exe -?
+
     # this doesn't work
-powershell.exe -file .\minuskript.txt
+powershell.exe -file käsud.txt
     # but this works
-Copy-Item .\minuskript.txt minuskript.ps1
-powershell.exe -file .\minuskript.ps1
+Copy-Item -Path käsud.txt -Destination käsud.ps1
+powershell.exe -file käsud.ps1
+pwsh -f käsud.ps1
 
-Get-Content .\minuskript.txt | powershell.exe -c -
-Invoke-Item .\minuskript.txt
+powershell.exe -command .\käsud.ps1
+.\käsud.ps1
+.\käsud
 
+Get-Help Command_Precedence -ShowWindow
 
-get-command -noun ExecutionPolicy
+Get-Help Run_With_PowerShell -ShowWindow
+
+#endregion
+
+#region The script execution policy
+
+Get-Help Execution_Policies -ShowWindow
+Get-Command -noun ExecutionPolicy
+Get-ExecutionPolicy -List
+
+Set-ExecutionPolicy Restricted -Scope Process
+.\käsud.ps1
+powershell.exe -ExecutionPolicy RemoteSigned -file käsud.ps1
+Set-ExecutionPolicy RemoteSigned -Scope Process
+
+#endregion
+
+#region PowerShell and AppLocker/WDAC
+
+Get-Help Language_Modes -ShowWindow
+
+$ExecutionContext.SessionState.LanguageMode
+
+# https://docs.microsoft.com/windows/security/threat-protection/windows-defender-application-control/select-types-of-rules-to-create#table-1-windows-defender-application-control-policy---policy-rule-options
+
+#endregion
+
+#region Digitally signing scripts
+
+Get-Help Signing -Category HelpFile -ShowWindow
+
+Get-Command -Noun AuthenticodeSignature
+
+Get-AuthenticodeSignature -FilePath käsud.ps1
+
+Get-ChildItem Cert:\CurrentUser\My -CodeSigningCert
+Get-Help Set-AuthenticodeSignature -Examples
+
+Get-Command -Noun FileCatalog
+
+#endregion
 
 #endregion
 
