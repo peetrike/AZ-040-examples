@@ -45,7 +45,7 @@
     if ($TaskName -match '\\') {
         $RootFolder.GetTask($TaskName)
     } elseif ($TaskPath) {
-        $currentFolder = $RootFolder.GetFolder($TaskPath)
+        $currentFolder = $RootFolder.GetFolder($TaskPath.TrimEnd('\'))
         Get-Task -Name $TaskName -Folder $currentFolder
     } else {
         foreach ($folder in Get-TaskFolder -Folder $RootFolder) {
