@@ -19,7 +19,19 @@
 
 Get-Help Read-Host -ShowWindow
 Get-Help Get-Credential -ShowWindow
+
+#region Additional material, Out-GridView as GUI filter:
 Get-Help Out-GridView -ShowWindow
+
+Get-ChildItem |
+    Out-GridView -Title 'Select the files to remove' -PassThru |
+    Remove-Item -WhatIf
+
+Get-ADUser -Filter { City -like 'Tallinn' } |
+    Out-GridView -Title 'Choose the user to add' -OutputMode Single |
+    Add-ADPrincipalGroupMembership -MemberOf 'IT' -WhatIf
+
+#endregion
 
 
 Get-WinEvent -MaxEvents 10 -FilterHashtable @{
