@@ -333,28 +333,100 @@ switch -Regex ($ip) {
 
 #region Lesson 3: Importing data from files
 
+#region Using Get-Content
+
+Get-Command -Noun Content
 Get-Help Get-Content -ShowWindow
 
-Get-Content -Path C:\Scripts\* -Include *.txt, *.log
-Get-Content C:\Scripts\computers.txt -TotalCount 10
-Get-Content file.txt -Tail 10
+Get-Content -Path .\* -Include *.txt, *.log
 
+Get-Help Get-Content -Parameter TotalCount
+Get-Content Module08.ps1 -Head 7
 
+Get-Help Get-Content -Parameter Tail
+Get-Content Module08.ps1 -Tail 5
+
+#endregion
+
+#region Using Import-Csv
+
+Get-Command -Noun Csv
 Get-Help Import-Csv -ShowWindow
 
-Import-Csv kasutajad.csv | Select-Object name, e-mail
+Get-Process p* | export-csv -Path protsessid.csv
+Import-Csv protsessid.csv | Select-Object Name, Path
 
+Invoke-Item protsessid.csv
+# https://peterwawa.wordpress.com/2014/05/13/excel-csv-ja-powershell/
+Get-Help Import-Csv -Parameter Encoding
 
+Get-ADUser -Filter * -ResultSetSize 10 -Properties mail |
+    Select-Object *name, mail -ExcludeProperty DistinguishedName |
+    Export-Csv -Path kasutajad.csv -Encoding utf8 -UseCulture -NoTypeInformation
+invoke-item kasutajad.csv
+Import-Csv kasutajad.csv -UseCulture
 
-# lisamaterjal, Out-GridView kui kasutajaliidese element:
+#endregion
+
+#region Using Import-Clixml
+
+Get-Command -Noun *xml -Module Microsoft.PowerShell.*
+Get-Help Import-Clixml -ShowWindow
+
+Get-Process p* | Export-Clixml -Path protsessid.xml
+Import-Clixml -Path protsessid.xml | get-member
+Invoke-Item protsessid.xml
+
+#endregion
+
+#region Using ConvertFrom-Json
+
+Get-Command -Noun Json
+Get-Help ConvertFrom-Json -ShowWindow
+
+Get-Process p* | ConvertTo-Json | Set-Content -Path protsessid.json
+Invoke-Item protsessid.json
+
+    #Requires -Version 7
+Get-Content protsessid.json | ConvertFrom-Json | Select-Object Name, Id, Cpu, Path
+    #Requires -Version 3
+(Get-Content protsessid.json | ConvertFrom-Json) | Select-Object Name, Id, Cpu, Path
+
+#endregion
+
+#endregion
+
+#region Using .PSD1 files as data source
+
+Get-Help Import-PowerShellDataFile -ShowWindow
+
+@'
+@{
+    Config = @(
+            @{
+                Setting = 1
+            }
+            @{
+                Setting = 7
+            }
+        )
+}
+'@ | Set-Content config33.psd1
+
+$myConfig = Import-PowerShellDataFile -Path config33.psd1
+$myConfig
+
+#endregion
+
+#region Additional material, Out-GridView as GUI filter:
 Get-Help Out-GridView -ShowWindow
 
 Get-ChildItem |
-    Out-GridView -Title 'mis failid soovid kustutada' -PassThru |
+    Out-GridView -Title 'Select the files to remove' -PassThru |
     Remove-Item -WhatIf
 
-Get-ADUser -filter { City -like 'Tallinn' } |
-    Out-GridView -Title 'mis kasutaja gruppi lisame' -OutputMode Single |
-    Add-ADPrincipalGroupMembership -MemberOf 'minu sobrad' -WhatIf
+Get-ADUser -Filter { City -like 'Tallinn' } |
+    Out-GridView -Title 'Choose the user to add' -OutputMode Single |
+    Add-ADPrincipalGroupMembership -MemberOf 'IT' -WhatIf
 
 #endregion
