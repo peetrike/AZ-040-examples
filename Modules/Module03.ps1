@@ -236,10 +236,13 @@ Get-ScheduledTask -TaskName katse
 Get-CimInstance MSFT_ScheduledTask -Namespace 'Root/Microsoft/Windows/TaskScheduler' -Filter 'TaskName="katse"'
 
 Measure-Command {
-    Get-ScheduledTask -TaskName katse -TaskPath '\meelis\'
+    Get-CimInstance MSFT_ScheduledTask -Namespace 'Root/Microsoft/Windows/TaskScheduler' -Filter 'TaskName="katse"'
 }
 Measure-Command {
     Get-ScheduledTask -TaskName katse
+}
+Measure-Command {
+    Get-ScheduledTask -TaskName katse -TaskPath '\meelis\'
 }
 Measure-Command {
     Get-ScheduledTask | where TaskName -eq 'katse'
