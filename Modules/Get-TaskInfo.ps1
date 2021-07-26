@@ -1,10 +1,21 @@
 ﻿function Get-TaskInfo {
+    <#
+        .SYNOPSIS
+            Finds Scheduled tasks from local computer
+        .DESCRIPTION
+            This sample function searches for Scheduled Tasks on local computer
+        .LINK
+            https://docs.microsoft.com/windows/win32/taskschd/task-scheduler-start-page
+    #>
+
     [CmdletBinding()]
     param(
             [ValidateNotNullOrEmpty()]
             [string]
+            # Specifies Scheduled Task name search pattern
         $TaskName = '*',
             [string]
+            # Specifies path for scheduled tasks in Task Scheduler namespace.
         $TaskPath
     )
 
