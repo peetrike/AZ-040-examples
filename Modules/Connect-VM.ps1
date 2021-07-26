@@ -58,7 +58,7 @@ if (-not $Credential) {
             Message  = 'Please enter credentials for VM connection'
             UserName = 'Adatum\Administrator'
         }
-        if ($NewCredential = Get-Credential @CredentialParams) {
+        if ($NewCredential = Microsoft.PowerShell.Security\Get-Credential @CredentialParams) {
             $Credential = $NewCredential
         }
 
