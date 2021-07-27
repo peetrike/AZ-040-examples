@@ -81,16 +81,16 @@ Get-Command | more
 
 #region Working in mixed-version environments
 
-    # Powershell 2+
+    #Requires -Version 2
 $PSVersionTable
 $Host.Version
 
     # Windows PowerShell ( < 6 )
 $PSVersionTable.BuildVersion
-    # PowerShell 5.1+
+    #Requires -Version 5.1
 $PSVersionTable.PSEdition
 $PSEdition
-    # PowerShell 6+
+    #Requires -Version 6
 Get-Help Editions -Category HelpFile -ShowWindow
     # PowerShell Core
 $PSVersionTable.OS
@@ -111,7 +111,7 @@ Start-Process -FilePath powershell.exe -ArgumentList '-version 2'
 
     # PowerShell < 6
 Get-Help PowerShell_exe -ShowWindow
-    # PowerShell 6+
+    #Requires -Version 6
 Get-Help pwsh -ShowWindow
 
 Start-Process -Verb RunAs -FilePath powershell.exe
@@ -122,6 +122,8 @@ Start-Process -Verb RunAs -FilePath pwsh
 #region Configuring the console
 
 # https://docs.microsoft.com/previous-versions/windows/it-pro/windows-powershell-1.0/ee692799(v=technet.10)
+$Host.PrivateData
+$Host.UI.RawUI.WindowTitle
 
     # Windows Terminal
 # https://docs.microsoft.com/windows/terminal/
@@ -130,14 +132,17 @@ Start-Process -Verb RunAs -FilePath pwsh
 # https://docs.microsoft.com/typography/font-list/consolas
 # https://www.programmingfonts.org/
 
-# https://code.visualstudio.com/docs/editor/accessibility#_zoom
 # https://docs.microsoft.com/windows/terminal/tips-and-tricks#zoom-with-the-mouse
+# https://code.visualstudio.com/docs/editor/accessibility#_zoom
 
 #endregion
 
 #region Configuring the ISE
 
 # https://docs.microsoft.com/powershell/scripting/dev-cross-plat/vscode/how-to-replicate-the-ise-experience-in-vscode
+
+# https://code.visualstudio.com/docs/getstarted/settings
+# https://docs.microsoft.com/powershell/scripting/dev-cross-plat/vscode/using-vscode#configuration-settings-for-visual-studio-code
 
 #endregion
 
@@ -223,7 +228,7 @@ Get-ChildItem -Path . -Filter *.ps1
 Get-Help Test-Connection -ShowWindow
     # up to PowerShell 5.1
 Test-Connection .
-    # PowerShell 6+
+    #Requires -Version 6
 Test-Connection -TargetName $env:COMPUTERNAME
 
 Test-Connection -ComputerName $env:COMPUTERNAME
@@ -238,7 +243,7 @@ Get-Help Test-Connection -Parameter Quiet
 Get-Command -Noun help
 Get-Help Update-Help
 
-# Requires -RunAsAdministrator
+    #Requires -RunAsAdministrator
 Update-Help -Module VPNClient
 
 # PowerShell 6+ allows to specify scope for Update-Help
@@ -270,9 +275,9 @@ Get-Module -ListAvailable
 $env:PSModulePath
 $env:PSModulePath -split [io.path]::PathSeparator
 
-    # PowerShell 3+
+    #Requires -Version 3
 Get-ADUser
-    # PowerShell 2.0
+    #Requires -Version 2
 Import-Module ActiveDirectory
 Get-ADUser
 
@@ -299,7 +304,7 @@ Get-Command | Group-Object -Property CommandType
 
 #region What are aliases?
 
-Get-Help aliases -Category HelpFile
+Get-Help Aliases -Category HelpFile
 
 dir
 ls
