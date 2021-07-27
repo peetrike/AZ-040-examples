@@ -43,7 +43,7 @@ Get-Command -ParameterName InputObject | Measure-Object
     # you can do this
 $Services = Get-Service p*
 Start-Service -InputObject $Services -WhatIf
-    # vut this is more convinient
+    # but this is more convinient
 Get-Service p* | Start-Service -WhatIf
 Get-Service bits | Set-Service -StartupType Automatic -WhatIf
 
