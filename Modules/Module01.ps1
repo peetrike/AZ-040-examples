@@ -69,7 +69,7 @@ bcdedit.exe --% /enum {current}
 
 #region Two host applications
 
-# https://docs.microsoft.com/powershell/scripting/getting-started/fundamental/windows-powershell-integrated-scripting-environment--ise-
+# https://docs.microsoft.com/powershell/scripting/windows-powershell/ise/introducing-the-windows-powershell-ise
 
     # Powershell ISE difference: next line doesn't show one screen at time
 Get-Command | more
@@ -83,6 +83,8 @@ Get-Command | more
 
     # Powershell 2+
 $PSVersionTable
+$Host.Version
+
     # Windows PowerShell ( < 6 )
 $PSVersionTable.BuildVersion
     # PowerShell 5.1+
@@ -94,6 +96,8 @@ Get-Help Editions -Category HelpFile -ShowWindow
 $PSVersionTable.OS
 
 # look also https://peterwawa.wordpress.com/2017/09/22/mis-keskkonnas-mu-skript-jookseb/
+
+# https://docs.microsoft.com/previous-versions/powershell/scripting/overview
 
 # https://docs.microsoft.com/powershell/scripting/windows-powershell/starting-the-windows-powershell-2.0-engine
 Start-Process -FilePath powershell.exe -ArgumentList '-version 2'
@@ -117,12 +121,18 @@ Start-Process -Verb RunAs -FilePath pwsh
 
 #region Configuring the console
 
+# https://docs.microsoft.com/previous-versions/windows/it-pro/windows-powershell-1.0/ee692799(v=technet.10)
+
     # Windows Terminal
 # https://docs.microsoft.com/windows/terminal/
 # https://github.com/microsoft/terminal
 
 # https://docs.microsoft.com/typography/font-list/consolas
 # https://www.programmingfonts.org/
+
+# https://code.visualstudio.com/docs/editor/accessibility#_zoom
+# https://docs.microsoft.com/windows/terminal/tips-and-tricks#zoom-with-the-mouse
+
 #endregion
 
 #region Configuring the ISE
