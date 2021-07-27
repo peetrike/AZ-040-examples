@@ -52,6 +52,8 @@ Get-Command | Get-Member
 
 Get-Command -Verb Format -Module Microsoft.PowerShell.Utility
 
+Get-Help Format.ps1xml -ShowWindow
+
 # https://peterwawa.wordpress.com/2021/06/10/objektide-kuvamisest/
 Get-FormatData -TypeName System.Diagnostics.Process |
     Select-Object -ExpandProperty FormatViewDefinition
@@ -71,10 +73,15 @@ Get-Help Sort-Object -ShowWindow
 Get-ChildItem
 
 Get-ChildItem | Sort-Object -Property LastWriteTime -Descending
+
+Get-ChildItem |
+    Sort-Object -Property @{ Expression = { $_.CreationTime - $_.LastWriteTime }; Descending = $False } |
+    Format-Table Name, CreationTime, LastWriteTime
+
     # the following discovers sort order for alphabet
 Get-Culture
 Get-UICulture
-Get-Command -noun *culture
+Get-Command -Noun *culture
 
 #endregion
 
@@ -82,7 +89,9 @@ Get-Command -noun *culture
 
 Get-Help Measure-Object -ShowWindow
 
-dir | Measure-Object -Property Length -Sum
+Get-ChildItem | Measure-Object -Property Length -Sum
+
+Get-Content module03.ps1 | Measure-Object -Word -Line
 
 #endregion
 
@@ -90,17 +99,18 @@ dir | Measure-Object -Property Length -Sum
 
 Get-Help Select-Object -ShowWindow
 
-dir | Sort-Object -Property Length | Select-Object -last 1
-dir | Sort-Object -Property Length | Select-Object -first 2
-dir | Sort-Object -Property Length | Select-Object -Skip 1 -first 1
+Get-ChildItem | Sort-Object -Property Length | Select-Object -Last 1
+Get-ChildItem | Sort-Object -Property Length | Select-Object -First 2
+Get-ChildItem | Sort-Object -Property Length | Select-Object -Skip 1 -First 1
 
-net localgroup administrators | Select-Object -Skip 6 | Select-Object -SkipLast 2
+    #Requires -Version 5
+net.exe localgroup administrators | Select-Object -Skip 6 | Select-Object -SkipLast 2
 
-Get-Help Select-Object -Parameter unique
+Get-Help Select-Object -Parameter Unique
 #region ettevalmistus
 New-ADGroup Katse1 -GroupScope Global
 New-ADGroup Katse2 -GroupScope Global
-Get-ADUser adam | Add-ADPrincipalGroupMembership -MemberOf katse1,katse2
+Get-ADUser adam | Add-ADPrincipalGroupMembership -MemberOf katse1, katse2
 #endregion
 Get-ADGroup -Filter { Name -like 'katse*' } | Get-ADGroupMember | Select-Object -Unique
 
@@ -116,8 +126,8 @@ Get-Process p* |
 
 Get-ChildItem | Select-Object -Property Name, *Time | Out-GridView
 
-Get-ADComputer pw-note | Select-Object -ExpandProperty DnsHostName | Get-Member
-Get-ADComputer pw-note | Select-Object -Property DnsHostName | Get-Member
+Get-ADComputer lon-cl1 | Select-Object -Property DnsHostName | Get-Member
+Get-ADComputer lon-cl1 | Select-Object -ExpandProperty DnsHostName | Get-Member
 
 Get-Command powershell |
     Select-Object -Property Name -ExpandProperty FileVersionInfo
@@ -126,8 +136,8 @@ Get-Command powershell |
 
 #region Creating calculated properties
 
-Get-Help Select-Object -Parameter Property
-Get-Help Format-Table -Parameter Property
+Get-Help Calculated_Properties -ShowWindow
+# https://docs.microsoft.com/dotnet/standard/base-types/formatting-types
 
 Get-CimInstance Win32_LogicalDisk
 
@@ -147,8 +157,6 @@ Get-CimInstance Win32_LogicalDisk |
     Add-Member @MemberProps -PassThru |
     Select-Object DeviceID, Size*
 
-Get-Help Format.ps1xml -ShowWindow
-
 #endregion
 
 #endregion
@@ -164,6 +172,9 @@ Get-Help Comparison -Category HelpFile -ShowWindow
 'tere' -ceq 'Tere'
 'tere' -like 't*'
 'tere' -match 't.*'
+
+1, 2, 3 -eq 2
+2, 4, 2, 3 -eq 2
 
 3 -eq '3'
 
@@ -310,7 +321,7 @@ Get-Help Encoding -Category HelpFile -ShowWindow
 Get-Help Out-File -ShowWindow
 Get-Help Redirect -Category HelpFile -ShowWindow
 
-dir | Out-File -FilePath failid.txt -Encoding utf8
+Get-ChildItem | Out-File -FilePath failid.txt -Encoding utf8
 dir > kaustad.txt
 
 Get-Help Add-Content -ShowWindow
@@ -323,7 +334,7 @@ Get-Help Set-Content -ShowWindow
 Get-Help ConvertTo-Csv -ShowWindow
 Get-Help Export-Csv -ShowWindow
 
-dir | Export-Csv -Path failid.csv -Encoding Default -UseCulture
+Get-ChildItem | Export-Csv -Path failid.csv -Encoding Default -UseCulture
 Get-ChildItem |
     ConvertTo-Csv -UseCulture -NoTypeInformation |
     Out-File -Encoding utf8 -FilePath failid.csv
@@ -342,9 +353,9 @@ Get-Command -Noun *xml -Module Microsoft.PowerShell.Utility
 Get-Help Export-Clixml -ShowWindow
 Get-Help ConvertTo-Xml -ShowWindow
 
-dir | ConvertTo-Xml
-dir | ConvertTo-Xml -As Stream | Out-File files.xml -Encoding utf8
-dir | Export-Clixml -Path failid.xml
+Get-ChildItem | ConvertTo-Xml
+Get-ChildItem | ConvertTo-Xml -As Stream | Out-File files.xml -Encoding utf8
+Get-ChildItem | Export-Clixml -Path failid.xml
 
 #endregion
 
@@ -361,8 +372,8 @@ Get-Help ConvertTo-Json -Parameter Depth
 
 Get-Help ConvertTo-Html -ShowWindow
 Get-ChildItem |
-    ConvertTo-Html -PreContent 'siin on mõned failid' -Property Name, Length |
-    Out-File -FilePath failid.htm
+    ConvertTo-Html -PreContent 'Here are some files' -Property Name, Length |
+    Out-File -FilePath failid.htm -Encoding utf8
 
 # https://github.com/EvotecIT/PSWriteHTML
 # https://github.com/Stephanevg/PSHTML
