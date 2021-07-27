@@ -21,7 +21,7 @@ Get-Command -Module ActiveDirectory | Measure-Object
 
 #region User management cmdlets
 
-Get-Command -noun ADUser
+Get-Command -Noun ADUser
 
 Get-ADUser -Identity Administrator
 Get-ADUser -Filter *
@@ -30,15 +30,14 @@ Get-ADUser -Identity Administrator -Properties *
 Get-ADUser -Filter { Department -like 'IT' }
 
 $longAgo = (Get-Date).AddDays(-90)
-Get-ADUser -Filter { logonCount -ge 1 -and LastLogonDate -le $longAgo } |
+Get-ADUser -Filter { LogonCount -ge 1 -and LastLogonDate -le $longAgo } |
     Move-ADObject -TargetPath 'ou=lost souls'
-
 
 $new = Get-ADUser 'Mihkel Metsik'
 Get-ADUser -Filter { Department -like 'IT' } |
     Set-ADUser -Manager $new
 
-Get-ADUser -filter * -Properties PasswordLastSet
+Get-ADUser -Filter * -Properties PasswordLastSet
 
     # https://peterwawa.wordpress.com/2013/04/09/kasutajakontode-loomine-domeenis/
 $userParams = @{
@@ -50,7 +49,7 @@ $userParams.SamAccountName = $userParams.GivenName.Substring(0, 4) +
     $userParams.SurName.Substring(0, 2)
 New-ADUser @userParams
 
-$userParams | Export-Csv -UseCulture -Encoding Default -Path ./users.csv
+$userParams | Export-Csv -UseCulture -Encoding Default -Path $PWD\users.csv
 
 Import-Csv -UseCulture -Encoding Default -Path .\users.csv |
     New-ADUser -Enabled $true -AccountPassword (
@@ -73,6 +72,8 @@ Get-ADUser -Filter { Department -like 'IT' } |
 
 Get-ADGroup IT | Add-ADGroupMember -Members 'Mati'
 
+Get-ADUser Adam | Get-ADPrincipalGroupMembership | Select-Object Name
+
 #endregion
 
 #region Computer object management cmdlets
@@ -82,8 +83,11 @@ Get-Command -Noun ADComputer
 Get-ADComputer -Filter (PasswordLastSet -lt $longAgo) | Disable-ADAccount
 
     # not part of ActiveDirectory module
+Get-Command Rename-Computer
+    # not available in PowerShell 7
 Get-Command Test-ComputerSecureChannel
 Get-Command Reset-ComputerMachinePassword
+Get-Command Add-Computer
 
 #endregion
 
@@ -102,7 +106,7 @@ Get-Command -Noun ADObject
 
 New-ADObject -Type Contact -Name 'MatiKontakt'
 
-Get-Command -Noun AdAccount*
+Get-Command -Noun ADAccount*
 Search-ADAccount -AccountDisabled -UsersOnly
 
 #endregion
@@ -112,10 +116,11 @@ Search-ADAccount -AccountDisabled -UsersOnly
 
 #region Lesson 2: Network configuration cmdlets
 
-#region Managing IP addresses
-
 Get-Module Net*
 Get-Command -Module NetTCPIP
+
+#region Managing IP addresses
+
 Get-Command -Module NetAdapter
 
 Get-NetIPAddress -AddressFamily IPv4
@@ -144,6 +149,8 @@ Clear-DnsClientCache
 Get-DnsClient -InterfaceAlias 'Wi-Fi'
 Get-DnsClientServerAddress -AddressFamily IPv4
 Get-DnsClientGlobalSetting
+
+# https://peterwawa.wordpress.com/2021/04/12/windowsi-arvutinimedest/
 
 #endregion
 
@@ -181,6 +188,7 @@ Get-NetUDPEndpoint -LocalPort 3389
 #region Lesson 3: Other server administration cmdlets
 
 #region Group Policy Management cmdlets
+
 Get-Command -Module GroupPolicy
 
 Get-Help Get-GPO
@@ -190,11 +198,11 @@ Get-Help Invoke-GPUpdate
 #endregion
 
 #region Server Manager cmdlets
-# Requires -Modules ServerManager
+    #Requires -Modules ServerManager
 Get-WindowsFeature
 Install-WindowsFeature -Name Telnet-Client -ComputerName myserver
 
-# Requires -RunAsAdministrator
+    #Requires -RunAsAdministrator
 Get-WindowsOptionalFeature -Online -FeatureName SMB1Protocol*
 Get-WindowsCapability -Online -Name *ssh*
 
