@@ -101,6 +101,7 @@ $PSVersionTable.OS
 
 # https://docs.microsoft.com/powershell/scripting/windows-powershell/starting-the-windows-powershell-2.0-engine
 Start-Process -FilePath powershell.exe -ArgumentList '-version 2'
+# https://devblogs.microsoft.com/powershell/windows-powershell-2-0-deprecation/
 
 #endregion
 
