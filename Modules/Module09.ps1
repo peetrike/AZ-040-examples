@@ -17,6 +17,20 @@
 
 #region Lesson 1: Accepting user input
 
+#region Identifying values that might change
+
+Get-WinEvent -MaxEvents 10 -FilterHashtable @{
+    LogName   = 'Application'
+    ID        = 15
+    StartTime = (Get-Date).AddDays(-1)
+}
+
+code -r events01.ps1
+
+code -r events02.ps1
+
+#endregion
+
 #region Using Read-Host
 
 Get-Help Read-Host -ShowWindow
@@ -63,11 +77,19 @@ Get-ADUser -Filter { City -like 'Tallinn' } |
 
 #region Passing parameters to a script
 
-Get-WinEvent -MaxEvents 10 -FilterHashtable @{
-    LogName   = 'Application'
-    ID        = 15
-    StartTime = (Get-Date).AddDays(-1)
-}
+code -r events03.ps1
+
+.\events03.ps1
+.\events03.ps1 -aeg ([datetime]::Now).AddHours(-1)
+.\events03.ps1 -aeg 'segadus'
+
+code -r events04.ps1
+.\events04.ps1 -aeg 'segadus'
+.\events04.ps1 -a '2021.07.27'
+.\events04.ps1 '2021.07.27' $env:COMPUTERNAME
+
+(Get-Command .\events04.ps1).Parameters.ComputerName
+.\events04.ps1 -cn $env:COMPUTERNAME
 
 #endregion
 
@@ -91,9 +113,16 @@ Get-ChildItem <# -Path c:\ #> -File
 
 #region Adding help information
 
-Get-Help Comment_Based -ShowWindow
+Get-Help .\events04.ps1
 
+Get-Help Comment_Based -ShowWindow
 Start-Process https://docs.microsoft.com/powershell/scripting/developer/help/writing-comment-based-help-topics
+
+code -r events05.ps1
+
+Get-Help .\events05.ps1
+Get-Help .\events05.ps1 -Examples
+Get-Help .\events05.ps1 -Parameter aeg
 
 #endregion
 
@@ -127,6 +156,11 @@ Get-Help Output_ -Category HelpFile -ShowWindow
 Get-Help CmdletBinding -Category HelpFile -ShowWindow
 Get-Help _CommonParameters -Category HelpFile -ShowWindow
 Get-Help Preference -Category HelpFile -ShowWindow
+
+code -r events06.ps1
+
+.\events06.ps1 -Verbose
+.\events06.ps1 -Debug
 
 #endregion
 
@@ -207,7 +241,17 @@ try {
 
 #region What are functions?
 
+Get-Command help
+(Get-Command c:).Definition
+
 Get-Help about_Functions -ShowWindow
+
+function get-hello { 'Hello' }
+get-hello
+get-command get-hello
+get-item function:\get-hello | Remove-Item
+
+code -r events07.ps1
 
 #endregion
 
@@ -220,6 +264,14 @@ Get-Help about_Scope -ShowWindow
 #region Creating a module
 
 # https://docs.microsoft.com/powershell/scripting/developer/module/how-to-write-a-powershell-script-module
+
+code -r events07.psm1
+
+Import-Module .\events07.psm1
+events07 -aeg ([datetime]::Now).AddHours(-2)
+Get-Command -Module events07
+Get-Help events07
+Remove-Module events07
 
 New-Module -Name SayHello -ScriptBlock {
     function get-hello {
@@ -235,6 +287,10 @@ Remove-Module SayHello
 #region Using dot sourcing
 
 # https://docs.microsoft.com/powershell/module/microsoft.powershell.core/about/about_operators#dot-sourcing-operator-
+
+. .\events07.ps1
+Get-Command events07
+Get-Item function:\events07 | Remove-Item
 
 #endregion
 
