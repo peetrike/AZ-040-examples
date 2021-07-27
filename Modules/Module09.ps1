@@ -46,6 +46,7 @@ Get-Help Get-Credential -ShowWindow
 $Credential = Get-Credential -Credential 'domain\user'
 $Credential.UserName
 
+code -r -g Connect-VM.ps1:61
 Get-Credential -Message 'Please enter secret' -UserName 'not used'
 
 $Credential = $host.ui.PromptForCredential(
@@ -72,6 +73,18 @@ Get-ChildItem |
 Get-ADUser -Filter { City -like 'Tallinn' } |
     Out-GridView -Title 'Choose the user to add' -OutputMode Single |
     Add-ADPrincipalGroupMembership -MemberOf 'IT' -WhatIf
+
+#endregion
+
+#region Extra: Other possibilities
+
+# https://github.com/peetrike/Examples/blob/master/src/Gui/Test-GuiElements.ps1#L35-L54
+
+#Requires -Version 6
+
+Find-Module Microsoft.PowerShell.ConsoleGuiTools
+
+# https://blog.ironmansoftware.com/tui-powershell
 
 #endregion
 
