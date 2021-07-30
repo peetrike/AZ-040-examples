@@ -178,16 +178,16 @@ $arvutid += 'Lon-DC2'
 $arvutid.Count
 
 $numbrid = @()
-
+$MaxNumber = 10000
 Measure-Command {
-    foreach ($number in 1..10000) {
+    foreach ($number in 1..$MaxNumber) {
         $numbrid += $number
     }
 }
 $numbrid.Count
 
 Measure-Command {
-    $numbrid = foreach ($number in 1..10000) {
+    $numbrid = foreach ($number in 1..$MaxNumber) {
         $number
     }
 }
