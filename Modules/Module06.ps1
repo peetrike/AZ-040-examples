@@ -49,6 +49,8 @@ Get-CimInstance -Namespace root\cimv2 -ClassName __Namespace
 
 #endregion
 
+#region Extra: WMI browsers outside of PowerShell, but included in Windows
+
 Get-Command wbemtest, wmic
 wbemtest.exe
 
@@ -58,6 +60,8 @@ WMIC.exe alias list brief
 
 WMIC.exe OS /?
 WMIC.exe OS get Version
+
+#endregion
 
 #endregion
 
