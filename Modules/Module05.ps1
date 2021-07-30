@@ -95,10 +95,9 @@ Test-Path -Path $regPath
 Set-Location -Path $regPath
 Get-ChildItem
 
-Get-ItemProperty HKLM:\SOFTWARE\Microsoft\Windows\CurrentVersion\Run
+Get-ItemProperty -Path (Join-Path -Path $regPath -ChildPath Run)
     #Requires -Version 5
-Get-ItemPropertyValue HKLM:\SOFTWARE\Microsoft\Windows\CurrentVersion\Run -Name SecurityHealth
-
+Get-ItemPropertyValue -Path (Join-Path -Path $regPath -ChildPath Run) -Name SecurityHealth
 
 #endregion
 
