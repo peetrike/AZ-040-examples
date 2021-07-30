@@ -78,6 +78,7 @@ $Number.GetType()
 'tere' | Get-Member
 $set = 1, 2, 3
 $set | Get-Member
+, $set | Get-Member
 $set.GetType()
 
 Start-Process ('https://docs.microsoft.com/dotnet/api/{0}' -f $set.GetType().BaseType)
