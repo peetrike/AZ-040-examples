@@ -32,8 +32,8 @@ Get-Command -Noun Variable
 
 # https://docs.microsoft.com/powershell/module/microsoft.powershell.core/about/about_variables#variable-names-that-include-special-characters
 
-${minu oluline data} = 3
-${minu oluline data}
+${minu oluline info} = 3
+${minu oluline info}
 
 # https://poshcode.gitbook.io/powershell-practice-and-style/style-guide/code-layout-and-formatting#capitalization-conventions
 # https://docs.microsoft.com/dotnet/standard/design-guidelines/capitalization-conventions
