@@ -93,6 +93,11 @@ Get-Command -ParameterName ComputerName | Measure-Object
 
 #region Using manual parameters to override the pipeline
 
+Get-ChildItem | Select-Object -First 1 | Stop-Service
+Get-Help Stop-Service -Parameter Name
+Get-ChildItem | Get-Member Name
+
+start-process notepad
     # Wrong ParameterSet
 Get-Process -Name notepad | Stop-Process -Name notepad
 
@@ -117,14 +122,21 @@ Get-ADGroup -Filter { Name -like 'London*' } |
 
 #region Expanding property values
 
-"winrm", "bits" |
-    Get-Service -ComputerName (Get-ADComputer -Filter { name -like '*srv' } |
-    Select-Object -ExpandProperty DnsHostName)
+'winrm', 'bits' |
+    Get-Service -ComputerName (
+        Get-ADComputer -Filter { Name -like '*srv*' } |
+            Select-Object -ExpandProperty DnsHostName
+    )
 
-Get-ADUser -Id Ty -Properties MemberOf |
+Get-ADUser -Id Tia -Properties MemberOf |
     Select-Object -ExpandProperty MemberOf |
     Get-ADGroup
-Get-ADUser -Id Ty | Get-ADPrincipalGroupMembership
+
+$Property = 'MemberOf'
+(Get-ADUser -Id Tia -Properties $Property).$Property |
+    Get-ADGroup
+
+Get-ADUser -Id Tia | Get-ADPrincipalGroupMembership
 
 #endregion
 
