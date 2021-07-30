@@ -56,10 +56,10 @@ $MinuMuutuja += 10
 
 $x = 7
 $x = 'tere'
-$x = get-process p*
+$x = Get-Process p*
 
 Get-Help Type_Accelerator -ShowWindow
-[int] $Number = 4
+[int] $Number = 5
 $Number = '4'
 $Number = 'neli'
 
