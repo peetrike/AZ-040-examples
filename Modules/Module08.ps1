@@ -24,13 +24,13 @@ Get-Help Scripts -Category HelpFile -ShowWindow
 get-date
 whoami
 
-'get-date; whoami' | Set-Content -Path käsud.txt -Encoding utf8BOM
+'get-date', 'whoami' | Set-Content -Path käsud.txt -Encoding utf8
 Start-Process cmd.exe -ArgumentList '/k powershell < käsud.txt'
-Invoke-Expression (gc .\käsud.txt)
+Invoke-Expression (gc .\käsud.txt -Raw)
 Invoke-Item .\käsud.txt
 
 Get-Content .\käsud.txt | powershell -command -
-pwsh -c (gc .\käsud.txt)
+pwsh -c (gc .\käsud.txt -Raw)
 
 #endregion
 
@@ -160,10 +160,10 @@ Get-Command -Noun FileCatalog
 Get-Help about_Foreach -Category HelpFile -ShowWindow
 
 foreach ($i in 1..10) {
-    "number on $i"
+    'number on {0}' -f ($i * 2)
 }
 
-foreach ($file in Get-ChildItem) {
+foreach ($file in Get-ChildItem -File) {
     $file.Name
 }
 
@@ -181,7 +181,7 @@ elseif ($false) { 'on väär' }
 else { 'on midagi muud' }
 
 if (Get-ChildItem -File) { 'on faile ' }
-else { new-item uus.txt }
+else { New-Item uus.txt }
 
 #endregion
 
@@ -197,15 +197,15 @@ switch ($choice) {
     default { Write-Warning -Message 'You did not select a valid option' }
 }
 
-$choice = Read-Host -Prompt 'kas Sa tahad jätkata? [j/e]'
+$choice = Read-Host -Prompt 'Do you want to continue? [y/n]'
 switch -Wildcard ($choice) {
-    '[jy]*' { 'olgu' }
-    'e*' { 'kahju' }
-    Default { 'proovi uuesti' }
+    '[jy]*' { 'Ok' }
+    'n*' { 'Too bad' }
+    default { 'Try again' }
 }
 
 $ip = Get-NetIPAddress -InterfaceAlias wi-fi -AddressFamily IPv4
-Switch -WildCard ($ip.IPAddress) {
+switch -WildCard ($ip.IPAddress) {
     '10.*' { 'This computer is on the internal network' }
     '10.1.*' { 'This computer is in London' }
     '10.2.*' { 'This computer is in Vancouver' }
@@ -224,7 +224,7 @@ switch -Regex (Get-Random -Maximum 11) {
 $computer = 'LON-CL1'
 $role = 'unknown role'
 $location = 'unknown location'
-Switch -WildCard ($computer) {
+switch -WildCard ($computer) {
     '*-CL*' { $role = 'client' }
     '*-SRV*' { $role = 'server' }
     '*-DC*' { $role = 'domain controller' }
@@ -232,7 +232,7 @@ Switch -WildCard ($computer) {
         $location = 'London'
     }
     'VAN-*' { $location = 'Vancouver' }
-    Default { "$computer is not a valid name" }
+    default { "$computer is not a valid name" }
 }
 "$computer is a $role in $location"
 
@@ -241,7 +241,7 @@ switch ($numbers) {
     3 { Write-Host -ForegroundColor Cyan '3 this time' }
     { $_ % 2 } { 'Odd number: {0}' -f $_ }
     5 { 'Got it!' }
-    Default { Write-Warning -Message 'Missed it' }
+    default { Write-Warning -Message 'Missed it' }
 }
 
 #endregion
@@ -262,21 +262,20 @@ for (
 
 #endregion
 
-
 #region Understanding other loop constructs
 
 Get-Help about_Do -ShowWindow
 Get-Help about_While -ShowWindow
 
-Do {
+do {
     'Script block to process'
     $answer = Read-Host -Prompt 'Go or Stop'
-} While ($answer -eq 'go')
+} while ($answer -eq 'go')
 
-Do {
+do {
     'Script block to process'
     $answer = Read-Host -Prompt 'Go or Stop'
-} Until ($answer -eq 'stop')
+} until ($answer -eq 'stop')
 
 Remove-Variable -Name i
 while (++$i -le 10) {
@@ -298,16 +297,16 @@ Get-Help about_Continue -ShowWindow
 
 $users = Get-ADUser -Filter * -ResultSetSize 20
 
-ForEach ($user in $users) {
-    If ($user.Name -eq 'Administrator') { continue }
-    'Modify user object'
+forEach ($user in $users) {
+    if ($user.Name -eq 'Administrator') { continue }
+    'Modify user {0}' -f $user.Name
 }
 
 $max = 3
-ForEach ($user in $users) {
+forEach ($user in $users) {
     $number++
     "Modify User object $number"
-    If ($number -ge $max) { break }
+    if ($number -ge $max) { break }
 }
 'After loop'
 
@@ -353,7 +352,7 @@ Get-Content Module08.ps1 -Tail 5
 Get-Command -Noun Csv
 Get-Help Import-Csv -ShowWindow
 
-Get-Process p* | export-csv -Path protsessid.csv
+Get-Process p* | Export-Csv -Path protsessid.csv
 Import-Csv protsessid.csv | Select-Object Name, Path
 
 Invoke-Item protsessid.csv
@@ -363,7 +362,7 @@ Get-Help Import-Csv -Parameter Encoding
 Get-ADUser -Filter * -ResultSetSize 10 -Properties mail |
     Select-Object *name, mail -ExcludeProperty DistinguishedName |
     Export-Csv -Path kasutajad.csv -Encoding utf8 -UseCulture -NoTypeInformation
-invoke-item kasutajad.csv
+Invoke-Item kasutajad.csv
 Import-Csv kasutajad.csv -UseCulture
 
 #endregion
@@ -403,16 +402,17 @@ Get-Help Import-PowerShellDataFile -ShowWindow
 @'
 @{
     Config = @(
-            @{
-                Setting = 1
-            }
-            @{
-                Setting = 7
-            }
-        )
+        @{
+            Setting = 1
+        }
+        @{
+            Setting = 7
+        }
+    )
 }
 '@ | Set-Content config33.psd1
 
+    #Requires -Version 5
 $myConfig = Import-PowerShellDataFile -Path config33.psd1
 $myConfig
 
