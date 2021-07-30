@@ -106,19 +106,40 @@ $PWD.ToString().Split('\')
 
 #region Working with dates
 
+Get-Help Get-Date
+Get-Date
+
 # https://docs.microsoft.com/dotnet/api/system.datetime
 
-$täna = Get-Date
+[datetime]::Now
+$täna = [datetime]::Today
 $täna
-$täna = [datetime]'2018.06.03'
 $täna | Get-Member
+
+$täna.ToString('d. MMMM yyyy')
+$täna.ToString('s')
+$täna.ToString([cultureinfo]'ja-jp')
+
+[datetime] '2011.08.04'
+
+$date = '04.08.11'
+[datetime] $date
+Get-Date -Date $date
+Invoke-WithCulture -Culture 'en-us' -ScriptBlock { Get-Date $date }
+Invoke-WithCulture -Culture 'ja-jp' -ScriptBlock { Get-Date $date }
+# https://github.com/peetrike/PWAddins/blob/master/src/Public/Invoke-WithCulture.ps1
+
+[datetime]::Parse
+[datetime]::Parse($date, [cultureinfo]'et-ee')
+[datetime]::Parse($date, [cultureinfo]'en-us')
+[datetime]::Parse($date, [cultureinfo]'ja-jp')
 
 # https://docs.microsoft.com/dotnet/api/system.timespan
 $aeg = New-TimeSpan -days 13
 $täna - $aeg
 $täna.AddDays(-13)
 $täna.Subtract($aeg)
-$täna.add($aeg)
+$täna.Add($aeg)
 
 #endregion
 
