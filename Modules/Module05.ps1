@@ -95,9 +95,9 @@ Test-Path -Path $regPath
 Set-Location -Path $regPath
 Get-ChildItem
 
-Get-ItemProperty -Path (Join-Path -Path $regPath -ChildPath Run)
+Get-ItemProperty -Path WSMan
     #Requires -Version 5
-Get-ItemPropertyValue -Path (Join-Path -Path $regPath -ChildPath Run) -Name SecurityHealth
+Get-ItemPropertyValue -Path WSMan -Name StackVersion
 
 #endregion
 
