@@ -19,6 +19,9 @@
         https://docs.microsoft.com/powershell/#community-resources
 #>
 
+# Course accounts:
+# Adatum\Administrator
+# Pa55w.rd
 
 #region Safety to prevent the entire script from being run instead of a selection
     throw "You're not supposed to run the entire script"
