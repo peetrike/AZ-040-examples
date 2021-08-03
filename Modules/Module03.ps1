@@ -75,7 +75,7 @@ Get-ChildItem
 Get-ChildItem | Sort-Object -Property LastWriteTime -Descending
 
 Get-ChildItem |
-    Sort-Object -Property @{ Expression = { $_.CreationTime - $_.LastWriteTime }; Descending = $False } |
+    Sort-Object -Property @{ Expression = { $_.LastWriteTime - $_.CreationTime }; Descending = $false } |
     Format-Table Name, CreationTime, LastWriteTime
 
     # the following discovers sort order for alphabet
