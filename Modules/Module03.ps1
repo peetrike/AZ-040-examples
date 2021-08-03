@@ -21,7 +21,7 @@
 Get-Help Pipelines -Category HelpFile
 
 1..3 | ForEach-Object { Start-Process notepad.exe }
-Get-Process notepad | Stop-Process
+Get-Process notepad | Stop-Process -Confirm
 
 Get-ChildItem | Sort-Object Length -Descending | Select-Object -First 3 | Remove-Item -WhatIf
 
@@ -74,8 +74,9 @@ Get-ChildItem
 
 Get-ChildItem | Sort-Object -Property LastWriteTime -Descending
 
+Get-Help about_calculated -ShowWindow
 Get-ChildItem |
-    Sort-Object -Property @{ Expression = { $_.CreationTime - $_.LastWriteTime }; Descending = $False } |
+    Sort-Object -Property @{ E = { $_.CreationTime - $_.LastWriteTime }; D = $False } |
     Format-Table Name, CreationTime, LastWriteTime
 
     # the following discovers sort order for alphabet
@@ -113,6 +114,9 @@ New-ADGroup Katse2 -GroupScope Global
 Get-ADUser adam | Add-ADPrincipalGroupMembership -MemberOf katse1, katse2
 #endregion
 Get-ADGroup -Filter { Name -like 'katse*' } | Get-ADGroupMember | Select-Object -Unique
+Get-ADGroup -Filter { Name -like 'katse*' } |
+    Get-ADGroupMember |
+    Sort-Object -Property Name -Unique
 
 #endregion
 
