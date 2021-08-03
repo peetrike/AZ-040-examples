@@ -299,6 +299,11 @@ Get-ADUser
 Import-Module ActiveDirectory
 Get-ADUser
 
+    # where to find modules
+Find-Module -Name UserProfile -Repository PSGallery
+Find-Module -Name UserProfile -Repository PSGallery | Install-Module -Scope CurrentUser -WhatIf
+Get-InstalledModule
+
 #endregion
 
 #region Finding cmdlets
@@ -308,13 +313,21 @@ Get-Command -Module VpnClient | Measure-Object
 Get-Command -Noun VpnConnection
 Get-VpnConnection
 
-Get-Command -noun Service
+Get-Command -Noun Service
 Get-Service BITS
 Stop-Service BITS
 
 Get-Command -Noun *user -Verb Get -CommandType Cmdlet
 
 Get-Help Command_Precedence -ShowWindow
+    # see ei lõpe hästi
+New-Alias help abi
+Get-Command help -All
+New-Alias abi help
+Get-Command abi
+    # parandame ringviite ära
+Get-Item alias:help | Remove-Item
+abi Get-Command
 
 Get-Command | Group-Object -Property CommandType
 
