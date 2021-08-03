@@ -34,7 +34,7 @@
 
 # https://docs.microsoft.com/powershell/scripting/overview
 
-get-help Parsing -ShowWindow
+Get-Help Parsing -ShowWindow
 
 #endregion
 
@@ -65,6 +65,7 @@ Get-Module Dism -ListAvailable
 $PSHOME
 Get-ChildItem (Join-Path $PSHOME Modules)
 
+Get-ChildItem -File
 # https://docs.microsoft.com/powershell/module/microsoft.powershell.core/about/about_special_characters#stop-parsing-token---
 bcdedit.exe --% /enum {current}
 
@@ -80,12 +81,17 @@ Get-Command | more
 # Visual Studio Code: http://code.visualstudio.com
 # https://docs.microsoft.com/powershell/scripting/dev-cross-plat/vscode/using-vscode
 
+# http://docs.microsoft.com/windows/terminal
+
 #endregion
 
 #region Working in mixed-version environments
 
     #Requires -Version 2
 $PSVersionTable
+    # väike viga aga ei paista silma
+$PSVersoinTable
+
 $Host.Version
 
     # Windows PowerShell ( < 6 )
@@ -133,6 +139,9 @@ $Host.UI.RawUI.WindowTitle
 # https://docs.microsoft.com/windows/terminal/
 # https://github.com/microsoft/terminal
 
+# selline font et järgnevad sümbolid oleksid erinevad
+# `'0O1l
+
 # https://docs.microsoft.com/typography/font-list/consolas
 # https://www.programmingfonts.org/
 
@@ -151,7 +160,6 @@ $Host.UI.RawUI.WindowTitle
 #endregion
 
 #endregion
-
 
 #region Lesson 2: Understanding command syntax
 
@@ -182,6 +190,7 @@ Get-Help Get-Command -Parameter * | Select-Object Name, Required, Type
 Get-Help Get-Process -ShowWindow
 Get-Help Get-Process -Parameter *
 Get-Help Get-Process -Parameter Id
+get-help get-command -Parameter verb
 
 #endregion
 
@@ -219,6 +228,9 @@ Get-Help Command_Syntax -Category HelpFile -ShowWindow
 # https://docs.microsoft.com/powershell/module/microsoft.powershell.core/about/about_command_syntax#parameters
 
 Get-Help Get-Command | Select-Object -ExpandProperty Syntax
+(Get-Help Get-Command).Syntax
+Get-Command get-command -Syntax
+
 Get-Command Get-Command | Select-Object -ExpandProperty ParameterSets | Format-Table
 
 Get-Help Get-WinEvent
@@ -246,6 +258,8 @@ Get-Help Test-Connection -Parameter Quiet
 
 Get-Command -Noun help
 Get-Help Update-Help
+Get-Help Save-Help -ShowWindow
+
 
     #Requires -RunAsAdministrator
 Update-Help -Module VPNClient
