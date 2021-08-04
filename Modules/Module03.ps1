@@ -312,18 +312,32 @@ dir | ForEach-Object Name | get-member
     #see teeb sama asja
 dir | Select-Object -ExpandProperty Name
     # PowerShell 3+
-(Get-ChildItem).Name
+(dir *.txt).Name
 
-dir | foreach -MemberName Encrypt -WhatIf
+Get-ChildItem | foreach -MemberName Encrypt -WhatIf
+dir | % Encrypt -WhatIf
+
+    # need teevad sama asja
+dir *.txt | % MoveTo('.\katse')
+dir *.txt | Move-Item -Destination '.\katse'
 
 #endregion
 
 #region Advanced enumeration syntax
 
-dir | ForEach-Object -Process { $_.Name }
+Get-ChildItem | ForEach-Object -Process { $_.Name }
+dir | ForEach { $_.Name }
 dir | % { $_.Name }
 
-Get-Service BITS | ForEach-Object { stop-service $_ }
+    # kõigi ketaste pealt kõigist kaustadest *.txt failid
+Get-PSDrive -PSProvider FileSystem | ForEach-Object {
+    Get-ChildItem -Path $_.Root -Recurse -Filter *.txt |
+        Move-Item -Destination 'kuskile'
+}
+
+Get-Service B* | ForEach-Object {
+    Stop-Service $_ -WhatIf
+}
 Get-Service BITS | Stop-Service
 
 #endregion
@@ -334,17 +348,24 @@ Get-Service BITS | Stop-Service
 #region Lesson 5: Sending pipeline data as output
 
 Get-Help Encoding -Category HelpFile -ShowWindow
+Get-Command -ParameterName Encoding
 
 #region Writing output to a file
 
 Get-Help Out-File -ShowWindow
+Get-Help Out-File -Parameter NoClobber
+
 Get-Help Redirect -Category HelpFile -ShowWindow
 
 Get-ChildItem | Out-File -FilePath failid.txt -Encoding utf8
 dir > kaustad.txt
+dir | Set-Content -Path failid.txt -Encoding utf8
 
 Get-Help Add-Content -ShowWindow
 Get-Help Set-Content -ShowWindow
+
+dir | Select-Object name, *time | Set-Content -Path failid.txt -Encoding utf8
+dir | Select-Object name, *time | Add-Content -Path failid.txt -Encoding utf8
 
 #endregion
 
@@ -391,6 +412,7 @@ Get-Help ConvertTo-Json -Parameter Depth
 
 Get-Help ConvertTo-Html -ShowWindow
 Get-ChildItem |
+    Select-Object -First 4 |
     ConvertTo-Html -PreContent 'Here are some files' -Property Name, Length |
     Out-File -FilePath failid.htm -Encoding utf8
 
