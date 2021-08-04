@@ -8,6 +8,8 @@
         https://github.com/peetrike/10961-examples
     .LINK
         https://diigo.com/profile/peetrike/?query=%23MOC-10961+%23M3
+    .LINK
+        https://docs.microsoft.com/learn/paths/powershell/
 #>
 
 #region Safety to prevent the entire script from being run instead of a selection
@@ -132,9 +134,14 @@ Get-ChildItem | Select-Object -Property Name, *Time | Out-GridView
 
 Get-ADComputer lon-cl1 | Select-Object -Property DnsHostName | Get-Member
 Get-ADComputer lon-cl1 | Select-Object -ExpandProperty DnsHostName | Get-Member
+Get-ADComputer -Filter * |
+    Select-Object -ExpandProperty DnsHostName |
+    Out-File servers.txt
 
 Get-Command powershell |
     Select-Object -Property Name -ExpandProperty FileVersionInfo
+
+Get-Help Select-Object -Parameter ExcludeProperty
 
 #endregion
 
@@ -149,7 +156,10 @@ $SizeGB = @{ Name ='Size (GB)'; Expression = { $_.Size / 1GB } }
 Get-CimInstance Win32_LogicalDisk | Select-Object -Property DeviceID, $SizeGB
 
 $SizeGB.Format = 'N2'
-Get-CimInstance Win32_LogicalDisk | Format-Table -Property DeviceID, $SizeGB
+Get-CimInstance Win32_LogicalDisk | Format-Table -Property DeviceID, VolumeName, $SizeGB
+Get-CimInstance Win32_LogicalDisk | Format-Table -Property DeviceID,
+    VolumeName,
+    @{ Name ='Size (GB)'; Expression = { $_.Size / 1GB }; Format = 'N3' }
 
 Get-Help Add-Member -ShowWindow
 $MemberProps = @{
@@ -174,8 +184,10 @@ Get-Help Comparison -Category HelpFile -ShowWindow
 
 'tere' -eq 'Tere'
 'tere' -ceq 'Tere'
-'tere' -like 't*'
-'tere' -match 't.*'
+'tere' -like 't*'       # filesystem pattern
+'tere' -match 't.*'     # Regular Expression pattern
+
+Get-Help about_regular -ShowWindow
 
 1, 2, 3 -eq 2
 2, 4, 2, 3 -eq 2
@@ -210,10 +222,11 @@ Get-Help Where-Object -ShowWindow
 Get-Alias -Definition Where-Object
 
 Get-Service p* | Where-Object Status -eq 'Stopped'
-Get-Service p* | Where Status -like 'Running*'
+Get-Service p* | where Status -like 'Running*'
 gps | ? cpu -gt 1000
 
 Get-ChildItem | Where PSIsContainer
+Get-ChildItem | Where PSIsContainer -eq $false
 
 #endregion
 
@@ -222,8 +235,10 @@ Get-ChildItem | Where PSIsContainer
 Get-ChildItem | Where-Object -FilterScript { -not $_.PSIsContainer }
 gci | ? { ! $_.PSIsContainer }
 
-
 Get-ChildItem | Where-Object { ($_.Name.Length -ge 9) -and ($_.Length -ge 2KB) }
+
+    # lase filtrist läbi ainult PowerShelli käsud (mida Get-Command üles leiab)
+'get-service', 'get-uhhuu' | Where-Object { Get-Command $_ -ErrorAction SilentlyContinue }
 
 #endregion
 
