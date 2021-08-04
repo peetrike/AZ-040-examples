@@ -18,7 +18,7 @@
 
 #region What is the pipeline?
 
-Get-Help Pipelines -Category HelpFile
+Get-Help Pipelines -Category HelpFile -ShowWindow
 
 1..3 | ForEach-Object { Start-Process notepad.exe }
 Get-Process notepad | Stop-Process -Confirm
