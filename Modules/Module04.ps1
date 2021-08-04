@@ -36,6 +36,12 @@ Get-Help Start-Service -Parameter InputObject
 
 Get-Command -ParameterName InputObject | Measure-Object
 
+$teenus = Get-Service -Name bits
+Start-Service -InputObject $teenus
+Remove-Variable -Name teenus
+
+Get-Service bits | Start-Service
+
 #endregion
 
 #region Passing data by using ByValue
@@ -48,7 +54,9 @@ Get-Service p* | Start-Service -WhatIf
 Get-Service bits | Set-Service -StartupType Automatic -WhatIf
 
 Get-Help Start-Service -Parameter Name
-'bits', 'winrm' | Start-Service
+    # need on samaväärsed
+'bits', 'winrm' | Start-Service -WhatIf
+Start-Service -Name 'bits', 'winrm' -WhatIf
 
     # PowerShell 7 removed -ComputerName from Get/Set-Service
 Get-Help Get-Service -Online
