@@ -34,7 +34,14 @@ Get-Command -Noun Variable
 
 ${minu oluline info} = 3
 ${minu oluline info}
+$minu oluline info
 
+    # erinevad nimetamise stiilid
+$MinuOlulineInfo = 34       # Pascal Case
+$minuOlulineInfo = 22       # Camel Case
+$minu_oluline_info = 43     # Snake Case
+
+$minu
 # https://poshcode.gitbook.io/powershell-practice-and-style/style-guide/code-layout-and-formatting#capitalization-conventions
 # https://docs.microsoft.com/dotnet/standard/design-guidelines/capitalization-conventions
 #endregion
@@ -100,7 +107,7 @@ $tekst.ToUpper()
 $tekst.Length
 
 $PWD.ToString().Contains('\')
-$PWD.ToString().Split('\')
+$PWD.Path.Split('\')
 
 #endregion
 
@@ -170,6 +177,7 @@ $dates
 #region Working with arrays
 
 $arvutid
+$arvutid.Count
 $arvutid[1]
 $arvutid[-1]
 $arvutid | Select-Object -First 1 -Skip 1
@@ -268,6 +276,17 @@ $computers.Keys -contains 'Server2'
 $computers.ContainsKey('Lon-svr1')
 
 Get-Help splatting -ShowWindow
+
+    # kasutajakontod hashtable'iks
+$users = @{}
+foreach ($u in get-aduser -Filter *) {
+    $name = $u.samaccountname
+    $users.$name = $u
+    #$users.Add($name, $u)
+}
+$users.administrator
+$users.tia
+$users.adam
 
 #endregion
 
