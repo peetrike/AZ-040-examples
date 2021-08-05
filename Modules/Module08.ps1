@@ -159,11 +159,17 @@ Get-Command -Noun FileCatalog
 
 Get-Help about_Foreach -Category HelpFile -ShowWindow
 
-foreach ($i in 1..10) {
+$numbrid = 1..10
+foreach ($i in $numbrid) {
     'number on {0}' -f ($i * 2)
 }
+    # see teeb sama asja
+1..10 | ForEach-Object { 'Number on {0}' -f ($_ * 2) }
 
-foreach ($file in Get-ChildItem -File) {
+foreach ($file in Get-ChildItem -File) { $file.Name }
+$failid = Get-ChildItem -File
+foreach ($file in $failid)
+{
     $file.Name
 }
 
@@ -176,8 +182,9 @@ Get-Help Pipelines -Category HelpFile -ShowWindow
 
 Get-Help about_If -ShowWindow
 
-if ($true) { 'on tõene' }
-elseif ($false) { 'on väär' }
+$a = 0
+if ($a -gt 1) { 'on tõene' }
+elseif ($a -eq 0) { 'on väär' }
 else { 'on midagi muud' }
 
 if (Get-ChildItem -File) { 'on faile ' }
@@ -288,6 +295,11 @@ while ($true) {
     Start-Sleep -Seconds 2
 }
 
+$i = 1
+while ($i--) {
+    'Processing...'
+    Start-Sleep -Seconds 2
+}
 #endregion
 
 #region Understanding Break and Continue
