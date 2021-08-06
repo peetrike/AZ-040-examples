@@ -1,7 +1,9 @@
-﻿$aeg = [datetime]::Now.AddDays(-1)
+﻿#region kasutaja eelistuste muutujad
+$aeg = [datetime]::Now.AddDays(-1)
 $ComputerName = ''
 $EventID = 15
 $LogName = 'Application'
+#endregion
 
 $EventParams = @{
     MaxEvents       = 10

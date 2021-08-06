@@ -195,7 +195,7 @@ code -r events06.ps1
 
 #endregion
 
-#region Using log files
+#region Extra: Using log files
 
 code -r .\write-log.ps1
 
@@ -303,6 +303,24 @@ code -r events07.ps1
 
 Get-Help about_Scope -ShowWindow
 
+$minuasi = 'minu asi'
+
+function katse {
+    [CmdletBinding()]
+    param (
+        $minuasi
+    )
+    write-verbose -Message ('Minu asi on: {0}' -f $minuasi)
+
+    $minuasi += " + katsetuse asi"
+    <# return #> $minuasi
+}
+
+katse -minuasi $minuasi -Verbose
+
+$minuasi = katse -minuasi $minuasi -Verbose
+$minuasi
+
 #endregion
 
 #region Creating a module
@@ -316,6 +334,15 @@ events07 -aeg ([datetime]::Now).AddHours(-2)
 Get-Command -Module events07
 Get-Help events07
 Remove-Module events07
+
+Import-Module .\events07.ps1
+Get-Module events07 | Format-List
+Remove-Module events07
+
+Import-Module .\events07
+Get-Module events07 | Format-List
+Remove-Module events07
+
 
 New-Module -Name SayHello -ScriptBlock {
     function get-hello {
