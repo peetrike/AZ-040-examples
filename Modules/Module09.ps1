@@ -177,6 +177,19 @@ code -r events06.ps1
 
 #endregion
 
+#region Using log files
+
+code -r .\write-log.ps1
+
+get-help .\write-log.ps1
+.\write-log.ps1 -Type Warning -Message 'Midagi on viltu'
+
+Find-Module -Command Write-PSFMessage -Repository PSGallery
+Write-PSFMessage 'Teade logisse'
+Get-PSFMessage
+
+#endregion
+
 #region Using breakpoints
 
 Get-Help Debuggers -ShowWindow
