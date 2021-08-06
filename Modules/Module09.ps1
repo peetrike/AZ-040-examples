@@ -34,8 +34,8 @@ code -r events02.ps1
 #region Using Read-Host
 
 Get-Help Read-Host -ShowWindow
-$answer = Read-Host -Prompt 'Enter your choice'
-$Password = Read-Host -Prompt 'Enter the password' -AsSecureString
+$UserName = Read-Host -Prompt 'Enter user name for server'
+$Password = Read-Host -Prompt 'Enter the password for username' -AsSecureString
 
 #endregion
 
@@ -43,7 +43,9 @@ $Password = Read-Host -Prompt 'Enter the password' -AsSecureString
 
 Get-Help Get-Credential -ShowWindow
 
+$Credential = Get-Credential -Message 'Enter credential for server' -UserName Administrator
 $Credential = Get-Credential -Credential 'domain\user'
+
 $Credential.UserName
 
 code -r -g Connect-VM.ps1:61
@@ -156,7 +158,8 @@ $Error
 dir pull -ErrorVariable viga
 $Error[0]
 $viga
-    # PowerShell 7+
+$viga | Format-List * -Force
+    #Requires -Version 7
 Get-Error
 
 #endregion
@@ -169,6 +172,21 @@ Get-Help Output_ -Category HelpFile -ShowWindow
 Get-Help CmdletBinding -Category HelpFile -ShowWindow
 Get-Help _CommonParameters -Category HelpFile -ShowWindow
 Get-Help Preference -Category HelpFile -ShowWindow
+Get-Help Write-Host -ShowWindow
+
+write-error "suur viga"
+$Error[0]
+write-error "suur viga" 2>> vealogi.txt
+
+Write-Warning -Message 'Fail juba olemas, kirjutan üle'
+Write-Warning -Message 'Fail juba olemas, kirjutan üle' 3>> hoiatuslogi.txt
+
+$asi = 13
+Write-Verbose -Message ('Muutuja väärtus: {0}, toimetan edasi' -f $asi) -Verbose
+Write-Verbose -Message ('Muutuja väärtus: {0}, toimetan edasi' -f $asi) -Verbose 4>> verbaalne.txt
+
+Write-Debug -Message 'Arendajale mõeldud teade' -Debug
+Write-Debug -Message 'Arendajale mõeldud teade' -Debug 5>> debuglogi.txt
 
 code -r events06.ps1
 
