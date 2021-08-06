@@ -13,6 +13,10 @@
         $Session = .\Connect-VM.ps1 -VmName Cl1
 
         This example creates remote session to client OS VM
+    .EXAMPLE
+        .\Connect-VM.ps1 -VmName Cl1 | Enter-PSSession
+
+        This example creates remote session and connects to it.
     .LINK
         New-PSSession
 #>
