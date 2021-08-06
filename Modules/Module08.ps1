@@ -309,16 +309,20 @@ Get-Help about_Continue -ShowWindow
 
 $users = Get-ADUser -Filter * -ResultSetSize 20
 
-forEach ($user in $users) {
+foreach ($user in $users) {
     if ($user.Name -eq 'Administrator') { continue }
     'Modify user {0}' -f $user.Name
 }
 
 $max = 3
-forEach ($user in $users) {
+$number = 0
+foreach ($user in $users) {
     $number++
     "Modify User object $number"
-    if ($number -ge $max) { break }
+    if ($number -ge $max) {
+        "katkestan"
+        break
+    }
 }
 'After loop'
 
@@ -357,6 +361,8 @@ Get-Content Module08.ps1 -Head 7
 Get-Help Get-Content -Parameter Tail
 Get-Content Module08.ps1 -Tail 5
 
+Get-Help Get-Content -Parameter ReadCount
+
 #endregion
 
 #region Using Import-Csv
@@ -388,6 +394,10 @@ Get-Process p* | Export-Clixml -Path protsessid.xml
 Import-Clixml -Path protsessid.xml | get-member
 Invoke-Item protsessid.xml
 
+$XmlKasutajad = Get-ADUser -filter { City -like 'Tallinn'} | ConvertTo-Xml
+$XmlKasutajad.OuterXml | Set-Content -Path kasutajad.xml -Encoding utf8
+$häälestus = [xml](Get-Content kasutajad.xml)
+
 #endregion
 
 #region Using ConvertFrom-Json
@@ -402,6 +412,17 @@ Invoke-Item protsessid.json
 Get-Content protsessid.json | ConvertFrom-Json | Select-Object Name, Id, Cpu, Path
     #Requires -Version 3
 (Get-Content protsessid.json | ConvertFrom-Json) | Select-Object Name, Id, Cpu, Path
+
+    # veebirakendustega suhtlemine
+Invoke-RestMethod -Uri https://devblogs.microsoft.com/powershell/feed
+
+$url = 'http://ipinfo.io/json'
+
+$info = Invoke-WebRequest -Uri $url | Select-Object -ExpandProperty Content | ConvertFrom-Json
+$info = Invoke-RestMethod -Uri $url
+
+$info.ip
+$info | Select-Object ip, hostname
 
 #endregion
 
