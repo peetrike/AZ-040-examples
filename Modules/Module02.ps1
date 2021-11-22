@@ -24,11 +24,12 @@ Get-Command -Module ActiveDirectory | Measure-Object
 Get-Command -Noun ADUser
 
 Get-ADUser -Identity Administrator
-Get-ADUser -Filter *
+Get-ADUser -Filter * | Measure-Object
 
 Get-ADUser -Identity Administrator -Properties *
 Get-ADUser -Filter { Department -like 'IT' }
 
+    # https://peterwawa.wordpress.com/2014/01/11/kontode-muutmine-domeenis/
 $longAgo = (Get-Date).AddDays(-90)
 Get-ADUser -Filter { LogonCount -ge 1 -and LastLogonDate -le $longAgo } |
     Move-ADObject -TargetPath 'ou=lost souls'
@@ -116,7 +117,7 @@ Search-ADAccount -AccountDisabled -UsersOnly
 
 #region Lesson 2: Network configuration cmdlets
 
-Get-Module Net*
+Get-Module Net* -ListAvailable
 Get-Command -Module NetTCPIP
 
 #region Managing IP addresses
