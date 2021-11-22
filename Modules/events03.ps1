@@ -3,8 +3,10 @@
     $ComputerName
 )
 
+#region User preference variables
 $EventID = 15
 $LogName = 'Application'
+#endregion
 
 $EventParams = @{
     MaxEvents       = 10

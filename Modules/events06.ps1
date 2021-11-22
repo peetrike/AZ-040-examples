@@ -3,8 +3,10 @@
         see skript otsib sündmuste logist asju
     .DESCRIPTION
         pikem kirjeldus sellest, mida skript teeb ...
+    .PARAMETER ComputerName
+        See parameeter ütleb et kust arvutist sündmused võtta.
     .EXAMPLE
-        events06.ps1 -aeg (get-date).adddays(-3)
+        .\events06.ps1 -aeg (get-date).adddays(-3)
 
         Leiab 3 päeva vanad sündmused
     .LINK
@@ -14,6 +16,7 @@
 [CmdletBinding()]
 param (
         [datetime]
+        # aeg, millest alates sündmusi otsida
     $aeg = [datetime]::Now.AddDays(-1),
         [ValidatePattern('Lon-*')]
         [Alias('CN')]
@@ -21,8 +24,10 @@ param (
     $ComputerName
 )
 
+#region User preference variables
 $EventID = 15
 $LogName = 'Application'
+#endregion
 
 $EventParams = @{
     MaxEvents       = 10

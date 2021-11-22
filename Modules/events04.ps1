@@ -1,13 +1,21 @@
 ﻿param (
+        <# [parameter(
+            Mandatory
+        )] #>
         [datetime]
-    $aeg = [datetime]::Now.AddDays(-1),
+    $Aeg = [datetime]::Now.AddDays(-1),
+        [ValidateScript({
+            Test-Connection -ComputerName $_ -Quiet -Count 1
+        })]
         [Alias('CN')]
         [string]
     $ComputerName
 )
 
+#region User preference variables
 $EventID = 15
 $LogName = 'Application'
+#endregion
 
 $EventParams = @{
     MaxEvents       = 10
