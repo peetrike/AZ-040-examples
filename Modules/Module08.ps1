@@ -159,11 +159,17 @@ Get-Command -Noun FileCatalog
 
 Get-Help about_Foreach -Category HelpFile -ShowWindow
 
-foreach ($i in 1..10) {
+$numbers = 1..10
+foreach ($i in $numbers) {
     'number on {0}' -f ($i * 2)
 }
 
-foreach ($file in Get-ChildItem -File) {
+1..10 | ForEach-Object { 'Number on {0}' -f ($_ * 2) }
+
+foreach ($file in Get-ChildItem -File) { $file.Name }
+$failid = Get-ChildItem -File
+foreach ($file in $failid)
+{
     $file.Name
 }
 
@@ -176,11 +182,12 @@ Get-Help Pipelines -Category HelpFile -ShowWindow
 
 Get-Help about_If -ShowWindow
 
-if ($true) { 'on tõene' }
-elseif ($false) { 'on väär' }
-else { 'on midagi muud' }
+$a = 0
+if ($a -gt 1) { 'greater' }
+elseif ($a -eq 0) { 'equal' }
+else { 'something else' }
 
-if (Get-ChildItem -File) { 'on faile ' }
+if (Get-ChildItem -File) { 'there are some files' }
 else { New-Item uus.txt }
 
 #endregion
@@ -288,6 +295,11 @@ while ($true) {
     Start-Sleep -Seconds 2
 }
 
+$i = 1
+while ($i--) {
+    'Processing...'
+    Start-Sleep -Seconds 2
+}
 #endregion
 
 #region Understanding Break and Continue
@@ -297,16 +309,20 @@ Get-Help about_Continue -ShowWindow
 
 $users = Get-ADUser -Filter * -ResultSetSize 20
 
-forEach ($user in $users) {
+foreach ($user in $users) {
     if ($user.Name -eq 'Administrator') { continue }
     'Modify user {0}' -f $user.Name
 }
 
 $max = 3
+$number = 0
 forEach ($user in $users) {
     $number++
     "Modify User object $number"
-    if ($number -ge $max) { break }
+    if ($number -ge $max) {
+        "breaking out"
+        break
+    }
 }
 'After loop'
 
@@ -345,6 +361,8 @@ Get-Content Module08.ps1 -Head 7
 Get-Help Get-Content -Parameter Tail
 Get-Content Module08.ps1 -Tail 5
 
+Get-Help Get-Content -Parameter ReadCount
+
 #endregion
 
 #region Using Import-Csv
@@ -376,6 +394,10 @@ Get-Process p* | Export-Clixml -Path protsessid.xml
 Import-Clixml -Path protsessid.xml | get-member
 Invoke-Item protsessid.xml
 
+$XmlKasutajad = Get-ADUser -filter { City -like 'Tallinn' } | ConvertTo-Xml
+$XmlKasutajad.OuterXml | Set-Content -Path kasutajad.xml -Encoding utf8
+$häälestus = [xml](Get-Content kasutajad.xml)
+
 #endregion
 
 #region Using ConvertFrom-Json
@@ -390,6 +412,17 @@ Invoke-Item protsessid.json
 Get-Content protsessid.json | ConvertFrom-Json | Select-Object Name, Id, Cpu, Path
     #Requires -Version 3
 (Get-Content protsessid.json | ConvertFrom-Json) | Select-Object Name, Id, Cpu, Path
+
+    # communicating with Web apps
+$url = 'http://ipinfo.io/json'
+
+$info = Invoke-WebRequest -Uri $url | Select-Object -ExpandProperty Content | ConvertFrom-Json
+$info = Invoke-RestMethod -Uri $url
+
+$info.ip
+$info | Select-Object ip, hostname
+
+Invoke-RestMethod -Uri https://devblogs.microsoft.com/powershell/feed
 
 #endregion
 
