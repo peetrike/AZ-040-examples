@@ -31,7 +31,7 @@
 
 # https://docs.microsoft.com/powershell/scripting/overview
 
-get-help Parsing -ShowWindow
+Get-Help Parsing -ShowWindow
 
 #endregion
 
@@ -76,6 +76,8 @@ Get-Command | more
 
 # Visual Studio Code: http://code.visualstudio.com
 # https://docs.microsoft.com/powershell/scripting/dev-cross-plat/vscode/using-vscode
+
+# http://docs.microsoft.com/windows/terminal
 
 #endregion
 
@@ -130,6 +132,9 @@ $Host.UI.RawUI.WindowTitle
 # https://docs.microsoft.com/windows/terminal/
 # https://github.com/microsoft/terminal
 
+    # Ensure that following is different enough to differentiate:
+# `' 0O 1l
+
 # https://docs.microsoft.com/typography/font-list/consolas
 # https://www.programmingfonts.org/
 
@@ -179,6 +184,7 @@ Get-Help Get-Command -Parameter * | Select-Object Name, Required, Type
 Get-Help Get-Process -ShowWindow
 Get-Help Get-Process -Parameter *
 Get-Help Get-Process -Parameter Id
+Get-Help Get-Command -Parameter Verb
 
 #endregion
 
@@ -216,6 +222,9 @@ Get-Help Command_Syntax -Category HelpFile -ShowWindow
 # https://docs.microsoft.com/powershell/module/microsoft.powershell.core/about/about_command_syntax#parameters
 
 Get-Help Get-Command | Select-Object -ExpandProperty Syntax
+(Get-Help Get-Command).Syntax
+Get-Command Get-Command -Syntax
+
 Get-Command Get-Command | Select-Object -ExpandProperty ParameterSets | Format-Table
 
 Get-Help Get-WinEvent
@@ -243,6 +252,7 @@ Get-Help Test-Connection -Parameter Quiet
 
 Get-Command -Noun help
 Get-Help Update-Help
+Get-Help Save-Help -ShowWindow
 
     #Requires -RunAsAdministrator
 Update-Help -Module VPNClient
@@ -282,6 +292,10 @@ Get-ADUser
 Import-Module ActiveDirectory
 Get-ADUser
 
+    # where to find modules
+Find-Module -Name UserProfile -Repository PSGallery
+Get-InstalledModule
+
 #endregion
 
 #region Finding cmdlets
@@ -291,7 +305,7 @@ Get-Command -Module VpnClient | Measure-Object
 Get-Command -Noun VpnConnection
 Get-VpnConnection
 
-Get-Command -noun Service
+Get-Command -Noun Service
 Get-Service BITS
 Stop-Service BITS
 
