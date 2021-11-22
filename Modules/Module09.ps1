@@ -34,12 +34,14 @@ code -r events02.ps1
 #region Using Read-Host
 
 Get-Help Read-Host -ShowWindow
-$answer = Read-Host -Prompt 'Enter your choice'
+$UserName = Read-Host -Prompt 'Enter user name for the server'
 $Password = Read-Host -Prompt 'Enter the password' -AsSecureString
 
 #endregion
 
 #region Using Get-Credential
+
+Get-Command Get-Credential -All
 
 Get-Help Get-Credential -ShowWindow
 
@@ -155,8 +157,8 @@ dir loll
 $Error
 dir pull -ErrorVariable viga
 $Error[0]
-$viga
-    # PowerShell 7+
+$viga | format-list * -Force
+    #Requires -Version 7
 Get-Error
 
 #endregion
@@ -169,6 +171,22 @@ Get-Help Output_ -Category HelpFile -ShowWindow
 Get-Help CmdletBinding -Category HelpFile -ShowWindow
 Get-Help _CommonParameters -Category HelpFile -ShowWindow
 Get-Help Preference -Category HelpFile -ShowWindow
+
+Get-Help Write-Host -ShowWindow
+
+write-error "suur viga"
+$Error[0]
+write-error "suur viga" 2>> vealogi.txt
+
+Write-Warning -Message 'Fail juba olemas, kirjutan üle'
+Write-Warning -Message 'Fail juba olemas, kirjutan üle' 3>> hoiatuslogi.txt
+
+$asi = 13
+Write-Verbose -Message ('Muutuja väärtus: {0}, toimetan edasi' -f $asi) -Verbose
+Write-Verbose -Message ('Muutuja väärtus: {0}, toimetan edasi' -f $asi) -Verbose 4>> verbaalne.txt
+
+Write-Debug -Message 'Arendajale mõeldud teade' -Debug
+Write-Debug -Message 'Arendajale mõeldud teade' -Debug 5>> debuglogi.txt
 
 code -r events06.ps1
 
@@ -285,6 +303,24 @@ code -r events07.ps1
 
 Get-Help about_Scope -ShowWindow
 
+$minuasi = 'minu asi'
+
+function katse {
+    [CmdletBinding()]
+    param (
+        $minuasi
+    )
+    write-verbose -Message ('Minu asi on: {0}' -f $minuasi)
+
+    $minuasi += " + katsetuse asi"
+    <# return #> $minuasi
+}
+
+katse -minuasi $minuasi -Verbose
+
+$minuasi = katse -minuasi $minuasi -Verbose
+$minuasi
+
 #endregion
 
 #region Creating a module
@@ -297,6 +333,14 @@ Import-Module .\events07.psm1
 events07 -aeg ([datetime]::Now).AddHours(-2)
 Get-Command -Module events07
 Get-Help events07
+Remove-Module events07
+
+Import-Module .\events07.ps1
+Get-Module events07 | Format-List
+Remove-Module events07
+
+Import-Module .\events07
+Get-Module events07 | Format-List
 Remove-Module events07
 
 New-Module -Name SayHello -ScriptBlock {
