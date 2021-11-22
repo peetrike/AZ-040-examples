@@ -132,6 +132,8 @@ Get-ADComputer lon-cl1 | Select-Object -ExpandProperty DnsHostName | Get-Member
 Get-Command powershell |
     Select-Object -Property Name -ExpandProperty FileVersionInfo
 
+Get-Help Select-Object -Parameter ExcludeProperty
+
 #endregion
 
 #region Creating calculated properties
@@ -145,7 +147,7 @@ $SizeGB = @{ Name ='Size (GB)'; Expression = { $_.Size / 1GB } }
 Get-CimInstance Win32_LogicalDisk | Select-Object -Property DeviceID, $SizeGB
 
 $SizeGB.Format = 'N2'
-Get-CimInstance Win32_LogicalDisk | Format-Table -Property DeviceID, $SizeGB
+Get-CimInstance Win32_LogicalDisk | Format-Table -Property DeviceID, VolumeName, $SizeGB
 
 Get-Help Add-Member -ShowWindow
 $MemberProps = @{
@@ -170,8 +172,10 @@ Get-Help Comparison -Category HelpFile -ShowWindow
 
 'tere' -eq 'Tere'
 'tere' -ceq 'Tere'
-'tere' -like 't*'
-'tere' -match 't.*'
+'tere' -like 't*'       # filesystem pattern
+'tere' -match 't.*'     # Regular Exression patterm
+
+Get-Help about_regular -ShowWindow
 
 1, 2, 3 -eq 2
 2, 4, 2, 3 -eq 2
@@ -206,10 +210,10 @@ Get-Help Where-Object -ShowWindow
 Get-Alias -Definition Where-Object
 
 Get-Service p* | Where-Object Status -eq 'Stopped'
-Get-Service p* | Where Status -like 'Running*'
+Get-Service p* | where Status -like 'Running*'
 gps | ? cpu -gt 1000
 
-Get-ChildItem | Where PSIsContainer
+Get-ChildItem | where PSIsContainer
 
 #endregion
 
@@ -220,6 +224,8 @@ gci | ? { ! $_.PSIsContainer }
 
 
 Get-ChildItem | Where-Object { ($_.Name.Length -ge 9) -and ($_.Length -ge 2KB) }
+
+'get-service', 'get-uhhuu', 'get-userprofile' | Where-Object { Get-Command $_ -ErrorAction SilentlyContinue }
 
 #endregion
 
@@ -290,10 +296,10 @@ Get-Help ForEach-Object -ShowWindow
 Get-Alias -Definition ForEach-Object
 
 dir | ForEach-Object Name | get-member
-    #see teeb sama asja
-dir | Select-Object -ExpandProperty Name
-    # PowerShell 3+
-(Get-ChildItem).Name
+    #the following do the same
+dir *.txt | Select-Object -ExpandProperty Name
+    #Requires -Version 3
+(dir *.txt).Name
 
 dir | foreach -MemberName Encrypt -WhatIf
 
@@ -301,11 +307,12 @@ dir | foreach -MemberName Encrypt -WhatIf
 
 #region Advanced enumeration syntax
 
-dir | ForEach-Object -Process { $_.Name }
-dir | % { $_.Name }
+Get-ChildItem | ForEach-Object -Process { $_.Name }
+dir | foreach { $_.Name }
+dir | % Name
 
-Get-Service BITS | ForEach-Object { stop-service $_ }
-Get-Service BITS | Stop-Service
+Get-Service BITS | ForEach-Object { Stop-Service $_ -WhatIf }
+Get-Service BITS | Stop-Service -WhatIf
 
 #endregion
 
@@ -315,10 +322,12 @@ Get-Service BITS | Stop-Service
 #region Lesson 5: Sending pipeline data as output
 
 Get-Help Encoding -Category HelpFile -ShowWindow
+Get-Command -ParameterName Encoding
 
 #region Writing output to a file
 
 Get-Help Out-File -ShowWindow
+Get-Help Out-File -Parameter NoClobber
 Get-Help Redirect -Category HelpFile -ShowWindow
 
 Get-ChildItem | Out-File -FilePath failid.txt -Encoding utf8
@@ -372,6 +381,7 @@ Get-Help ConvertTo-Json -Parameter Depth
 
 Get-Help ConvertTo-Html -ShowWindow
 Get-ChildItem |
+    Select-Object -First 4 |
     ConvertTo-Html -PreContent 'Here are some files' -Property Name, Length |
     Out-File -FilePath failid.htm -Encoding utf8
 
