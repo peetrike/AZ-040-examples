@@ -33,6 +33,8 @@
 
 Get-Help Parsing -ShowWindow
 
+# https://docs.microsoft.com/powershell/scripting/windows-powershell/starting-windows-powershell
+
 #endregion
 
 #region PowerShell versions
@@ -43,9 +45,11 @@ Get-Help Parsing -ShowWindow
 
 Get-Help PowerShell -Category HelpFile
 
-# https://docs.microsoft.com/powershell/scripting/whats-new/what-s-new-in-powershell-71
+# https://docs.microsoft.com/powershell/scripting/whats-new/what-s-new-in-powershell-72
 
 # https://docs.microsoft.com/powershell/scripting/install/powershell-in-docker
+
+# https://docs.microsoft.com/powershell/scripting/install/powershell-support-lifecycle
 
 #endregion
 
@@ -60,6 +64,8 @@ Get-Module ActiveDirectory -ListAvailable
 Get-Module Dism -ListAvailable
 
 $PSHOME
+$env:PSModulePath -split [io.path]::PathSeparator | Where-Object { $_ -like "$PSHOME*" }
+$env:PSModulePath -split [io.path]::PathSeparator | Where-Object { $_ -like "$env:windir*" }
 Get-ChildItem (Join-Path $PSHOME Modules)
 
 # https://docs.microsoft.com/powershell/module/microsoft.powershell.core/about/about_special_characters#stop-parsing-token---
@@ -69,6 +75,18 @@ bcdedit.exe --% /enum {current}
 
 #region Two host applications
 
+Get-Command powershell
+Get-Command pwsh
+
+Get-Command -Noun Transcript
+
+Get-Command -Noun History
+Get-Help Get-History -ShowWindow
+    #Requires -Modules PSReadLine
+Get-Help PSReadLine -Category HelpFile -ShowWindow
+Get-PSReadLineOption | Select-Object *history*
+Get-PSReadLineKeyHandler -Chord 'UpArrow', 'DownArrow', 'F8', 'Shift-F8', 'F2'
+
 # https://docs.microsoft.com/powershell/scripting/windows-powershell/ise/introducing-the-windows-powershell-ise
 
     # Powershell ISE difference: next line doesn't show one screen at time
@@ -76,8 +94,6 @@ Get-Command | more
 
 # Visual Studio Code: http://code.visualstudio.com
 # https://docs.microsoft.com/powershell/scripting/dev-cross-plat/vscode/using-vscode
-
-# http://docs.microsoft.com/windows/terminal
 
 #endregion
 
@@ -133,13 +149,14 @@ $Host.UI.RawUI.WindowTitle
 # https://github.com/microsoft/terminal
 
     # Ensure that following is different enough to differentiate:
-# `' 0O 1l
+# `' 0O 1Il
 
 # https://docs.microsoft.com/typography/font-list/consolas
 # https://www.programmingfonts.org/
 
 # https://docs.microsoft.com/windows/terminal/tips-and-tricks#zoom-with-the-mouse
-# https://code.visualstudio.com/docs/editor/accessibility#_zoom
+
+Get-PSReadLineKeyHandler -Chord 'Ctrl-c', 'Ctrl-C', 'Ctrl-v', 'Shift-Insert', 'Ctrl-x'
 
 #endregion
 
@@ -147,8 +164,12 @@ $Host.UI.RawUI.WindowTitle
 
 # https://docs.microsoft.com/powershell/scripting/dev-cross-plat/vscode/how-to-replicate-the-ise-experience-in-vscode
 
+# https://code.visualstudio.com/docs/getstarted/themes
 # https://code.visualstudio.com/docs/getstarted/settings
+
 # https://docs.microsoft.com/powershell/scripting/dev-cross-plat/vscode/using-vscode#configuration-settings-for-visual-studio-code
+
+# https://code.visualstudio.com/docs/editor/accessibility#_zoom
 
 #endregion
 
@@ -169,6 +190,7 @@ Get-Command Get-Mailbox
 Get-Command Get-ADUser
 Get-Command -Noun *User -Verb Get
 
+    #Requires -Modules PowerShellGet
 Find-Module -Command Get-User -Repository PSGallery
 
 #endregion
@@ -190,21 +212,22 @@ Get-Help Get-Command -Parameter Verb
 
 #region Tab completion
 
-# https://docs.microsoft.com/powershell/scripting/learn/using-tab-expansion
+# https://docs.microsoft.com/powershell/module/microsoft.powershell.core/about/about_tab_expansion
 
 Get-Help PSReadLine -Category HelpFile -ShowWindow
 Get-Command -Module PSReadLine
 
-Get-PSReadLineKeyHandler -Chord 'tab'
-Get-PSReadLineKeyHandler -Chord 'ctrl- '
+Get-PSReadLineKeyHandler -Chord 'Tab', 'Shift-Tab', 'Ctrl- '
 
 Get-Module PSReadLine
+Get-InstalledModule PSReadLine
 Find-Module PSReadLine -AllowPrerelease
 
 #endregion
 
 #region Using Get-Help
 
+Get-Help default -ShowWindow
 Get-Help Get-Help
 
 Get-Help Get-Help -Examples
@@ -257,7 +280,7 @@ Get-Help Save-Help -ShowWindow
     #Requires -RunAsAdministrator
 Update-Help -Module VPNClient
 
-# PowerShell 6+ allows to specify scope for Update-Help
+    #Requires -Version 6.1
 Get-Help Update-Help -Parameter Scope
 
 #endregion
@@ -284,7 +307,10 @@ Get-Module
 Get-Module -ListAvailable
 
 $env:PSModulePath
-$env:PSModulePath -split [io.path]::PathSeparator
+$env:PSModulePath -split [IO.Path]::PathSeparator
+
+    #Requires -Version 4
+$env:PSModulePath -split [IO.Path]::PathSeparator | Where-Object { $_ -like "$env:ProgramFiles*" }
 
     #Requires -Version 3
 Get-ADUser
