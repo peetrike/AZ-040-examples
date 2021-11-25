@@ -36,7 +36,7 @@ Get-ChildItem |
 
 #region Pipeline output
 
-Get-Help Objects -Category HelpFile
+Get-Help Objects -Category HelpFile -ShowWindow
 
 #endregion
 
@@ -45,6 +45,13 @@ Get-Help Objects -Category HelpFile
 Get-Help Get-Member -ShowWindow
 
 Get-Command | Get-Member
+
+Get-ChildItem
+Get-ChildItem | Get-Member
+
+Get-ADUser -Identity Administrator
+Get-ADUser -Identity Administrator | Get-Member
+Get-ADUser -Identity Administrator -Properties * | Get-Member
 
 #endregion
 
@@ -59,6 +66,7 @@ Get-FormatData -TypeName System.Diagnostics.Process |
     Select-Object -ExpandProperty FormatViewDefinition
 
 Get-Process p* | Format-Table -View StartTime
+
 #endregion
 
 #endregion
@@ -143,7 +151,7 @@ Get-Help Calculated_Properties -ShowWindow
 
 Get-CimInstance Win32_LogicalDisk
 
-$SizeGB = @{ Name ='Size (GB)'; Expression = { $_.Size / 1GB } }
+$SizeGB = @{ Name = 'Size (GB)'; Expression = { $_.Size / 1GB } }
 Get-CimInstance Win32_LogicalDisk | Select-Object -Property DeviceID, $SizeGB
 
 $SizeGB.Format = 'N2'
@@ -170,22 +178,31 @@ Get-CimInstance Win32_LogicalDisk |
 
 Get-Help Comparison -Category HelpFile -ShowWindow
 
-'tere' -eq 'Tere'
+'tere' -eq 'Tere'       # by default the text comparison is case-insensitive
 'tere' -ceq 'Tere'
 'tere' -like 't*'       # filesystem pattern
-'tere' -match 't.*'     # Regular Exression patterm
+'tere' -match 't.*'     # Regular Expression pattern
 
+Get-Help Wildcards -ShowWindow
 Get-Help about_regular -ShowWindow
-
-1, 2, 3 -eq 2
-2, 4, 2, 3 -eq 2
 
 3 -eq '3'
 
 '13' -gt 3
 13 -gt '3'
 
+    # arrays in comparison
+2 -in 1, 2, 3, 4
+1, 2, 3, 4 -contains 3
+
+1, 2, 3 -eq 2
+2, 4, 2, 3 -eq 2
+'tere', 'tore', 'mäger' -match '^t'
+
 Get-Help Type_Operators -ShowWindow
+
+$a = Get-Date
+$a -is [datetime]
 
 'tere' -as [bool]
 (Get-ChildItem) -as [bool]
@@ -209,9 +226,15 @@ Get-Help Simplified_Syntax -ShowWindow
 Get-Help Where-Object -ShowWindow
 Get-Alias -Definition Where-Object
 
+Get-Service bits | Get-Member -Name Status
+[enum]::GetValues([System.ServiceProcess.ServiceControllerStatus])
+[System.ServiceProcess.ServiceControllerStatus]'Stopped'
+
 Get-Service p* | Where-Object Status -eq 'Stopped'
-Get-Service p* | where Status -like 'Running*'
-gps | ? cpu -gt 1000
+Get-Service p* | where Status -like 'Run*'
+gsv p* | ? Status -eq 1
+[System.ServiceProcess.ServiceControllerStatus]1
+[System.ServiceProcess.ServiceControllerStatus]::Stopped.value__
 
 Get-ChildItem | where PSIsContainer
 
@@ -295,13 +318,19 @@ Get-Help Simplified_Syntax -ShowWindow
 Get-Help ForEach-Object -ShowWindow
 Get-Alias -Definition ForEach-Object
 
-dir | ForEach-Object Name | get-member
+dir | ForEach-Object Name | Get-Member
     #the following do the same
 dir *.txt | Select-Object -ExpandProperty Name
     #Requires -Version 3
 (dir *.txt).Name
 
 dir | foreach -MemberName Encrypt -WhatIf
+dir | % Decrypt -WhatIf
+
+#region Preparation
+'katse', 'kutse' | ForEach-Object { New-Item -ItemType Directory -Name $_ -ErrorAction SilentlyContinue }
+#endregion
+dir k* -Directory | % CreateSubdirectory -ArgumentList 'muu'
 
 #endregion
 
@@ -332,9 +361,10 @@ Get-Help Redirect -Category HelpFile -ShowWindow
 
 Get-ChildItem | Out-File -FilePath failid.txt -Encoding utf8
 dir > kaustad.txt
+dir >> kaustad.txt
 
-Get-Help Add-Content -ShowWindow
 Get-Help Set-Content -ShowWindow
+Get-Help Add-Content -ShowWindow
 
 #endregion
 
@@ -343,7 +373,7 @@ Get-Help Set-Content -ShowWindow
 Get-Help ConvertTo-Csv -ShowWindow
 Get-Help Export-Csv -ShowWindow
 
-Get-ChildItem | Export-Csv -Path failid.csv -Encoding Default -UseCulture
+Get-ChildItem | Export-Csv -Path failid.csv -Encoding default -UseCulture
 Get-ChildItem |
     ConvertTo-Csv -UseCulture -NoTypeInformation |
     Out-File -Encoding utf8 -FilePath failid.csv
@@ -401,7 +431,7 @@ Get-Help Out-Host -Parameter Paging
 Get-Help Out-Printer -ShowWindow
 Get-Help Out-String -ShowWindow
 Get-Help Out-GridView -ShowWindow
-Get-ChildItem | Out-GridView
+Get-ChildItem | Select-Object * | Out-GridView
 
 #endregion
 
