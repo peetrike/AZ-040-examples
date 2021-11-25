@@ -29,8 +29,15 @@ Get-ADUser -Filter * | Measure-Object
 Get-ADUser -Identity Administrator -Properties *
 Get-ADUser -Filter { Department -like 'IT' }
 
+Search-ADAccount -UsersOnly -PasswordExpired
+$DaysAgo = New-TimeSpan -Days 90
+Search-ADAccount -UsersOnly -AccountExpiring -TimeSpan $DaysAgo
+
+Get-Help Search-ADAccount -ShowWindow
+
+
     # https://peterwawa.wordpress.com/2014/01/11/kontode-muutmine-domeenis/
-$longAgo = (Get-Date).AddDays(-90)
+$longAgo = (Get-Date) - $DaysAgo
 Get-ADUser -Filter { LogonCount -ge 1 -and LastLogonDate -le $longAgo } |
     Move-ADObject -TargetPath 'ou=lost souls'
 
@@ -82,6 +89,9 @@ Get-Command -Noun ADComputer
 
 #$longAgo = (Get-Date).AddDays(-90)
 Get-ADComputer -Filter (PasswordLastSet -lt $longAgo) | Disable-ADAccount
+
+Search-ADAccount -AccountInactive -TimeSpan $DaysAgo -ComputersOnly
+Search-ADAccount -AccountInactive -TimeSpan 90.00:00:00 -ComputersOnly
 
     # not part of ActiveDirectory module
 Get-Command Rename-Computer
