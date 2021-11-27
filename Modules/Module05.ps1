@@ -33,10 +33,15 @@ Get-Help Variable_ -Category HelpFile -ShowWindow
 
 #region Lesson 2: Using PSDrives
 
+#region What are PSDrives?
+
+Get-PSDrive
+
+#endregion
+
 #region Cmdlets for using PSDrives
 
 Get-Command -Noun PSDrive
-Get-PSDrive
 
 Get-Help Locations -Category HelpFile -ShowWindow
 
@@ -44,10 +49,12 @@ Get-Command -Noun Item, ItemProperty*, Content, Location
 Get-Command -Noun ChildItem
 Get-Alias -Definition Get-ChildItem
 
+Get-Help New-PSDrive -ShowWindow
     #Requires -Version 3
 New-PSDrive -Name 's' -Root '\\server\share\folder' -Persist -Credential 'domain\user' -PSProvider FileSystem
-     #Requires -Modules SmbShare
-New-SmbMapping -LocalPath 's:' -RemotePath '\\server\share\folder' -Persistent $true -UserName 'domain\user'
+    #Requires -Modules SmbShare
+New-SmbMapping -LocalPath 's:' -RemotePath '\\lon-dc1\netlogon' -Persistent $false
+Get-Help New-SmbMapping -Parameter UserName
 Get-Help New-SmbMapping -Parameter Password
 
 #endregion
@@ -73,7 +80,7 @@ New-Item -ItemType File -Name minufail.txt -Path uus
 New-Item -Name kaust -ItemType Junction -Target uus
 
 Set-Location kaust
-New-Item -ItemType HardLink -Name teinefail.txt -Value minufail.txt
+New-Item -ItemType HardLink -Name teinefail.txt -Value ..\uus\minufail.txt
     #Requires -RunAsAdministrator
 New-Item -ItemType SymbolicLink -Name link.txt -Value minufail.txt
 
