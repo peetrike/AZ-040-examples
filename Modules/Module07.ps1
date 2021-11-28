@@ -19,9 +19,9 @@
 
 #region What are variables?
 
-Get-Help variables -Category HelpFile -ShowWindow
-Get-Help variable_ -Category HelpFile -ShowWindow
+Get-Help variables -Category HelpFile
 
+Get-Help variable_ -Category HelpFile -ShowWindow
 Get-ChildItem Variable:
 
 Get-Command -Noun Variable
@@ -43,6 +43,11 @@ $minu_oluline_info = 43     # Snake Case
 
 # https://poshcode.gitbook.io/powershell-practice-and-style/style-guide/code-layout-and-formatting#capitalization-conventions
 # https://docs.microsoft.com/dotnet/standard/design-guidelines/capitalization-conventions
+
+    # variable names are not case sensitive, not even on Linux:
+$var = 'variable'
+$VAR
+
 #endregion
 
 #region Assigning a value to a variable
@@ -58,6 +63,7 @@ $MinuMuutuja += 10
 
 #region Variable types
 
+# https://docs.microsoft.com/powershell/module/microsoft.powershell.core/about/about_variables#types-of-variables
 # https://docs.microsoft.com/dotnet/api/
 
 $x = 7
@@ -87,9 +93,9 @@ $set | Get-Member
 , $set | Get-Member
 $set.GetType()
 
-Start-Process ('https://docs.microsoft.com/dotnet/api/{0}' -f $set.GetType().BaseType)
+Start-Process ('https://docs.microsoft.com/dotnet/api/{0}' -f $set.GetType().BaseType.FullName)
 
-$set.GetLength
+$set.SetValue
 
 #endregion
 
@@ -156,7 +162,7 @@ $täna.Add($aeg)
 
 #region What is an array?
 
-Get-Help Array -Category HelpFile -ShowWindow
+Get-Help Arrays -ShowWindow
 
 # https://docs.microsoft.com/dotnet/api/system.array
 
@@ -180,6 +186,7 @@ $arvutid.Count
 $arvutid[1]
 $arvutid[-1]
 $arvutid | Select-Object -First 1 -Skip 1
+
 $arvutid.Add('Lon-DC1')
 $arvutid += 'Lon-DC2'
 $arvutid.Count
@@ -210,8 +217,9 @@ $computers = [Collections.ArrayList] (Get-Content computers.txt)
 $computers.Add('Lon-DC1')
 $computers.RemoveAt(1)
 
+# https://github.com/dotnet/platform-compat/blob/master/docs/DE0006.md
 
-#https://docs.microsoft.com/dotnet/api/system.collections.generic.list-1
+# https://docs.microsoft.com/dotnet/api/system.collections.generic.list-1
 
 $computers = [Collections.Generic.List[string]] (Get-Content computers.txt)
 , $computers | Get-Member
