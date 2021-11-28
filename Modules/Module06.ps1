@@ -20,9 +20,15 @@
 #region Architecture and technologies
 
 # CIM - Common Information Model: http://www.dmtf.org/standards/cim/
-# WMI - Windows Management Instrumentation, based on WBEM: https://docs.microsoft.com/windows/win32/wmisdk/wmi-start-page
-# Web-based Enterprise Management: https://www.dmtf.org/standards/wbem
-# Desktop Management Interface: https://www.dmtf.org/sites/default/files/standards/documents/DSP0005.pdf
+# For Linux: OMI - Open Management Infrastructure: https://collaboration.opengroup.org/omi/
+# Windows Remote Management (WinRM), based on Web Services Management (WS-Man)
+#   * https://docs.microsoft.com/windows/win32/winrm
+#   * https://www.dmtf.org/standards/ws-man
+
+# WMI - Windows Management Instrumentation, based on WBEM
+#   * https://docs.microsoft.com/windows/win32/wmisdk/wmi-start-page
+# Web-Based Enterprise Management (WBEM): https://www.dmtf.org/standards/wbem
+# Desktop Management Interface (DMI): https://www.dmtf.org/sites/default/files/standards/documents/DSP0005.pdf
 
     # PowerShell < 6
 Get-Command -noun Wmi*
@@ -37,6 +43,7 @@ Get-Command -Module CimCmdlets
 
 Get-CimInstance -Namespace root -ClassName __Namespace
 Get-CimInstance -Namespace root\cimv2 -ClassName __Namespace
+Get-CimInstance -Namespace root\Microsoft\Windows -ClassName __Namespace
 
 #endregion
 
@@ -70,9 +77,12 @@ WMIC.exe OS get Version
 
 #region Listing namespaces
 
-Get-WmiObject –Namespace root –List -Recurse | Select-Object -Unique __NAMESPACE
+Get-WmiObject –Namespace ROOT –List -Recurse -ErrorAction SilentlyContinue |
+    Select-Object -Unique __NAMESPACE
 
-Get-CimInstance -Namespace root -ClassName __Namespace
+Get-CimInstance -Namespace ROOT -ClassName __Namespace
+code -r .\Get-CimNamespace.ps1
+.\Get-CimNamespace.ps1
 
 #endregion
 
@@ -85,8 +95,16 @@ Get-CimClass -ClassName Win32_* | Sort-Object CimClassName
 Get-CimClass Win32_Product
     # instead, use this, registry or module MSI
 Get-CimClass -ClassName Win32_InstalledWin32Program
-# https://docs.microsoft.com/troubleshoot/windows-server/admin-development/windows-installer-reconfigured-all-applications
 
+Get-ChildItem 'HKLM:\SOFTWARE\Microsoft\Windows\CurrentVersion\Uninstall',
+              'HKLM:\SOFTWARE\Wow6432Node\Microsoft\Windows\CurrentVersion\Uninstall'
+
+Find-Module msi -Repository PSGallery
+Get-MSIProductInfo
+
+    # Microsoft Store apps
+    #Requires -RunAsAdministrator
+Get-CimInstance -ClassName Win32_InstalledStoreProgram
 #endregion
 
 #region Querying instances
@@ -106,10 +124,14 @@ WHERE DriveType=3
 '@
 Get-CimInstance Win32_LogicalDisk –Filter "DriveType=3" -Property DeviceId, Size, FreeSpace -Verbose
 
-Get-CimInstance -ClassName Win32_ComputerSystem
-Get-CimInstance -ClassName Win32_OperatingSystem
-Get-CimInstance -ClassName Win32_PhysicalMemory
-Get-CimInstance -ClassName Win32_PhysicalMemoryArray
+Get-CimInstance -ClassName Win32_Service -Filter 'Name="bits"'
+Get-Service BITS
+Get-CimInstance -ClassName Win32_Process -Filter "ProcessID=$pid"
+Get-Process -Id $pid
+
+Get-CimInstance Win32_ComputerSystem
+Get-CimInstance Win32_OperatingSystem
+# https://peterwawa.wordpress.com/2014/04/11/mis-mlu-mul-masinasserveris-on/
 
 #endregion
 
@@ -119,6 +141,9 @@ Get-Help Get-WmiObject -Parameter ComputerName
 Get-Help Get-CimInstance -Parameter ComputerName
 
 Get-WmiObject Win32_OperatingSystem -ComputerName 'LON-DC1'
+
+Get-NetFirewallRule -Name wmi*-in-*
+Get-NetFirewallRule -Name winrm-http*
 
 #endregion
 
@@ -178,7 +203,5 @@ Get-CimInstance -ClassName Win32_Process -Filter "Name='notepad.exe'" |
 (Get-WmiObject win32_service -Filter 'Name="bits"').StopService()
 
 #endregion
-
-
 
 #endregion
