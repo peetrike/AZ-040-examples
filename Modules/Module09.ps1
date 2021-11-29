@@ -51,11 +51,12 @@ $Credential.UserName
 code -r -g Connect-VM.ps1:61
 Get-Credential -Message 'Please enter secret' -UserName 'not used'
 
+$host.ui.PromptForCredential
 $Credential = $host.ui.PromptForCredential(
     'Need credentials',
     'Please enter your user name and password.',
     'user',
-    'domain'
+    'target'
 )
 
 Find-Module BetterCredentials -Repository PSGallery
@@ -81,6 +82,8 @@ Get-ADUser -Filter { City -like 'Tallinn' } |
 #region Extra: Other possibilities
 
 # https://github.com/peetrike/Examples/blob/master/src/Gui/Test-GuiElements.ps1#L35-L55
+# https://github.com/peetrike/Examples/blob/master/src/Gui/ToastNotification.ps1
+Find-Module burnttoast -Repository PSGallery
 
 #Requires -Version 6
 
@@ -284,6 +287,10 @@ try {
 #region Lesson 4: Functions and modules
 
 #region What are functions?
+
+$func = { 'Hello' }
+& $func
+# https://peterwawa.wordpress.com/2011/01/26/kaustade-iguste-kaardistus/
 
 Get-Command help
 (Get-Command c:).Definition
