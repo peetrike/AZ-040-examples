@@ -17,7 +17,7 @@
     [CmdletBinding()]
     param (
             [parameter(
-                Mandatory=$false
+                Mandatory = $false
             )]
             [datetime]
             # aeg, millest alates sündmusi otsida
