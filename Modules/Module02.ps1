@@ -57,7 +57,8 @@ $userParams.SamAccountName = $userParams.GivenName.Substring(0, 4) +
     $userParams.SurName.Substring(0, 2)
 New-ADUser @userParams
 
-$userParams | Export-Csv -UseCulture -Encoding Default -Path $PWD\users.csv
+new-object psobject -Property $userParams |
+    Export-Csv -Path users.csv -NoTypeInformation -UseCulture -Encoding utf8
 
 Import-Csv -UseCulture -Encoding Default -Path .\users.csv |
     New-ADUser -Enabled $true -AccountPassword (
