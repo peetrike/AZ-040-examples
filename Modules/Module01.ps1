@@ -193,6 +193,11 @@ Get-Command -Noun *User -Verb Get
     #Requires -Modules PowerShellGet
 Find-Module -Command Get-User -Repository PSGallery
 
+get-command Get-Credential -All
+get-command Microsoft.PowerShell.Security\Get-Credential
+
+get-command ping
+
 #endregion
 
 #region Parameters
@@ -228,10 +233,11 @@ Find-Module PSReadLine -AllowPrerelease
 #region Using Get-Help
 
 Get-Help default -ShowWindow
-Get-Help Get-Help
+Get-Help Get-Help -ShowWindow
 
 Get-Help Get-Help -Examples
 Get-Help Get-Help -Parameter *
+Get-Help Get-Help -Parameter Examples
 Get-Help Get-Help -Detailed
 Get-Help Get-Help -Full
 Get-Help Get-Process -ShowWindow
@@ -335,7 +341,7 @@ Get-Command -Noun Service
 Get-Service BITS
 Stop-Service BITS
 
-Get-Command -Noun *user -Verb Get -CommandType Cmdlet
+Get-Command -Noun *user -Verb Get # -CommandType Cmdlet
 
 Get-Help Command_Precedence -ShowWindow
 
@@ -364,6 +370,12 @@ Get-Help dir -Parameter Recurse
 (Get-Command Get-ChildItem).Parameters.Recurse
 (Get-Command Get-ChildItem).Parameters.Recurse.aliases
 dir -s
+
+get-command ping
+New-Alias -Name ping -Definition Test-Connection
+Set-Alias ping Test-Connection
+Get-Command ping
+ping www.ee
 
 #endregion
 
