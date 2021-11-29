@@ -23,8 +23,10 @@ Get-Help Scripts -Category HelpFile -ShowWindow
 
 get-date
 whoami
+Get-History -Count 2 |
+    Select-Object -ExpandProperty Commandline |
+    Set-Content -Path käsud.txt -Encoding utf8
 
-'get-date', 'whoami' | Set-Content -Path käsud.txt -Encoding utf8
 Start-Process cmd.exe -ArgumentList '/k powershell < käsud.txt'
 Invoke-Expression (gc .\käsud.txt -Raw)
 Invoke-Item .\käsud.txt
@@ -35,8 +37,6 @@ pwsh -c (gc .\käsud.txt -Raw)
 #endregion
 
 #region Modifying scripts
-
-# https://github.com/janikvonrotz/awesome-powershell#editors-and-ides
 
 # https://code.visualstudio.com
 Get-Command code
@@ -60,6 +60,8 @@ ise käsud.txt
 # https://docs.github.com/en/codespaces
 
 # https://notepad-plus-plus.org/
+
+# https://github.com/janikvonrotz/awesome-powershell#editors-and-ides
 
 #endregion
 
@@ -118,10 +120,10 @@ Get-Help Execution_Policies -ShowWindow
 Get-Command -noun ExecutionPolicy
 Get-ExecutionPolicy -List
 
-Set-ExecutionPolicy Restricted -Scope Process
+Set-ExecutionPolicy Restricted -Scope Process       #DevSkim: ignore DS113853
 .\käsud.ps1
 powershell.exe -ExecutionPolicy RemoteSigned -file käsud.ps1
-Set-ExecutionPolicy RemoteSigned -Scope Process
+Set-ExecutionPolicy RemoteSigned -Scope Process     #DevSkim: ignore DS113853
 
 #endregion
 
@@ -145,6 +147,8 @@ Get-AuthenticodeSignature -FilePath käsud.ps1
 
 Get-ChildItem Cert:\CurrentUser\My -CodeSigningCert
 Get-Help Set-AuthenticodeSignature -Examples
+
+Get-Help New-SelfSignedCertificate -ShowWindow
 
 Get-Command -Noun FileCatalog
 
@@ -183,8 +187,8 @@ Get-Help Pipelines -Category HelpFile -ShowWindow
 Get-Help about_If -ShowWindow
 
 $a = 0
-if ($a -gt 1) { 'greater' }
-elseif ($a -eq 0) { 'equal' }
+if ($a -gt 1) { 'a is greater' }
+elseif ($null -eq $b) { 'b is not set' }
 else { 'something else' }
 
 if (Get-ChildItem -File) { 'there are some files' }
@@ -341,6 +345,8 @@ switch -Regex ($ip) {
     default { '{0} is not on the internal network' -f $_ }
 }
 
+# https://github.com/nightroman/PowerShellTraps/tree/master/Basic/Break-and-Continue-without-loop
+
 #endregion
 
 #endregion
@@ -416,17 +422,20 @@ Get-Content protsessid.json | ConvertFrom-Json | Select-Object Name, Id, Cpu, Pa
     # communicating with Web apps
 $url = 'http://ipinfo.io/json'
 
-$info = Invoke-WebRequest -Uri $url | Select-Object -ExpandProperty Content | ConvertFrom-Json
-$info = Invoke-RestMethod -Uri $url
+$info = Invoke-WebRequest -Uri $url
+$info.Headers.'Content-Type'
+$jsonInfo = $info.Content | ConvertFrom-Json
+$jsonInfo = Invoke-RestMethod -Uri $url
 
-$info.ip
-$info | Select-Object ip, hostname
+$jsonInfo.ip
+$jsonInfo | Select-Object ip, hostname
 
 Invoke-RestMethod -Uri https://devblogs.microsoft.com/powershell/feed
 
 #endregion
 
 #endregion
+
 
 #region Using .PSD1 files as data source
 
