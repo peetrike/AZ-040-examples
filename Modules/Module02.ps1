@@ -139,6 +139,7 @@ Get-NetIPAddress -AddressFamily IPv4
 Get-NetIPConfiguration -InterfaceAlias 'Wi-fi'
 Get-NetIPInterface -Dhcp Enabled -ConnectionState Connected
 
+get-alias -Definition Get-NetIPConfiguration
 #endregion
 
 #region Managing routing
@@ -156,11 +157,18 @@ Get-Command -Module DnsClient
 Resolve-DnsName -Name www.ee
 Resolve-DnsName -Name ttu.ee -Type mx
 
+Resolve-DnsName -Name www.ee -DnsOnly
+Resolve-DnsName -Name www.ee -CacheOnly
+
+
 Get-DnsClientCache
 Clear-DnsClientCache
 Get-DnsClient -InterfaceAlias 'Wi-Fi'
 Get-DnsClientServerAddress -AddressFamily IPv4
 Get-DnsClientGlobalSetting
+
+find-module Indented.Net.Dns -Repository PSGallery
+get-dns õhtuleht.ee
 
 # https://peterwawa.wordpress.com/2021/04/12/windowsi-arvutinimedest/
 
@@ -210,6 +218,8 @@ Get-Help Invoke-GPUpdate
 #endregion
 
 #region Server Manager cmdlets
+
+get-command -Module ServerManager
     #Requires -Modules ServerManager
 Get-WindowsFeature
 Install-WindowsFeature -Name Telnet-Client -ComputerName myserver
