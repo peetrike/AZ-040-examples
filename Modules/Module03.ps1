@@ -425,9 +425,9 @@ Get-Help Out-File -ShowWindow
 Get-Help Out-File -Parameter NoClobber
 Get-Help Redirect -Category HelpFile -ShowWindow
 
-Get-ChildItem | Out-File -FilePath failid.txt -Encoding utf8
-dir > kaustad.txt
-dir >> kaustad.txt
+Get-ChildItem | Out-File -FilePath failid.txt -Encoding utf8 -Append
+dir > kaustad.txt    # out-file
+dir >> kaustad.txt   # out-file -append
 
 Get-Help Set-Content -ShowWindow
 Get-Help Add-Content -ShowWindow
@@ -468,6 +468,10 @@ Get-ChildItem | Export-Clixml -Path failid.xml
 
 Get-Help ConvertTo-Json -ShowWindow
 Get-ChildItem | Select-Object Name, Length, LastWriteTime | ConvertTo-Json
+Get-ChildItem |
+    Select-Object Name, Length, LastWriteTime |
+    ConvertTo-Json |
+    Out-File -FilePath failid.json -Encoding utf8
 
 Get-Help ConvertTo-Json -Parameter Depth
 
