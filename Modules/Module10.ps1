@@ -33,6 +33,11 @@ Get-Help about_Remote_Requirements -ShowWindow
 Get-Command -ParameterName ComputerName -Module microsoft.powershell.* | Measure-Object
 
 Get-Help CimSession -Category HelpFile -ShowWindow
+Get-Command -ParameterName CimSession
+
+    # PowerShell 7 tries to remove that parameter.
+Get-Command -ParameterName ComputerName
+Get-Command -ParameterName Server
 
 #endregion
 
@@ -44,6 +49,9 @@ Get-Help CimSession -Category HelpFile -ShowWindow
     # Service WinRM must work to get access to WSMan drive
 Get-Service WinRM
 Get-Item WSMan:\localhost\Client\TrustedHosts
+
+    #Requires -RunAsAdministrator
+Set-PSSessionConfiguration microsoft.powerShell –ShowSecurityDescriptorUI
 
 Get-LocalGroup 'Remote Management Users'
 Get-LocalGroup 'Remote Management Users' | Get-LocalGroupMember
@@ -69,6 +77,8 @@ Get-Help Enter-PSSession -ShowWindow
 Enter-PSSession -ComputerName Lon-DC1
 exit
 
+Get-Help Enter-PSSession -Parameter Credential
+
 #endregion
 
 #region Using remoting: one-to-many
@@ -77,14 +87,20 @@ Get-Help Invoke-Command -ShowWindow
 
 Invoke-Command -ComputerName Lon-DC1 -ScriptBlock { whoami.exe }
 
+Get-Help Invoke-Command -Parameter Credential
+
 #endregion
 
 #region Remoting output vs. local output
 
     # remote command output
 Get-Help about_Remote_Output -ShowWindow
+
+# https://docs.microsoft.com/powershell/scripting/learn/remoting/powershell-remoting-faq#is-the-output-of-remote-commands-different-from-local-output-
+
 Invoke-Command -ComputerName Lon-DC1 -ScriptBlock { 1..3 | start notepad.exe }
 Invoke-Command -ComputerName Lon-DC1 -ScriptBlock { Get-Process notepad } | Get-Member
+
 Get-Process | Get-Member
 
 #endregion
@@ -96,10 +112,10 @@ Get-Process | Get-Member
 
 #region Common remoting options
 
-Get-Command -ParameterName Credential -module microsoft.powershell.core
-Get-Command -ParameterName Port -module microsoft.powershell.core
-Get-Command -ParameterName UseSSL -module microsoft.powershell.core
-Get-Command -ParameterName Configurationname -module microsoft.powershell.core
+Get-Command -ParameterName Credential -Module microsoft.powershell.core
+Get-Command -ParameterName Port -Module microsoft.powershell.core
+Get-Command -ParameterName UseSSL -Module microsoft.powershell.core
+Get-Command -ParameterName ConfigurationName -Module microsoft.powershell.core
 
 Get-Help New-PSSession -Parameter SessionOption
 Get-Help New-PSSessionOption -ShowWindow
@@ -109,19 +125,23 @@ Get-Help New-PSSessionOption -ShowWindow
 #region Sending parameters to remote computers
 
 Get-Help Remote_Variables -ShowWindow
-# https://docs.microsoft.com/powershell/module/microsoft.powershell.core/about/about_scopes#the-using-scope-modifier
 
 $ServiceName = 'Bits'
     #Requires -Version 3
 Invoke-Command -ComputerName Lon-DC1 -ScriptBlock { get-service $using:ServiceName }
     #Requires -Version 2
-Invoke-Command -ComputerName Lon-DC1 -ScriptBlock { param ($sn) get-service $sn } -ArgumentList $ServiceName
+Invoke-Command -ComputerName Lon-DC1 -ScriptBlock {
+    param ($sn)
+    Get-Service $sn
+} -ArgumentList $ServiceName
 
 #endregion
 
 #region Windows PowerShell scopes
 
 Get-Help Scopes -ShowWindow
+
+# https://docs.microsoft.com/powershell/module/microsoft.powershell.core/about/about_scopes#the-using-scope-modifier
 
 #endregion
 
@@ -176,6 +196,14 @@ Get-PSSession | Invoke-Command -ScriptBlock { $env:COMPUTERNAME }
 
 Get-Help Disconnected -ShowWindow
 Get-Command -noun PSSession -Verb *Connect
+
+$DcName = 'lon-dc1'
+$dc = New-PSSession -ComputerName $DcName
+Disconnect-PSSession -Session $dc
+Get-PSSession -ComputerName $DcName
+Get-PSSession -ComputerName $DcName | Connect-PSSession
+Get-PSSession
+
 
 #endregion
 
