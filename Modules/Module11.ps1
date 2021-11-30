@@ -39,7 +39,7 @@ Get-WmiObject Win32_Processor -AsJob
 
 Get-Help Remote_Jobs -ShowWindow
 
-    # workflows are remove in PowerShell 7
+    # workflows are removed in PowerShell 7
     #Requires -Version 3
 workflow getinfo { Get-CimInstance Win32_Processor }
 
@@ -92,8 +92,9 @@ $RootFolder.GetFolder('\meelis').GetTasks(1)
     # Windows 8/Server 2012 or newer
 Get-Command -Module ScheduledTasks
 # https://docs.microsoft.com/powershell/module/scheduledtasks
+# https://docs.microsoft.com/powershell/module/scheduledtasks/?view=winserver2012-ps
 
-help Get-ScheduledTask -ShowWindow
+Get-Help Get-ScheduledTask -ShowWindow
 
 Get-ScheduledTask | Measure-Object
 Get-ScheduledTask -TaskPath \Meelis\
@@ -109,6 +110,8 @@ Get-Help Register-ScheduledTask -ShowWindow
 
 Get-Help about_Scheduled_Jobs -ShowWindow
 # https://docs.microsoft.com/powershell/module/psscheduledjob/about/about_scheduled_jobs
+
+# https://docs.microsoft.com/previous-versions/powershell/module/psscheduledjob/?view=powershell-3.0
 
     #Requires -Version 3
     # this module is removed from PowerShell 7
@@ -140,7 +143,7 @@ $trigger = New-ScheduledTaskTrigger -Weekly -DaysOfWeek Monday, Thursday -At '15
 Get-Help Register-ScheduledTask -ShowWindow
 # https://docs.microsoft.com/powershell/module/scheduledtasks/register-scheduledtask
 
-$Action = New-ScheduledTaskAction -Execute 'PowerShell.exe' -Argument '-Noninteractive -c dir'
+$Action = New-ScheduledTaskAction -Execute 'PowerShell.exe' -Argument '-Noninteractive -command c:\myscript.ps1'
 Register-ScheduledTask -TaskName 'SoftwareScan' -Action $Action # -Trigger $trigger
 
 $User = 'Adatum\Administrator'
