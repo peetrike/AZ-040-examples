@@ -1,4 +1,4 @@
-<#
+﻿<#
     .SYNOPSIS
         Module 03 samples
     .DESCRIPTION
@@ -86,6 +86,8 @@ Get-ChildItem |
     Sort-Object -Property @{ Expression = { $_.LastWriteTime - $_.CreationTime }; Descending = $false } |
     Format-Table Name, CreationTime, LastWriteTime
 
+Get-ChildItem | Sort-Object -Property Name -Culture en-us
+
     # the following discovers sort order for alphabet
 Get-Culture
 Get-UICulture
@@ -167,10 +169,43 @@ Get-CimInstance Win32_LogicalDisk |
     Add-Member @MemberProps -PassThru |
     Select-Object DeviceID, Size*
 
-#endregion
+$SizeGB = @{ Name = 'Size (GB)'; Expression = { '{0:n2}' -f ($_.Size / 1GB) } }
+Get-CimInstance Win32_LogicalDisk | Select-Object -Property DeviceID, $SizeGB | Get-Member
 
 #endregion
 
+#endregion
+
+#region Lab A
+
+#region Task 1
+# Display the current day of the year
+Get-Command -Noun date
+Get-Date
+Get-Date | Get-Member -MemberType Properties
+
+Get-Date | Select-Object -Property DayOfYear
+Get-Date | Select-Object -ExpandProperty DayOfYear
+(Get-Date).DayOfYear
+
+#endregion
+
+#region Task 2
+# Display information about installed hotfixes
+Get-Help hotfix
+Get-Command -Noun Hotfix
+# . . .
+
+#endregion
+
+#region Task 3
+# Display a list of available scopes from the DHCP server
+Get-Module *dhcp* -ListAvailable
+Get-Command -Noun *scope* -Module DhcpServer
+# . . .
+#endregion
+
+#endregion
 
 #region Lesson 3: Filtering objects out of the pipeline
 
@@ -180,7 +215,7 @@ Get-Help Comparison -Category HelpFile -ShowWindow
 
 'tere' -eq 'Tere'       # by default the text comparison is case-insensitive
 'tere' -ceq 'Tere'
-'tere' -like 't*'       # filesystem pattern
+'tere' -like 't*'       # wildcards/filesystem pattern
 'tere' -match 't.*'     # Regular Expression pattern
 
 Get-Help Wildcards -ShowWindow
@@ -230,19 +265,23 @@ Get-Service bits | Get-Member -Name Status
 [enum]::GetValues([System.ServiceProcess.ServiceControllerStatus])
 [System.ServiceProcess.ServiceControllerStatus]'Stopped'
 
+Get-Service p* | Where-Object -Property Status -EQ -Value 'Stopped'
 Get-Service p* | Where-Object Status -eq 'Stopped'
 Get-Service p* | where Status -like 'Run*'
 gsv p* | ? Status -eq 1
 [System.ServiceProcess.ServiceControllerStatus]1
 [System.ServiceProcess.ServiceControllerStatus]::Stopped.value__
 
-Get-ChildItem | where PSIsContainer
+Get-ChildItem | Where-Object PSIsContainer -Property -eq $true
+-Value Get-ChildItem | Where-Object PSIsContainer-EQ -eq $true
+dir | ? PSIsContainer
 
 #endregion
 
 #region Advanced filtering syntax
 
 Get-ChildItem | Where-Object -FilterScript { -not $_.PSIsContainer }
+Get-ChildItem | Where-Object -FilterScript { -not $PSItem.PSIsContainer }
 gci | ? { ! $_.PSIsContainer }
 
 
@@ -308,6 +347,30 @@ Measure-Command {
 
 #endregion
 
+#region Lab B
+
+#region Task 1
+# Display a list of all the users in the Users container of Active Directory
+Get-Help Get-ADUser
+Get-Help Get-ADUser -Parameter SearchBase
+# . . .
+#endregion
+
+#region Task 2
+# Create a report showing the Security event log entries that have the event ID 4624
+Get-Command Get-WinEvent
+Get-Help Get-WinEvent -Parameter FilterHashtable
+# . . .
+#endregion
+
+#region Task 3
+# Display a list of the encryption certificates installed on the computer
+get-childitem Cert:\LocalMachine\my
+Get-Help Certificate_ -Category HelpFile -ShowWindow
+# . . .
+#endregion
+
+#endregion
 
 #region Lesson 4: Enumerating objects in the pipeline
 
@@ -318,14 +381,14 @@ Get-Help Simplified_Syntax -ShowWindow
 Get-Help ForEach-Object -ShowWindow
 Get-Alias -Definition ForEach-Object
 
-dir | ForEach-Object Name | Get-Member
+dir -File | ForEach-Object -MemberName Name | Get-Member
     #the following do the same
 dir *.txt | Select-Object -ExpandProperty Name
     #Requires -Version 3
 (dir *.txt).Name
 
-dir | foreach -MemberName Encrypt -WhatIf
-dir | % Decrypt -WhatIf
+dir -File | foreach Encrypt -WhatIf
+dir -File | % Decrypt -WhatIf
 
 #region Preparation
 'katse', 'kutse' | ForEach-Object { New-Item -ItemType Directory -Name $_ -ErrorAction SilentlyContinue }
@@ -342,6 +405,9 @@ dir | % Name
 
 Get-Service BITS | ForEach-Object { Stop-Service $_ -WhatIf }
 Get-Service BITS | Stop-Service -WhatIf
+
+Get-ChildItem -File |
+    ForEach-Object -Begin { $summa = 0 } -Process { $summa += $_.Length } -End { Write-Output $summa }
 
 #endregion
 
