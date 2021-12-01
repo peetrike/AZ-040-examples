@@ -39,6 +39,8 @@ $profile.AllUsersAllHosts
 
 Get-Help about_Execution_Policies -ShowWindow
 
+# https://docs.microsoft.com/powershell/scripting/learn/remoting/powershell-remoting-faq#where-are-my-profiles-
+
 #endregion
 
 #endregion
@@ -66,8 +68,16 @@ $savedCredential = Import-Clixml -Path credential.xml
 Invoke-Item credential.xml
 
     # PowerShell 7+
-Find-Module Microsoft.PowerShell.SecretManagement
+Find-Module Microsoft.PowerShell.SecretManagement -Repository PSGallery
+Find-Module -Tag SecretManagement -Repository PSGallery
 
+    #Requires -Modules Microsoft.PowerShell.SecretManagement
+Get-SecretInfo -Name test
+$Credential = Get-Secret -Name test
+$Cred2 = Get-Credential -UserName 'domain\test2' -Message 'Enter Credential for saving'
+Set-Secret -Name Temporary -Secret $Cred2
+$secretInfo = Get-SecretInfo -Name Temporary
+Remove-Secret -Name Temporary -Vault $secretInfo.VaultName
 #endregion
 
 #region Array operators
@@ -80,13 +90,15 @@ Find-Module Microsoft.PowerShell.SecretManagement
 1, 2, 3, 4 -contains 1
 2, 3, 4, 5 -contains 1
 
-
-    # this doesn't work
 Get-Process notepad | Stop-Process
 Start-Process notepad
 $p = Get-Process notepad
+    # this doesn't work
 $p -in (Get-Process notepad)
 (Get-Process) -contains $p
+    # this works
+$p.Id -in (Get-Process notepad).Id
+$p.Id -in (Get-Process notepad | Select-Object -ExpandProperty Id)
 
 #endregion
 
@@ -131,6 +143,9 @@ $Matches.user
 'Money: {0:c}' -f 1.24
 'Percent {0:p}' -f 0.36
 'Hex: {0:x}' -f 349
+'Hex: {0:X}' -f 349
+'Hex: {0:X4}' -f 349
+'Hex: 0x{0:X4}' -f 349
 
 'Custom: {0:00.00}' -f 3.2
 'Custom: {0:##.00}' -f 3.2
@@ -206,6 +221,21 @@ Find-Module PSFramework -Repository PSGallery
 # https://psframework.org/documentation/documents/psframework/logging.html
 Get-Help Write-PSFMessage -ShowWindow
 
+#region Preparation
+$paramSetPSFLoggingProvider = @{
+    Name         = 'logfile'
+    InstanceName = 'Course 10961'
+    FilePath     = Join-Path $pwd 'PsfMessage.log'
+    Enabled      = $true
+}
+Set-PSFLoggingProvider @paramSetPSFLoggingProvider
+#endregion
+
+Write-PSFMessage 'Teade logisse'
+Write-PSFMessage 'Teade ekraanile' -Level Host
+Get-PSFMessage
+
+code -r Write-Log.ps1
 #endregion
 
 #endregion
