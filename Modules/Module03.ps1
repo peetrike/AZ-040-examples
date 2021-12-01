@@ -505,4 +505,13 @@ Get-ChildItem | Select-Object * | Out-GridView
 
 #endregion
 
+#region Extra: More export options
+
+Find-Module ImportExcel -Repository PSGallery
+Find-Module ImportExcel -Repository PSGallery | Select ProjectUri
+
+# https://github.com/dfinke/ImportExcel/tree/master/Examples
+
+#endregion
+
 #endregion
