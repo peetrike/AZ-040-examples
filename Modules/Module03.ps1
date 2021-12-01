@@ -191,7 +191,7 @@ Get-Help about_regular -ShowWindow
 '13' -gt 3
 13 -gt '3'
 
-    # arrays in comparison
+    # arrays in comparison, look also: Module 12
 2 -in 1, 2, 3, 4
 1, 2, 3, 4 -contains 3
 
