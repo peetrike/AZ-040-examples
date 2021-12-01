@@ -36,6 +36,7 @@ ${minu oluline info} = 3
 ${minu oluline info}
 $minu oluline info
 
+$täpi = 'tere'
     # different naming styles:
 $MinuOlulineInfo = 34       # Pascal Case
 $minuOlulineInfo = 22       # Camel Case
@@ -57,7 +58,9 @@ Set-Variable -Name uus -Value 'tere'
 
 Get-Help Assignment -Category HelpFile -ShowWindow
 $kasutaja = Get-ADUser meelis
-$MinuMuutuja += 10
+$MinuMuutuja += 10      # $MinuMuutuja = $MinuMuutuja + 10
+
+Set-Variable -Name täpi -Value (get-content tere.txt)
 
 #endregion
 
