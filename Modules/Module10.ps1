@@ -68,6 +68,8 @@ Get-Help Set-WSManQuickConfig
 
 # https://devops-collective-inc.gitbook.io/secrets-of-powershell-remoting/configuring-remoting-via-gpo
 
+# https://docs.microsoft.com/powershell/scripting/learn/remoting/powershell-remoting-faq#can-i-test-remoting-on-a-single-computer-not-in-a-domain-
+
 #endregion
 
 #region Using remoting: one-to-one
