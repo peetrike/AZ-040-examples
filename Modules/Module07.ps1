@@ -59,6 +59,7 @@ Get-Help Assignment -Category HelpFile -ShowWindow
 $kasutaja = Get-ADUser meelis
 $MinuMuutuja += 10
 
+Get-Help numeric -Category HelpFile -ShowWindow
 #endregion
 
 #region Variable types
