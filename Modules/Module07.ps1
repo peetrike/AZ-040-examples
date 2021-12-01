@@ -62,6 +62,7 @@ $MinuMuutuja += 10      # $MinuMuutuja = $MinuMuutuja + 10
 
 Set-Variable -Name täpi -Value (get-content tere.txt)
 
+Get-Help numeric -Category HelpFile -ShowWindow
 #endregion
 
 #region Variable types
