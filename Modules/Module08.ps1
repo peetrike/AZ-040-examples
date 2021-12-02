@@ -28,11 +28,18 @@ Get-History -Count 2 |
     Set-Content -Path käsud.txt -Encoding utf8
 
 Start-Process cmd.exe -ArgumentList '/k powershell < käsud.txt'
+
+    # in PowerShell
 Invoke-Expression (gc .\käsud.txt -Raw)
 Invoke-Item .\käsud.txt
-
 Get-Content .\käsud.txt | powershell -command -
 pwsh -c (gc .\käsud.txt -Raw)
+
+    # in cmd.exe
+type .\käsud.txt | powershell -command -
+pwsh -nologo -noprofile < käsud.txt
+    # in bash/ksh/sh
+cat käsud.txt | pwsh -c -
 
 #endregion
 
@@ -82,7 +89,7 @@ if ($PSVersionTable.PSVersion.Major -lt 6) {
 }
 
 Find-Script Send-PasswordNotification -Repository PSGallery
-Find-Module UserProfile -Repository PSGallery
+Find-Module UserProfile -Repository PSGallery | Update-Module
 Find-Module -Command get-user -Repository PSGallery
 
 Get-InstalledScript
@@ -101,7 +108,7 @@ Copy-Item -Path käsud.txt -Destination käsud.ps1
 powershell.exe -file käsud.ps1
 pwsh -f käsud.ps1
 
-powershell.exe -command .\käsud.ps1
+powershell.exe-command .\käsud.ps1
 .\käsud.ps1
 .\käsud
 käsud
@@ -123,6 +130,7 @@ Get-ExecutionPolicy -List
 Set-ExecutionPolicy Restricted -Scope Process       #DevSkim: ignore DS113853
 .\käsud.ps1
 powershell.exe -ExecutionPolicy RemoteSigned -file käsud.ps1
+pwsh.exe -NoProfile -ExecutionPolicy AllSigned -c Get-ExecutionPolicy -list
 Set-ExecutionPolicy RemoteSigned -Scope Process     #DevSkim: ignore DS113853
 
 #endregion
@@ -194,6 +202,14 @@ else { 'something else' }
 if (Get-ChildItem -File) { 'there are some files' }
 else { New-Item uus.txt }
 
+if (-not (Test-Path -Path käsud.txt -PathType Leaf )) {
+    new-item -Path käsud.txt
+}
+if (!(Test-Path -Path käsud.txt)) {
+    new-item -Path käsud.txt -ItemType File
+}
+
+Test-Path hklm:/software
 #endregion
 
 #region Understanding the Switch construct
@@ -299,7 +315,7 @@ while ($true) {
     Start-Sleep -Seconds 2
 }
 
-$i = 1
+$i = 3
 while ($i--) {
     'Processing...'
     Start-Sleep -Seconds 2
@@ -359,7 +375,7 @@ switch -Regex ($ip) {
 Get-Command -Noun Content
 Get-Help Get-Content -ShowWindow
 
-Get-Content -Path .\* -Include *.txt, *.log
+Get-Content -Path .\* -Include *.txt, *.log -Exclude käsud*
 
 Get-Help Get-Content -Parameter TotalCount
 Get-Content Module08.ps1 -Head 7
@@ -457,5 +473,7 @@ Get-Help Import-PowerShellDataFile -ShowWindow
     #Requires -Version 5
 $myConfig = Import-PowerShellDataFile -Path config33.psd1
 $myConfig
+
+# https://peterwawa.wordpress.com/2020/07/03/skriptid-ja-haalestus/
 
 #endregion
