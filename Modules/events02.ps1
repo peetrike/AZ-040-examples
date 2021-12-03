@@ -6,7 +6,7 @@ $LogName = 'Application'
 #endregion
 
 $EventParams = @{
-    MaxEvents       = 10
+    MaxEvents       = 1
     FilterHashtable = @{
         LogName   = $LogName
         ID        = $EventID

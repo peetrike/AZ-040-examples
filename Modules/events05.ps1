@@ -1,6 +1,6 @@
 ﻿<#
     .SYNOPSIS
-        see skript otsib sündmuste logist asju
+        otsib sündmuste logist asju
     .DESCRIPTION
         pikem kirjeldus sellest, mida skript teeb ...
     .EXAMPLE
@@ -9,6 +9,10 @@
         Leiab 3 päeva vanad sündmused
     .LINK
         Get-WinEvent
+    .LINK
+        http://www.ee
+    .NOTES
+        Author: Meelis Nigols
 #>
 param (
         [parameter(
@@ -20,6 +24,7 @@ param (
         [ValidatePattern('Lon-*')]
         [Alias('CN')]
         [string]
+        # arvuti nimi, kust logi vaadata
     $ComputerName
 )
 

@@ -74,7 +74,7 @@ Get-ChildItem |
     Remove-Item -WhatIf
 
 Get-ADUser -Filter { City -like 'Tallinn' } |
-    Out-GridView -Title 'Choose the user to add' -OutputMode Single |
+    Out-GridView -Title 'Choose the users to add' -OutputMode Multiple |
     Add-ADPrincipalGroupMembership -MemberOf 'IT' -WhatIf
 
 #endregion
@@ -87,7 +87,7 @@ Find-Module burnttoast -Repository PSGallery
 
 #Requires -Version 6
 
-Find-Module Microsoft.PowerShell.ConsoleGuiTools
+Find-Module Microsoft.PowerShell.ConsoleGuiTools -Repository PSGallery
 
 # https://blog.ironmansoftware.com/tui-powershell
 
@@ -141,6 +141,7 @@ code -r events05.ps1
 Get-Help .\events05.ps1
 Get-Help .\events05.ps1 -Examples
 Get-Help .\events05.ps1 -Parameter aeg
+Get-Help .\events05.ps1 -Online
 
 #endregion
 
@@ -175,6 +176,7 @@ Get-Help CmdletBinding -Category HelpFile -ShowWindow
 Get-Help _CommonParameters -Category HelpFile -ShowWindow
 Get-Help Preference -Category HelpFile -ShowWindow
 
+get-help redirect -ShowWindow
 Get-Help Write-Host -ShowWindow
 
 write-error "suur viga"
@@ -190,6 +192,10 @@ Write-Verbose -Message ('Muutuja väärtus: {0}, toimetan edasi' -f $asi) -Verbo
 
 Write-Debug -Message 'Arendajale mõeldud teade' -Debug
 Write-Debug -Message 'Arendajale mõeldud teade' -Debug 5>> debuglogi.txt
+
+#requires -Version 5
+Write-Information -MessageData 'Teade' -InformationAction Continue
+Write-Information -MessageData 'Teade' -InformationAction Continue 6>> infotekst.txt
 
 code -r events06.ps1
 
@@ -328,6 +334,13 @@ katse -minuasi $minuasi -Verbose
 $minuasi = katse -minuasi $minuasi -Verbose
 $minuasi
 
+$global:minuasi
+$script:minuasi
+$local:minuasi
+
+get-help about_return -ShowWindow
+
+
 #endregion
 
 #region Creating a module
@@ -342,9 +355,9 @@ Get-Command -Module events07
 Get-Help events07
 Remove-Module events07
 
+    # this is not module, it imports function to global scope
 Import-Module .\events07.ps1
 Get-Module events07 | Format-List
-Remove-Module events07
 
 Import-Module .\events07
 Get-Module events07 | Format-List
@@ -358,6 +371,8 @@ New-Module -Name SayHello -ScriptBlock {
 Get-Module SayHello
 get-hello
 Remove-Module SayHello
+
+Get-Help Export-ModuleMember -ShowWindow
 
 #endregion
 
