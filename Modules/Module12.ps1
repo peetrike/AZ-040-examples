@@ -31,6 +31,10 @@ $profile | Get-Member -MemberType NoteProperty
 $profile.CurrentUserCurrentHost
 $profile.AllUsersAllHosts
 
+    # this doesn't load profile scirpts
+powershell.exe -noprofile
+pwsh.exe -NoProfile
+
 #endregion
 
 #region Profile script security concerns
@@ -178,7 +182,7 @@ $acl.Access
 
 Get-Help Set-Acl -ShowWindow
 
-Find-Module NTFSSecurity
+Find-Module NTFSSecurity -repository psgallery
 
 Get-NTFSAccess -Path module12.ps1
 Get-NTFSAudit -Path module12.ps1
