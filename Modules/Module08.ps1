@@ -304,6 +304,12 @@ while ($i--) {
     'Processing...'
     Start-Sleep -Seconds 2
 }
+
+Start-Process notepad
+while (get-process notepad -ErrorAction SilentlyContinue) {
+    write-verbose -Message 'Notepad töötab'
+    Start-Sleep -Seconds 2
+}
 #endregion
 
 #region Understanding Break and Continue
