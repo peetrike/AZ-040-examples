@@ -6,7 +6,7 @@
         Module 01 - Getting started with Windows PowerShell
     .NOTES
         Contact: Meelis Nigols
-        e-mai/skype: meelisn@outlook.com
+        e-mail/skype: meelisn@outlook.com
     .LINK
         https://github.com/peetrike/10961-examples
     .LINK
