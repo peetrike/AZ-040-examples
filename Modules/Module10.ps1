@@ -51,7 +51,7 @@ Get-Service WinRM
 Get-Item WSMan:\localhost\Client\TrustedHosts
 
     #Requires -RunAsAdministrator
-Set-PSSessionConfiguration microsoft.powerShell –ShowSecurityDescriptorUI
+Set-PSSessionConfiguration -Name microsoft.powerShell -ShowSecurityDescriptorUI
 
 Get-LocalGroup 'Remote Management Users'
 Get-LocalGroup 'Remote Management Users' | Get-LocalGroupMember
@@ -88,8 +88,12 @@ Get-Help Enter-PSSession -Parameter Credential
 Get-Help Invoke-Command -ShowWindow
 
 Invoke-Command -ComputerName Lon-DC1 -ScriptBlock { whoami.exe }
+Invoke-Command -ComputerName Lon-DC1, lon-cl1 -ScriptBlock { whoami.exe }
+Invoke-Command -ComputerName (get-content servers.txt) -ScriptBlock { whoami.exe }
 
 Get-Help Invoke-Command -Parameter Credential
+
+
 
 #endregion
 
@@ -102,6 +106,11 @@ Get-Help about_Remote_Output -ShowWindow
 
 Invoke-Command -ComputerName Lon-DC1 -ScriptBlock { 1..3 | start notepad.exe }
 Invoke-Command -ComputerName Lon-DC1 -ScriptBlock { Get-Process notepad } | Get-Member
+
+Invoke-Command -ComputerName Lon-DC1 -ScriptBlock {
+    dir c:\ | select-object -Property name, last*
+} |
+    Get-Member
 
 Get-Process | Get-Member
 
@@ -118,6 +127,7 @@ Get-Command -ParameterName Credential -Module microsoft.powershell.core
 Get-Command -ParameterName Port -Module microsoft.powershell.core
 Get-Command -ParameterName UseSSL -Module microsoft.powershell.core
 Get-Command -ParameterName ConfigurationName -Module microsoft.powershell.core
+get-command Get-PSSessionConfiguration
 
 Get-Help New-PSSession -Parameter SessionOption
 Get-Help New-PSSessionOption -ShowWindow
@@ -192,6 +202,8 @@ Get-PSSession -ComputerName Lon-DC1 | Enter-PSSession
 
 Get-PSSession | Invoke-Command -ScriptBlock { $env:COMPUTERNAME }
 
+Invoke-Command -Session $dc -ScriptBlock { whoami.exe }
+
 #endregion
 
 #region Disconnected sessions
@@ -205,7 +217,6 @@ Disconnect-PSSession -Session $dc
 Get-PSSession -ComputerName $DcName
 Get-PSSession -ComputerName $DcName | Connect-PSSession
 Get-PSSession
-
 
 #endregion
 
