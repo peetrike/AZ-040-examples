@@ -86,6 +86,8 @@ Get-ChildItem |
     Sort-Object -Property @{ Expression = { $_.LastWriteTime - $_.CreationTime }; Descending = $false } |
     Format-Table Name, CreationTime, LastWriteTime
 
+Get-ChildItem | Sort-Object -Property Name -Culture en-us
+
     # the following discovers sort order for alphabet
 Get-Culture
 Get-UICulture
@@ -157,6 +159,9 @@ Get-CimInstance Win32_LogicalDisk | Select-Object -Property DeviceID, $SizeGB
 $SizeGB.Format = 'N2'
 Get-CimInstance Win32_LogicalDisk | Format-Table -Property DeviceID, VolumeName, $SizeGB
 
+$SizeGB = @{ Name = 'Size (GB)'; Expression = { '{0:n2}' -f ($_.Size / 1GB) } }
+Get-CimInstance Win32_LogicalDisk | Select-Object -Property DeviceID, $SizeGB | Get-Member
+
 Get-Help Add-Member -ShowWindow
 $MemberProps = @{
     MemberType = 'ScriptProperty'
@@ -180,7 +185,7 @@ Get-Help Comparison -Category HelpFile -ShowWindow
 
 'tere' -eq 'Tere'       # by default the text comparison is case-insensitive
 'tere' -ceq 'Tere'
-'tere' -like 't*'       # filesystem pattern
+'tere' -like 't*'       # wildcards/filesystem pattern
 'tere' -match 't.*'     # Regular Expression pattern
 
 Get-Help Wildcards -ShowWindow
@@ -230,19 +235,23 @@ Get-Service bits | Get-Member -Name Status
 [enum]::GetValues([System.ServiceProcess.ServiceControllerStatus])
 [System.ServiceProcess.ServiceControllerStatus]'Stopped'
 
+Get-Service p* | Where-Object -Property Status -EQ -Value 'Stopped'
 Get-Service p* | Where-Object Status -eq 'Stopped'
 Get-Service p* | where Status -like 'Run*'
 gsv p* | ? Status -eq 1
 [System.ServiceProcess.ServiceControllerStatus]1
 [System.ServiceProcess.ServiceControllerStatus]::Stopped.value__
 
-Get-ChildItem | where PSIsContainer
+Get-ChildItem | Where-Object -Property PSIsContainer -EQ $true
+Get-ChildItem | where PSIsContainer -EQ $true
+dir | ? PSIsContainer
 
 #endregion
 
 #region Advanced filtering syntax
 
 Get-ChildItem | Where-Object -FilterScript { -not $_.PSIsContainer }
+Get-ChildItem | where { -not $PSItem.PSIsContainer }
 gci | ? { ! $_.PSIsContainer }
 
 
@@ -318,14 +327,14 @@ Get-Help Simplified_Syntax -ShowWindow
 Get-Help ForEach-Object -ShowWindow
 Get-Alias -Definition ForEach-Object
 
-dir | ForEach-Object Name | Get-Member
+dir -File | ForEach-Object -MemberName Name | Get-Member
     #the following do the same
 dir *.txt | Select-Object -ExpandProperty Name
     #Requires -Version 3
 (dir *.txt).Name
 
-dir | foreach -MemberName Encrypt -WhatIf
-dir | % Decrypt -WhatIf
+dir -File | foreach Encrypt -WhatIf
+dir -File | % Decrypt -WhatIf
 
 #region Preparation
 'katse', 'kutse' | ForEach-Object { New-Item -ItemType Directory -Name $_ -ErrorAction SilentlyContinue }
@@ -342,6 +351,10 @@ dir | % Name
 
 Get-Service BITS | ForEach-Object { Stop-Service $_ -WhatIf }
 Get-Service BITS | Stop-Service -WhatIf
+
+Get-ChildItem -File |
+    ForEach-Object -Begin { $summa = 0 } -Process { $summa += $_.Length } -End { Write-Output $summa }
+Get-ChildItem -File | Measure-Object -Sum
 
 #endregion
 
@@ -360,8 +373,8 @@ Get-Help Out-File -Parameter NoClobber
 Get-Help Redirect -Category HelpFile -ShowWindow
 
 Get-ChildItem | Out-File -FilePath failid.txt -Encoding utf8
-dir > kaustad.txt
-dir >> kaustad.txt
+dir > kaustad.txt       # Out-File
+dir >> kaustad.txt      # Out-File -Append
 
 Get-Help Set-Content -ShowWindow
 Get-Help Add-Content -ShowWindow
@@ -402,6 +415,10 @@ Get-ChildItem | Export-Clixml -Path failid.xml
 
 Get-Help ConvertTo-Json -ShowWindow
 Get-ChildItem | Select-Object Name, Length, LastWriteTime | ConvertTo-Json
+Get-ChildItem |
+    Select-Object Name, Length, LastWriteTime |
+    ConvertTo-Json |
+    Out-File -FilePath failid.json -Encoding utf8
 
 Get-Help ConvertTo-Json -Parameter Depth
 
