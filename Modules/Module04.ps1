@@ -53,6 +53,7 @@ Get-ParameterInfo -Name Sort-Object | Where-Object PipeLine -NotLike 'None'
 Get-Help Sort-Object -Parameter InputObject
 
 Get-Command -ParameterName InputObject | Measure-Object
+Get-Help * -Parameter InputObject | Measure-Object
 
 #endregion
 
@@ -89,7 +90,7 @@ Get-Help Test-Connection -Parameter *
 
     # but this does
 Get-ADComputer -Filter * |
-    Select-Object -Property @{n = 'ComputerName'; e= { $_.DnsHostName } } |
+    Select-Object -Property @{n = 'ComputerName'; e = { $_.DnsHostName } } |
     Test-Connection -Count 1
 Get-ADComputer -Filter * | Test-Connection -ComputerName { $_.DnsHostName } -Count 1
 
@@ -114,6 +115,11 @@ Get-Command -ParameterName ComputerName | Measure-Object
 #region Lesson 2: Advanced techniques for passing pipeline data
 
 #region Using manual parameters to override the pipeline
+
+    # this doesn't work
+'bits', 'winrm' | Start-Service -Name b* -WhatIf
+New-Object PSObject -Property @{ ComputerName = 'Lon-DC1' } |
+    Test-Connection -ComputerName 'lon-cl1'
 
 Get-ChildItem | Select-Object -First 1 | Stop-Service
 Get-Help Stop-Service -Parameter Name
