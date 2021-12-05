@@ -32,6 +32,13 @@ Get-Command -Noun Variable
 
 # https://docs.microsoft.com/powershell/module/microsoft.powershell.core/about/about_variables#variable-names-that-include-special-characters
 
+    # variable names are not case sensitive, not even on Linux:
+$var = 'variable'
+$VAR
+
+$täpi = 'tere'
+${My⏱} = 3
+
 ${minu oluline info} = 3
 ${minu oluline info}
 $minu oluline info
@@ -43,10 +50,6 @@ $minu_oluline_info = 43     # Snake Case
 
 # https://poshcode.gitbook.io/powershell-practice-and-style/style-guide/code-layout-and-formatting#capitalization-conventions
 # https://docs.microsoft.com/dotnet/standard/design-guidelines/capitalization-conventions
-
-    # variable names are not case sensitive, not even on Linux:
-$var = 'variable'
-$VAR
 
 #endregion
 
