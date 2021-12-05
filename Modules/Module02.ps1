@@ -57,9 +57,10 @@ $userParams.SamAccountName = $userParams.GivenName.Substring(0, 4) +
     $userParams.SurName.Substring(0, 2)
 New-ADUser @userParams
 
-$userParams | Export-Csv -UseCulture -Encoding Default -Path $PWD\users.csv
+New-Object -TypeName PSObject -Property $userParams |
+    Export-Csv -UseCulture -Encoding utf8 -Path $PWD\users.csv
 
-Import-Csv -UseCulture -Encoding Default -Path .\users.csv |
+Import-Csv -UseCulture -Encoding utf8 -Path .\users.csv |
     New-ADUser -Enabled $true -AccountPassword (
         Read-Host -Prompt 'Enter password for user' -AsSecureString
     )
@@ -138,6 +139,8 @@ Get-NetIPAddress -AddressFamily IPv4
 Get-NetIPConfiguration -InterfaceAlias 'Wi-fi'
 Get-NetIPInterface -Dhcp Enabled -ConnectionState Connected
 
+Get-Alias -Definition Get-NetIPConfiguration
+
 #endregion
 
 #region Managing routing
@@ -152,6 +155,7 @@ Get-NetRoute -AddressFamily IPv4  -DestinationPrefix '0.0.0.0/0'
 
 Get-Command -Module DnsClient
 
+Get-Help Resolve-DnsName -ShowWindow
 Resolve-DnsName -Name www.ee
 Resolve-DnsName -Name ttu.ee -Type mx
 
@@ -209,6 +213,9 @@ Get-Help Invoke-GPUpdate
 #endregion
 
 #region Server Manager cmdlets
+
+Get-Command -Module ServerManager
+
     #Requires -Modules ServerManager
 Get-WindowsFeature
 Install-WindowsFeature -Name Telnet-Client -ComputerName myserver
