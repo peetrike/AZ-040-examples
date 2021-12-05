@@ -28,6 +28,8 @@ Get-PSProvider
 Get-Help Function_ -Category HelpFile -ShowWindow
 Get-Help Variable_ -Category HelpFile -ShowWindow
 
+Get-Help about_*_provider
+
 #endregion
 
 
@@ -74,6 +76,8 @@ Get-ChildItem -Directory
 Get-ChildItem -File
 
 New-Item -ItemType Directory -Name uus
+Get-ChildItem -Path . -Filter uus
+
 New-Item -ItemType File -Name minufail.txt -Path uus
 
     #Requires -Version 5.0
@@ -121,6 +125,7 @@ Get-Command -Module pki
 Set-Location Cert:\LocalMachine\My
     #Requires -Version 3.0
 Get-ChildItem -ExpiringInDays 60 | Test-Certificate -User
+Get-ChildItem -Path Cert:\LocalMachine\my | Select-Object not*, haspr*
 # https://docs.microsoft.com/previous-versions/powershell/module/microsoft.powershell.security/about/about_certificate_provider?view=powershell-3.0#dynamic-parameters
 
 Get-ChildItem -SSLServerAuthentication
