@@ -104,7 +104,7 @@ Get-MSIProductInfo
 
     # Microsoft Store apps
     #Requires -RunAsAdministrator
-Get-CimInstance -ClassName Win32_InstalledStoreProgram
+Get-CimClass -ClassName Win32_InstalledStoreProgram
 #endregion
 
 #region Querying instances
@@ -133,6 +133,22 @@ Get-CimInstance Win32_ComputerSystem
 Get-CimInstance Win32_OperatingSystem
 # https://peterwawa.wordpress.com/2014/04/11/mis-mlu-mul-masinasserveris-on/
 
+#region version-neutral approach
+
+$queryParam = @{
+    Filter       = 'DriveType=3'
+    ComputerName = '.'
+}
+if ($command = Get-Command Get-CimInstance -ErrorAction SilentlyContinue) {
+    $queryParam.ClassName = 'Win32_LogicalDisk'
+} else {
+    $command = Get-Command Get-WmiObject
+    $queryParam.Class = 'Win32_LogicalDisk'
+}
+& $command @queryParam
+
+#endregion
+
 #endregion
 
 #region Connecting to remote computers
@@ -140,7 +156,8 @@ Get-CimInstance Win32_OperatingSystem
 Get-Help Get-WmiObject -Parameter ComputerName
 Get-Help Get-CimInstance -Parameter ComputerName
 
-Get-WmiObject Win32_OperatingSystem -ComputerName 'LON-DC1'
+Get-WmiObject -Class Win32_OperatingSystem -ComputerName 'LON-DC1'
+Get-CimInstance -ClassName Win32_OperatingSystem -ComputerName 'LON-DC1'
 
 Get-NetFirewallRule -Name wmi*-in-*
 Get-NetFirewallRule -Name winrm-http*
