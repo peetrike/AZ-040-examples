@@ -60,7 +60,9 @@ Set-Variable -Name uus -Value 'tere'
 
 Get-Help Assignment -Category HelpFile -ShowWindow
 $kasutaja = Get-ADUser meelis
-$MinuMuutuja += 10
+$MinuMuutuja += 10              # $MinuMuutuja = $MinuMuutuja + 10
+
+Set-Variable -Name täpi -Value (Get-Content tere.txt)
 
 Get-Help numeric -Category HelpFile -ShowWindow
 #endregion
@@ -116,7 +118,12 @@ $tekst.ToUpper()
 $tekst.Length
 
 $PWD.ToString().Contains('\')
-$PWD.ToString().Split('\')
+$PWD.Path.Split('\')
+
+$env:Path.split(';')
+    # for multiplatform
+$env:PATH.split([io.path]::PathSeparator)
+$env:PATH -split [io.path]::PathSeparator
 
 #endregion
 
@@ -152,6 +159,7 @@ Invoke-WithCulture -Culture 'ja-jp' -ScriptBlock { Get-Date $date }
 
 # https://docs.microsoft.com/dotnet/api/system.timespan
 $aeg = New-TimeSpan -days 13
+$aeg | Get-Member
 $täna - $aeg
 $täna.AddDays(-13)
 $täna.Subtract($aeg)
@@ -181,6 +189,9 @@ $dates = @(
     [datetime]'2021.12.31'
 )
 $dates
+
+@(Get-ADUser -filter { City -like 'tallinn' })
+
 #endregion
 
 #region Working with arrays
@@ -188,12 +199,14 @@ $dates
 $arvutid
 $arvutid.Count
 $arvutid[1]
+$arvutid[$arvutid.Count - 1]
 $arvutid[-1]
-$arvutid | Select-Object -First 1 -Skip 1
+$arvutid | Select-Object -Last 1
 
 $arvutid.Add('Lon-DC1')
 $arvutid += 'Lon-DC2'
 $arvutid.Count
+$arvutid | Select-Object -First 2 -Skip 2
 
 $numbrid = @()
 $MaxNumber = 10000
@@ -229,12 +242,17 @@ $computers = [Collections.Generic.List[string]] (Get-Content computers.txt)
 , $computers | Get-Member
 $computers.Add('Lon-DC1')
 $computers.Contains('Lon-DC1')
+$computers[-1]
+
+$computers.RemoveAt
+$computers.Remove
 
 # https://docs.microsoft.com/dotnet/api/system.collections.objectmodel.collection-1
 $computers = [Collections.ObjectModel.Collection[string]] (Get-Content computers.txt)
 , $computers | Get-Member
 $computers.Insert(1, 'Lon-DC1')
 $computers.IndexOf('Lon-DC1')
+$computers[-1]
 
 #endregion
 
@@ -297,8 +315,32 @@ $users.administrator
 $users.tia
 $users.adam
 
+#endregion
+
+#region EXTRA: Splatting
 Get-Help splatting -ShowWindow
 
+New-ADUser -Name 'Meelis' -Surname 'Nigols' -GivenName 'Meelis' -SamAccountName 'meelisn' -StreetAddress 'miski tee 123' -City 'Tallinn'
+New-ADUser -Name 'Meelis'`
+           -Surname 'Nigols'`
+           -GivenName 'Meelis'`
+           #-SamAccountName 'meelisn'`
+           -StreetAddress 'miski tee 123'`
+           -City 'Tallinn'
+
+$users = import-csv kasutajad.csv
+foreach ($u in users) {
+    $CreateProperties = @{
+        GivenName      = $u.Eesnimi
+        #SurName        = $u.perenimi
+        Name           = $u.eesnimi, $u.perenimi -join ' '
+        SamAccountName = $u.eesnimi.substring(0,4)
+    }
+    if ($u.aadress) {
+        $CreateProperties.StreetAddress = $u.aadress
+    }
+    New-ADUser @CreateProperties
+}
 #endregion
 
 #endregion
