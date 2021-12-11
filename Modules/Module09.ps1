@@ -87,7 +87,7 @@ Find-Module burnttoast -Repository PSGallery
 
 #Requires -Version 6
 
-Find-Module Microsoft.PowerShell.ConsoleGuiTools
+Find-Module Microsoft.PowerShell.ConsoleGuiTools -Repository PSGallery
 
 # https://blog.ironmansoftware.com/tui-powershell
 
@@ -141,6 +141,7 @@ code -r events05.ps1
 Get-Help .\events05.ps1
 Get-Help .\events05.ps1 -Examples
 Get-Help .\events05.ps1 -Parameter aeg
+Get-Help .\events05.ps1 -Online
 
 #endregion
 
@@ -175,6 +176,7 @@ Get-Help CmdletBinding -Category HelpFile -ShowWindow
 Get-Help _CommonParameters -Category HelpFile -ShowWindow
 Get-Help Preference -Category HelpFile -ShowWindow
 
+Get-Help redirect -ShowWindow
 Get-Help Write-Host -ShowWindow
 
 write-error "suur viga"
@@ -190,6 +192,11 @@ Write-Verbose -Message ('Muutuja väärtus: {0}, toimetan edasi' -f $asi) -Verbo
 
 Write-Debug -Message 'Arendajale mõeldud teade' -Debug
 Write-Debug -Message 'Arendajale mõeldud teade' -Debug 5>> debuglogi.txt
+
+    #Requires -Version 5
+Write-Information -MessageData 'Teade' -InformationAction Continue
+Write-Information -MessageData 'Teade' -InformationAction Continue 6>> infotekst.txt
+Write-Host 'kah teade' 6>> infotekst.txt
 
 code -r events06.ps1
 
@@ -309,8 +316,13 @@ code -r events07.ps1
 #region Using variable scopes
 
 Get-Help about_Scope -ShowWindow
+Get-Help Get-Variable -Parameter Scope
 
 $minuasi = 'minu asi'
+$minuasi
+$local:minuasi
+$script:minuasi
+$global:minuasi
 
 function katse {
     [CmdletBinding()]
@@ -328,6 +340,8 @@ katse -minuasi $minuasi -Verbose
 $minuasi = katse -minuasi $minuasi -Verbose
 $minuasi
 
+Get-Help about_return -ShowWindow
+
 #endregion
 
 #region Creating a module
@@ -336,15 +350,18 @@ $minuasi
 
 code -r events07.psm1
 
+Get-Help Export-ModuleMember -ShowWindow
+
 Import-Module .\events07.psm1
 events07 -aeg ([datetime]::Now).AddHours(-2)
 Get-Command -Module events07
 Get-Help events07
 Remove-Module events07
 
+    # this is not module, it imports function to global scope
 Import-Module .\events07.ps1
-Get-Module events07 | Format-List
-Remove-Module events07
+Get-Command events07 | Format-List
+Remove-Item -Path function:\events07
 
 Import-Module .\events07
 Get-Module events07 | Format-List
