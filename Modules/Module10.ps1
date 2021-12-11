@@ -51,7 +51,7 @@ Get-Service WinRM
 Get-Item WSMan:\localhost\Client\TrustedHosts
 
     #Requires -RunAsAdministrator
-Set-PSSessionConfiguration microsoft.powerShell –ShowSecurityDescriptorUI
+Set-PSSessionConfiguration -Name microsoft.powerShell -ShowSecurityDescriptorUI
 
 Get-LocalGroup 'Remote Management Users'
 Get-LocalGroup 'Remote Management Users' | Get-LocalGroupMember
@@ -88,6 +88,8 @@ Get-Help Enter-PSSession -Parameter Credential
 Get-Help Invoke-Command -ShowWindow
 
 Invoke-Command -ComputerName Lon-DC1 -ScriptBlock { whoami.exe }
+Invoke-Command -ComputerName Lon-DC1, Lon-CL1 -ScriptBlock { whoami.exe }
+Invoke-Command -ComputerName (get-content servers.txt) -ScriptBlock { whoami.exe }
 
 Get-Help Invoke-Command -Parameter Credential
 
@@ -102,6 +104,10 @@ Get-Help about_Remote_Output -ShowWindow
 
 Invoke-Command -ComputerName Lon-DC1 -ScriptBlock { 1..3 | start notepad.exe }
 Invoke-Command -ComputerName Lon-DC1 -ScriptBlock { Get-Process notepad } | Get-Member
+Invoke-Command -ComputerName Lon-DC1 -ScriptBlock {
+    Get-Process notepad | Select-Object -Property ProcessName, Id, Path
+} |
+    Get-Member
 
 Get-Process | Get-Member
 
@@ -118,6 +124,7 @@ Get-Command -ParameterName Credential -Module microsoft.powershell.core
 Get-Command -ParameterName Port -Module microsoft.powershell.core
 Get-Command -ParameterName UseSSL -Module microsoft.powershell.core
 Get-Command -ParameterName ConfigurationName -Module microsoft.powershell.core
+Get-Command -Noun PSSessionConfiguration
 
 Get-Help New-PSSession -Parameter SessionOption
 Get-Help New-PSSessionOption -ShowWindow
@@ -179,7 +186,7 @@ Get-Help New-PSSession -ShowWindow
 
 New-PSSession -ComputerName Lon-Svr1
 
-$dc = New-PSSession –ComputerName Lon-DC1
+$dc = New-PSSession -ComputerName Lon-DC1
 $dc | Get-Member
 
 #endregion
@@ -191,6 +198,7 @@ Enter-PSSession -Session $dc
 Get-PSSession -ComputerName Lon-DC1 | Enter-PSSession
 
 Get-PSSession | Invoke-Command -ScriptBlock { $env:COMPUTERNAME }
+Invoke-Command -Session $dc -ScriptBlock { whoami.exe }
 
 #endregion
 
@@ -205,7 +213,6 @@ Disconnect-PSSession -Session $dc
 Get-PSSession -ComputerName $DcName
 Get-PSSession -ComputerName $DcName | Connect-PSSession
 Get-PSSession
-
 
 #endregion
 
