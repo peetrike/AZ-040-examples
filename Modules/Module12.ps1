@@ -21,6 +21,10 @@
 
 Get-Help about_Profiles -ShowWindow
 
+    # this doesn't load profile scirpts
+powershell.exe -noprofile
+pwsh -NoProfile
+
 #endregion
 
 #region Profile script locations
@@ -178,7 +182,7 @@ $acl.Access
 
 Get-Help Set-Acl -ShowWindow
 
-Find-Module NTFSSecurity
+Find-Module NTFSSecurity -Repository PSGallery
 
 Get-NTFSAccess -Path module12.ps1
 Get-NTFSAudit -Path module12.ps1
