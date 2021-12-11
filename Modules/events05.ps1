@@ -1,10 +1,10 @@
 ﻿<#
     .SYNOPSIS
-        see skript otsib sündmuste logist asju
+        otsib sündmuste logist asju
     .DESCRIPTION
-        pikem kirjeldus sellest, mida skript teeb ...
+        See skript otsib Application logist sündmusi, mille EventId on 15
     .EXAMPLE
-        .\events05.ps1 -aeg (get-date).adddays(-3)
+        .\events05.ps1 -Aeg (Get-Date).AddDays(-3)
 
         Leiab 3 päeva vanad sündmused
     .LINK
