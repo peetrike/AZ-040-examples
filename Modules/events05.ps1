@@ -9,6 +9,10 @@
         Leiab 3 päeva vanad sündmused
     .LINK
         Get-WinEvent
+    .LINK
+        http://www.ee
+    .NOTES
+        Author: Meelis Nigols
 #>
 param (
         [parameter(
