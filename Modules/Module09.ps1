@@ -210,7 +210,7 @@ code -r events06.ps1
 code -r .\write-log.ps1
 
 get-help .\write-log.ps1
-.\write-log.ps1 -Type Warning -Message 'Midagi on viltu'
+.\write-log.ps1 -Level Warning -Message 'Midagi on viltu'
 
 Find-Module -Command Write-PSFMessage -Repository PSGallery
 Write-PSFMessage 'Teade logisse'
