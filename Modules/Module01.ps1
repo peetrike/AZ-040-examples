@@ -19,7 +19,6 @@
         https://docs.microsoft.com/powershell/#community-resources
 #>
 
-
 #region Safety to prevent the entire script from being run instead of a selection
     throw "You're not supposed to run the entire script"
 #endregion
@@ -143,6 +142,10 @@ Start-Process -Verb RunAs -FilePath pwsh
 # https://docs.microsoft.com/previous-versions/windows/it-pro/windows-powershell-1.0/ee692799(v=technet.10)
 $Host.PrivateData
 $Host.UI.RawUI.WindowTitle
+
+    #Requires -Version 7.2
+Get-Help ANSI_Terminals -ShowWindow
+$PSStyle
 
     # Windows Terminal
 # https://docs.microsoft.com/windows/terminal/
