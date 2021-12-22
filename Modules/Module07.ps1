@@ -84,6 +84,8 @@ $Number = 'neli'
 $Number | Get-Member
 $Number.GetType()
 
+Get-Help enum -Category HelpFile -ShowWindow
+
 #endregion
 
 #endregion
