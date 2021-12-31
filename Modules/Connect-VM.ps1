@@ -47,8 +47,8 @@ if (-not $Credential) {
         $CredentialProps.Name = $SecretName
         $CredentialProps.ErrorAction = [Management.Automation.ActionPreference]::SilentlyContinue
     } elseif ($cmd = Get-Command Get-SavedCredential -ErrorAction SilentlyContinue) {
-        Write-Verbose -Message 'Using telia.common module'
-        $CredentialProps.FileName = $SecretName
+        Write-Verbose -Message 'Using telia.savedcredential module'
+        $CredentialProps.Id = $SecretName
         $CredentialProps.WarningAction = [Management.Automation.ActionPreference]::SilentlyContinue
     }
     if ($cmd) {
@@ -73,7 +73,7 @@ if (-not $Credential) {
                     break
                 }
                 'Get-SavedCredential' {
-                    Save-Credential -FileName $SecretName -Credential $Credential
+                    Save-Credential -Id $SecretName -Credential $Credential
                 }
             }
         }
