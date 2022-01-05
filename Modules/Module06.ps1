@@ -84,6 +84,7 @@ Get-CimInstance -Namespace ROOT -ClassName __Namespace
 code -r .\Get-CimNamespace.ps1
 .\Get-CimNamespace.ps1
 
+# https://github.com/peetrike/CimNamespace/blob/main/src/Public/Get-CimNamespace.ps1
 #endregion
 
 #region Listing classes
