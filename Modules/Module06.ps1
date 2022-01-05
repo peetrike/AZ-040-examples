@@ -77,7 +77,7 @@ WMIC.exe OS get Version
 
 #region Listing namespaces
 
-Get-WmiObject –Namespace ROOT –List -Recurse -ErrorAction SilentlyContinue |
+Get-WmiObject -Namespace ROOT -List -Recurse -ErrorAction SilentlyContinue |
     Select-Object -Unique __NAMESPACE
 
 Get-CimInstance -Namespace ROOT -ClassName __Namespace
