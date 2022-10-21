@@ -39,16 +39,19 @@ param (
     $Credential #= 'Adatum\Administrator'
 )
 
+$CourseName = 'AZ-040T00'
+$CourseDomain = 'Contoso'
+
 if (-not $Credential) {
     $SecretName = 'MOC-10961c'
     $CredentialProps = @{}
     if ($cmd = Get-Command Get-Secret -ErrorAction SilentlyContinue) {
         Write-Verbose -Message 'Using SecretManagement module'
-        $CredentialProps.Name = $SecretName
+        $CredentialProps.Name = $CourseName
         $CredentialProps.ErrorAction = [Management.Automation.ActionPreference]::SilentlyContinue
     } elseif ($cmd = Get-Command Get-SavedCredential -ErrorAction SilentlyContinue) {
         Write-Verbose -Message 'Using telia.savedcredential module'
-        $CredentialProps.Id = $SecretName
+        $CredentialProps.Id = $CourseName
         $CredentialProps.WarningAction = [Management.Automation.ActionPreference]::SilentlyContinue
     }
     if ($cmd) {
@@ -60,7 +63,7 @@ if (-not $Credential) {
     } else {
         $CredentialParams = @{
             Message  = 'Please enter credentials for VM connection'
-            UserName = 'Adatum\Administrator'
+            UserName = '{0}\Administrator' -f $CourseDomain
         }
         if ($NewCredential = Microsoft.PowerShell.Security\Get-Credential @CredentialParams) {
             $Credential = $NewCredential
@@ -69,11 +72,11 @@ if (-not $Credential) {
         if ($Credential -and $PSCmdlet.ShouldContinue('Credential', 'Save entered credential for future')) {
             switch ($cmd.Name) {
                 'Get-Secret' {
-                    Set-Secret -Name $SecretName -Secret $Credential
+                    Set-Secret -Name $CourseName -Secret $Credential
                     break
                 }
                 'Get-SavedCredential' {
-                    Save-Credential -Id $SecretName -Credential $Credential
+                    Save-Credential -Id $CourseName -Credential $Credential
                 }
             }
         }
@@ -81,7 +84,7 @@ if (-not $Credential) {
 }
 
 if ($Credential) {
-    $Name = '10961c-Lon-{0}' -f $VmName
+    $Name = '{0}-SEA-{1}' -f $CourseName, $VmName
 
     New-PSSession -Name $VmName -VMName $Name -Credential $Credential
 }
