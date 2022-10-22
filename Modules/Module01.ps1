@@ -2,15 +2,17 @@
     .SYNOPSIS
         Module 01 samples
     .DESCRIPTION
-        This file contains sample commands from course 10961 for
+        This file contains sample commands from course AZ-040 for
         Module 01 - Getting started with Windows PowerShell
     .NOTES
         Contact: Meelis Nigols
         e-mail/skype: meelisn@outlook.com
     .LINK
-        https://github.com/peetrike/10961-examples
+        https://learn.microsoft.com/training/paths/get-started-windows-powershell/
     .LINK
-        https://diigo.com/profile/peetrike/?query=%23MOC-10961+%23M1
+        https://github.com/peetrike/AZ-040-examples
+    .LINK
+        https://diigo.com/profile/peetrike/?query=%23AZ-040+%23M1
     .LINK
         https://peterwawa.wordpress.com/tag/powershell/
     .LINK
@@ -24,37 +26,37 @@
 #endregion
 
 
-#region Lesson 1 - Overview and background of Windows PowerShell
+#region Lesson 1 - Overview of Windows PowerShell
 
-#region PowerShell overview
+#region PowerShell Introduction
 
-# https://docs.microsoft.com/powershell/scripting/overview
+# https://learn.microsoft.com/powershell/scripting/overview
 
 Get-Help Parsing -ShowWindow
 
-# https://docs.microsoft.com/powershell/scripting/windows-powershell/starting-windows-powershell
+# https://learn.microsoft.com/powershell/scripting/windows-powershell/starting-windows-powershell
 
 #endregion
 
 #region PowerShell versions
 
-# https://docs.microsoft.com/previous-versions/powershell/scripting/overview
-# https://docs.microsoft.com/powershell/scripting/windows-powershell/wmf/overview
-# https://docs.microsoft.com/powershell/scripting/windows-powershell/whats-new/what-s-new-in-windows-powershell-50
+# https://learn.microsoft.com/previous-versions/powershell/scripting/overview
+# https://learn.microsoft.com/powershell/scripting/windows-powershell/wmf/overview
+# https://learn.microsoft.com/powershell/scripting/windows-powershell/whats-new/what-s-new-in-windows-powershell-50
 
-Get-Help PowerShell -Category HelpFile
+Get-Help _PowerShell -Category HelpFile
 
-# https://docs.microsoft.com/powershell/scripting/whats-new/what-s-new-in-powershell-72
+# https://learn.microsoft.com/powershell/scripting/whats-new/what-s-new-in-powershell-72
 
-# https://docs.microsoft.com/powershell/scripting/install/powershell-in-docker
+# https://learn.microsoft.com/powershell/scripting/install/powershell-in-docker
 
-# https://docs.microsoft.com/powershell/scripting/install/powershell-support-lifecycle
+# https://learn.microsoft.com/powershell/scripting/install/powershell-support-lifecycle
 
 #endregion
 
-#region PowerShell vs. operating system
+#region Extra: PowerShell vs. operating system
 
-# https://docs.microsoft.com/powershell/windows/get-started
+# https://learn.microsoft.com/powershell/windows/get-started
 Get-Command Resolve-DnsName
 Get-Command Get-ScheduledTask
 Get-Command Get-NetAdapter
@@ -63,16 +65,16 @@ Get-Module ActiveDirectory -ListAvailable
 Get-Module Dism -ListAvailable
 
 $PSHOME
-$env:PSModulePath -split [io.path]::PathSeparator | Where-Object { $_ -like "$PSHOME*" }
-$env:PSModulePath -split [io.path]::PathSeparator | Where-Object { $_ -like "$env:windir*" }
+$env:PSModulePath -split [IO.Path]::PathSeparator | Where-Object { $_ -like "$PSHOME*" }
+$env:PSModulePath -split [IO.Path]::PathSeparator | Where-Object { $_ -like "$env:windir*" }
 Get-ChildItem (Join-Path $PSHOME Modules)
 
-# https://docs.microsoft.com/powershell/module/microsoft.powershell.core/about/about_special_characters#stop-parsing-token---
+# https://learn.microsoft.com/powershell/module/microsoft.powershell.core/about/about_special_characters#stop-parsing-token---
 bcdedit.exe --% /enum {current}
 
 #endregion
 
-#region Two host applications
+#region PowerShell applications
 
 Get-Command powershell
 Get-Command pwsh
@@ -86,17 +88,14 @@ Get-Help PSReadLine -Category HelpFile -ShowWindow
 Get-PSReadLineOption | Select-Object *history*
 Get-PSReadLineKeyHandler -Chord 'UpArrow', 'DownArrow', 'F8', 'Shift-F8', 'F2'
 
-# https://docs.microsoft.com/powershell/scripting/windows-powershell/ise/introducing-the-windows-powershell-ise
+# https://learn.microsoft.com/powershell/scripting/windows-powershell/ise/introducing-the-windows-powershell-ise
 
     # Powershell ISE difference: next line doesn't show one screen at time
 Get-Command | more
 
-# Visual Studio Code: http://code.visualstudio.com
-# https://docs.microsoft.com/powershell/scripting/dev-cross-plat/vscode/using-vscode
-
 #endregion
 
-#region Working in mixed-version environments
+#region Extra: Working in mixed-version environments
 
     #Requires -Version 2
 $PSVersionTable
@@ -114,18 +113,18 @@ $PSVersionTable.OS
 
 # look also https://peterwawa.wordpress.com/2017/09/22/mis-keskkonnas-mu-skript-jookseb/
 
-# https://docs.microsoft.com/previous-versions/powershell/scripting/overview
+# https://learn.microsoft.com/previous-versions/powershell/scripting/overview
 
-# https://docs.microsoft.com/powershell/scripting/windows-powershell/starting-the-windows-powershell-2.0-engine
+# https://learn.microsoft.com/powershell/scripting/windows-powershell/starting-the-windows-powershell-2.0-engine
 Start-Process -FilePath powershell.exe -ArgumentList '-version 2'
 # https://devblogs.microsoft.com/powershell/windows-powershell-2-0-deprecation/
 
 #endregion
 
-#region Precautions when opening Windows PowerShell
+#region Considerations when using PowerShell
 
-# https://docs.microsoft.com/powershell/scripting/setup/starting-windows-powershell
-# https://docs.microsoft.com/powershell/scripting/learn/ps101/01-getting-started
+# https://learn.microsoft.com/powershell/scripting/windows-powershell/starting-windows-powershell
+# https://learn.microsoft.com/powershell/scripting/learn/ps101/01-getting-started
 
     # PowerShell < 6
 Get-Help PowerShell_exe -ShowWindow
@@ -135,29 +134,38 @@ Get-Help pwsh -ShowWindow
 Start-Process -Verb RunAs -FilePath powershell.exe
 Start-Process -Verb RunAs -FilePath pwsh
 
+Get-Help Execution_Policies -ShowWindow
+Get-Command -Noun ExecutionPolicy
+
 #endregion
 
 #region Configuring the console
 
 # https://docs.microsoft.com/previous-versions/windows/it-pro/windows-powershell-1.0/ee692799(v=technet.10)
 $Host.PrivateData
-$Host.UI.RawUI.WindowTitle
+$Host.UI.RawUI
+Get-PSReadLineOption | Select-Object *color
 
     #Requires -Version 7.2
 Get-Help ANSI_Terminals -ShowWindow
 $PSStyle
 
+    #Requires -Version 7.2
+Get-ExperimentalFeature PSAnsiRenderingFileInfo
+Find-Module terminal-icons -Repository PSGallery
+
     # Windows Terminal
-# https://docs.microsoft.com/windows/terminal/
+# https://learn.microsoft.com/windows/terminal/
 # https://github.com/microsoft/terminal
 
     # Ensure that following is different enough to differentiate:
 # `' 0O 1Il
 
-# https://docs.microsoft.com/typography/font-list/consolas
+# https://learn.microsoft.com/typography/font-list/consolas
+# https://github.com/microsoft/cascadia-code
 # https://www.programmingfonts.org/
 
-# https://docs.microsoft.com/windows/terminal/tips-and-tricks#zoom-with-the-mouse
+# https://learn.microsoft.com/windows/terminal/tips-and-tricks#zoom-with-the-mouse
 
 Get-PSReadLineKeyHandler -Chord 'Ctrl-c', 'Ctrl-C', 'Ctrl-v', 'Shift-Insert', 'Ctrl-x'
 
@@ -165,7 +173,16 @@ Get-PSReadLineKeyHandler -Chord 'Ctrl-c', 'Ctrl-C', 'Ctrl-v', 'Shift-Insert', 'C
 
 #region Configuring the ISE
 
-# https://docs.microsoft.com/powershell/scripting/dev-cross-plat/vscode/how-to-replicate-the-ise-experience-in-vscode
+# https://learn.microsoft.com/powershell/scripting/windows-powershell/ise/exploring-the-windows-powershell-ise
+
+#endregion
+
+#region Visual Studio Code
+
+# http://code.visualstudio.com
+# https://learn.microsoft.com/powershell/scripting/dev-cross-plat/vscode/using-vscode
+
+# https://learn.microsoft.com/powershell/scripting/dev-cross-plat/vscode/how-to-replicate-the-ise-experience-in-vscode
 
 # https://code.visualstudio.com/docs/getstarted/themes
 # https://code.visualstudio.com/docs/getstarted/settings
@@ -179,7 +196,7 @@ Get-PSReadLineKeyHandler -Chord 'Ctrl-c', 'Ctrl-C', 'Ctrl-v', 'Shift-Insert', 'C
 #endregion
 
 
-#region Lesson 2: Understanding command syntax
+#region Lesson 2: Understand PowerShell command syntax
 
 #region Cmdlet structure
 
@@ -189,14 +206,15 @@ Get-Command | Measure-Object
 Get-Verb
 
 Get-Command Get-VM
-Get-Command Get-Mailbox
+Get-Command Get-EXOMailbox
 Get-Command Get-ADUser
-Get-Command -Noun *User -Verb Get
+Get-Command -Verb Get -Noun *User
 
     #Requires -Modules PowerShellGet
-Find-Module -Command Get-User -Repository PSGallery
+Find-Command Get-User -Repository PSGallery
 
     # when cmdlet names in different modules are same, you can use fully qualified cmdlet name
+    #Requires -Modules BetterCredentials
 Get-Command Get-Credential -All
 Get-Command Microsoft.PowerShell.Security\Get-Credential
 
@@ -226,13 +244,132 @@ Get-Command -Module PSReadLine
 
 Get-PSReadLineKeyHandler -Chord 'Tab', 'Shift-Tab', 'Ctrl- '
 
+# https://learn.microsoft.com/powershell/module/psreadline/about/about_psreadline#predictive-intellisense
+Get-PSReadLineKeyHandler -Chord 'F2'
+Get-PSReadLineOption | Select-Object PRediction*
+
 Get-Module PSReadLine
-Get-InstalledModule PSReadLine
-Find-Module PSReadLine -AllowPrerelease
+Find-Module PSReadLine
+
+#endregion
+
+#region About files
+
+Get-Help -Category HelpFile
+Get-Help about_
+Get-Help about_quoting -ShowWindow
+Get-Help quoting
+Get-Help beep
+
+#endregion
+
+#endregion
+
+
+#region Lesson 3: Finding commands
+
+#region What are modules?
+
+Get-Help Modules -Category HelpFile -ShowWindow
+
+Get-Module
+Get-Module -ListAvailable
+
+$env:PSModulePath
+$env:PSModulePath -split [IO.Path]::PathSeparator
+
+    #Requires -Version 4
+$env:PSModulePath -split [IO.Path]::PathSeparator | Where-Object { $_ -like "$env:ProgramFiles*" }
+
+    #Requires -Version 3
+Get-ADUser
+    #Requires -Version 2
+Import-Module ActiveDirectory
+Get-ADUser
+
+    # where to find modules
+    #Requires -Modules PowerShellGet
+Find-Module -Name UserProfile -Repository PSGallery
+Get-InstalledModule
+
+#endregion
+
+#region Finding cmdlets
+
+Get-Command -Module VpnClient
+Get-Command -Module VpnClient | Measure-Object
+Get-Command -Noun VpnConnection
+Get-VpnConnection
+
+Get-Command -Noun Service
+Get-Service BITS
+Stop-Service BITS
+
+Get-Command -Noun *user -Verb Get
+
+Get-Help Command_Precedence -ShowWindow
+
+Get-Command | Group-Object -Property CommandType
+
+# https://learn.microsoft.com/powershell/scripting/gallery/overview
+# https://learn.microsoft.com/powershell/module/powershellget/
+Get-Command -module PowerShellGet
+Get-Help Find-Command
+Get-Help Install-Module
+
+# https://devblogs.microsoft.com/powershell/powershellget-3-0-preview-1/
+# https://devblogs.microsoft.com/powershell/powershellget-3-0-preview-17/
+Get-Module PowerShellGet -ListAvailable
+
+#endregion
+
+#region What are aliases?
+
+Get-Help Aliases -Category HelpFile
+
+dir
+ls
+
+Get-Command -Noun Alias
+get-help Get-Alias -ShowWindow
+
+Get-Alias dir
+Get-Alias -Definition Get-ChildItem
+Get-Alias -Definition Get-Alias
+Get-Alias
+Get-Command -CommandType Alias
+
+    # alias can override other commands
+Get-Command ping
+New-Alias -Name ping -Definition Test-Connection
+Set-Alias ping Test-Connection
+Get-Command ping
+ping www.ee
+Remove-Item alias:\ping
+ping www.ee
+
+    # command parameter aliases
+Get-Help dir -Parameter Recurse
+(Get-Command Get-ChildItem).Parameters.Recurse
+(Get-Command Get-ChildItem).Parameters.Recurse.aliases
+dir -s
+
+#endregion
+
+#region Using Show-Command
+
+Get-Help Show-Command -ShowWindow
+
+Show-Command -Name Get-Process
+Show-Command
+
+# https://github.com/peetrike/Examples/blob/main/src/Gui/Test-Command.ps1
 
 #endregion
 
 #region Using Get-Help
+
+# https://learn.microsoft.com/powershell/scripting/learn/ps101/02-help-system
 
 Get-Help default -ShowWindow
 Get-Help Get-Help -ShowWindow
@@ -242,8 +379,9 @@ Get-Help Get-Help -Parameter *
 Get-Help Get-Help -Parameter Examples
 Get-Help Get-Help -Detailed
 Get-Help Get-Help -Full
-Get-Help Get-Process -ShowWindow
 Get-Help Get-Process -Online
+
+# https://github.com/peetrike/Examples/tree/main/CommandLine
 
 #endregion
 
@@ -281,6 +419,8 @@ Get-Help Test-Connection -Parameter Quiet
 
 #region Updating help
 
+Get-Help Updatable_Help -ShowWindow
+
 Get-Command -Noun help
 Get-Help Update-Help
 Get-Help Save-Help -ShowWindow
@@ -290,108 +430,6 @@ Update-Help -Module VPNClient
 
     #Requires -Version 6.1
 Get-Help Update-Help -Parameter Scope
-
-#endregion
-
-#region About files
-
-Get-Help -Category HelpFile
-Get-Help about_
-Get-Help about_quoting -ShowWindow
-Get-Help quoting
-
-#endregion
-
-#endregion
-
-
-#region Lesson 3: Finding commands
-
-#region What are modules?
-
-Get-Help Modules -Category HelpFile -ShowWindow
-
-Get-Module
-Get-Module -ListAvailable
-
-$env:PSModulePath
-$env:PSModulePath -split [IO.Path]::PathSeparator
-
-    #Requires -Version 4
-$env:PSModulePath -split [IO.Path]::PathSeparator | Where-Object { $_ -like "$env:ProgramFiles*" }
-
-    #Requires -Version 3
-Get-ADUser
-    #Requires -Version 2
-Import-Module ActiveDirectory
-Get-ADUser
-
-    # where to find modules
-Find-Module -Name UserProfile -Repository PSGallery
-Get-InstalledModule
-
-#endregion
-
-#region Finding cmdlets
-
-Get-Command -Module VpnClient
-Get-Command -Module VpnClient | Measure-Object
-Get-Command -Noun VpnConnection
-Get-VpnConnection
-
-Get-Command -Noun Service
-Get-Service BITS
-Stop-Service BITS
-
-Get-Command -Noun *user -Verb Get
-
-Get-Help Command_Precedence -ShowWindow
-
-Get-Command | Group-Object -Property CommandType
-
-#endregion
-
-#region What are aliases?
-
-Get-Help Aliases -Category HelpFile
-
-dir
-ls
-
-Get-Command -Noun Alias
-get-help Get-Alias -ShowWindow
-
-Get-Alias dir
-Get-Alias -Definition Get-ChildItem
-Get-Alias -Definition Get-Alias
-Get-Alias
-Get-Command -CommandType Alias
-
-    # alias can override other commands
-Get-Command ping
-New-Alias -Name ping -Definition Test-Connection
-Set-Alias ping Test-Connection
-Get-Command ping
-ping www.ee
-Remove-Item alias:\ping
-ping www.ee
-
-    # command parameter aliases
-Get-Help dir -Parameter Recurse
-(Get-Command Get-ChildItem).Parameters.Recurse
-(Get-Command Get-ChildItem).Parameters.Recurse.aliases
-dir -s
-
-
-
-#endregion
-
-#region Using Show-Command
-
-Get-Help Show-Command -ShowWindow
-
-Show-Command -Name Get-Process
-Show-Command
 
 #endregion
 
