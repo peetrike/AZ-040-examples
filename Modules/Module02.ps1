@@ -2,12 +2,14 @@
     .SYNOPSIS
         Module 02 samples
     .DESCRIPTION
-        This file contains sample commands from course 10961 for
+        This file contains sample commands from course AZ-040 for
         Module 02 - Cmdlets for administration
     .LINK
-        https://github.com/peetrike/10961-examples
+        https://learn.microsoft.com/training/paths/maintain-system-administration-tasks-windows-powershell/
     .LINK
-        https://diigo.com/profile/peetrike/?query=%23MOC-10961+%23M2
+        https://github.com/peetrike/AZ-040-examples
+    .LINK
+        https://diigo.com/profile/peetrike/?query=%23AZ-040+%23M2
 #>
 
 #region Safety to prevent the entire script from being run instead of a selection
@@ -22,6 +24,7 @@ Get-Command -Module ActiveDirectory | Measure-Object
 #region User management cmdlets
 
 Get-Command -Noun ADUser
+Get-Command -Noun ADAccount*
 
 Get-ADUser -Identity Administrator
 Get-ADUser -Filter * | Measure-Object
@@ -74,6 +77,7 @@ Import-Csv .\modify.csv | ForEach-Object {
 #region Group management cmdlets
 
 Get-Command -Noun ADGroup*
+Get-Command -Noun ADPrincipal*
 
 New-ADGroup -Name 'IT' -GroupScope Global
 Get-ADUser -Filter { Department -like 'IT' } |
@@ -117,6 +121,7 @@ Get-ADOrganizationalUnit -Filter * |
 Get-Command -Noun ADObject
 
 New-ADObject -Type Contact -Name 'MatiKontakt'
+Get-ADObject -Identity Administrator
 
 Get-Command -Noun ADAccount*
 Search-ADAccount -AccountDisabled -UsersOnly
@@ -147,7 +152,7 @@ Get-Alias -Definition Get-NetIPConfiguration
 
 Get-Command -Noun NetRoute
 
-Get-NetRoute -AddressFamily IPv4  -DestinationPrefix '0.0.0.0/0'
+Get-NetRoute -AddressFamily IPv4 -DestinationPrefix '0.0.0.0/0'
 
 #endregion
 
@@ -224,6 +229,8 @@ Install-WindowsFeature -Name Telnet-Client -ComputerName myserver
 Get-WindowsOptionalFeature -Online -FeatureName SMB1Protocol*
 Get-WindowsCapability -Online -Name *ssh*
 
+Get-Command -Module Dism
+
 #endregion
 
 #region Hyper-V cmdlets
@@ -240,6 +247,50 @@ Enter-PSSession -VMName MyVM -Credential 'computer\user'
 Get-Module *Administration -ListAvailable
 Get-Command -Module WebAdministration
 Get-Command -Module IISAdministration
+
+#endregion
+
+#endregion
+
+
+#region Lesson 4: Windows PowerShell in Windows 10
+
+#region Managing Windows 10 using PowerShell
+
+Get-Command -Module Microsoft.PowerShell.Management
+
+    # PowerShell 7 has several commands removed
+Get-Command -Module Microsoft.PowerShell.Management | Measure-Object
+
+Get-Command -Noun Clipboard
+Get-Command -Noun TimeZone
+Get-Command -Noun ControlPanel*
+Get-Command -Module Microsoft.PowerShell.Management -Noun Computer*
+Get-Command Get-HotFix
+
+Get-Command -Module Microsoft.PowerShell.Diagnostics
+
+Get-Module Microsoft.PowerShell.* -ListAvailable
+
+#endregion
+
+#region Managing permissions with PowerShell
+
+Get-Command -Noun Acl
+
+Find-Module NTFSSecurity
+Get-Command -Module NTFSSecurity
+
+New-Item -Name katse -ItemType Directory
+Get-Acl -Path .\katse
+(Get-Acl -Path .\katse).Access
+
+Get-NTFSAccess -Path .\katse
+
+Get-Command -Noun NTFSAccess
+Get-Command -Noun NTFSAudit
+Get-Command -Noun NTFSOwner
+Get-Command -Noun NTFSInheritance
 
 #endregion
 
