@@ -2,12 +2,14 @@
     .SYNOPSIS
         Module 03 samples
     .DESCRIPTION
-        This file contains sample commands from course 10961 for
+        This file contains sample commands from course AZ-040 for
         Module 03 - Working with the PowerShell pipeline
     .LINK
-        https://github.com/peetrike/10961-examples
+        https://learn.microsoft.com/training/paths/work-windows-powershell-pipeline/
     .LINK
-        https://diigo.com/profile/peetrike/?query=%23MOC-10961+%23M3
+        https://github.com/peetrike/AZ-040-examples
+    .LINK
+        https://diigo.com/profile/peetrike/?query=%23AZ-040+%23M3
 #>
 
 #region Safety to prevent the entire script from being run instead of a selection
@@ -31,6 +33,12 @@ Get-ChildItem |
     Remove-Item -WhatIf
 
 # https://get-powershellblog.blogspot.com/2017/07/bye-bye-backtick-natural-line.html
+
+    # unfinished line
+Get-ChildItem |
+
+Get-PSReadLineOption | Select-Object *Prompt
+Get-Help Set-PSReadLineOption -Parameter ContinuationPrompt
 
 #endregion
 
@@ -93,6 +101,15 @@ Get-Culture
 Get-UICulture
 Get-Command -Noun *culture
 
+    # Grouping results
+Get-Help Format-Table -Parameter GroupBy
+Get-Service c* | Format-Table -GroupBy Status
+Get-Service c* | Sort-Object Status | Format-Table -GroupBy Status
+
+Get-Help Group-Object -ShowWindow
+Get-Service c* | Group-Object Status
+Get-Service c* | Group-Object Status -NoElement
+
 #endregion
 
 #region Measuring objects
@@ -116,13 +133,27 @@ Get-ChildItem | Sort-Object -Property Length | Select-Object -Skip 1 -First 1
     #Requires -Version 5
 net.exe localgroup administrators | Select-Object -Skip 6 | Select-Object -SkipLast 2
 
-Get-Help Select-Object -Parameter Unique
-#region ettevalmistus
-New-ADGroup Katse1 -GroupScope Global
-New-ADGroup Katse2 -GroupScope Global
-Get-ADUser adam | Add-ADPrincipalGroupMembership -MemberOf katse1, katse2
-#endregion
-Get-ADGroup -Filter { Name -like 'katse*' } | Get-ADGroupMember | Select-Object -Unique
+    #region Selecting unique objects
+    Get-Help Select-Object -Parameter Unique
+
+    #region ettevalmistus
+        New-ADGroup Katse1 -GroupScope Global
+        New-ADGroup Katse2 -GroupScope Global
+        Get-ADUser adam | Add-ADPrincipalGroupMembership -MemberOf katse1, katse2
+    #endregion
+    Get-ADGroup -Filter { Name -like 'katse*' } | Get-ADGroupMember | Select-Object -Unique
+
+    Get-ADUser -Filter * -Property Department |
+        Select-Object -Property Department -Unique
+
+    Get-ADUser -Filter * -Property Department |
+        Group-Object -Property Department |
+        Foreach-Object { $_.Group | Get-Random }
+
+    Get-Help Sort-Object -Parameter Unique
+    Get-ADUser -Filter * -Property Department |
+        Sort-Object -Property Department -Unique
+    #endregion
 
 #endregion
 
@@ -136,8 +167,8 @@ Get-Process p* |
 
 Get-ChildItem | Select-Object -Property Name, *Time | Out-GridView
 
-Get-ADComputer lon-cl1 | Select-Object -Property DnsHostName | Get-Member
-Get-ADComputer lon-cl1 | Select-Object -ExpandProperty DnsHostName | Get-Member
+Get-ADComputer sea-cl1 | Select-Object -Property DnsHostName | Get-Member
+Get-ADComputer sea-cl1 | Select-Object -ExpandProperty DnsHostName | Get-Member
 
 Get-Command powershell |
     Select-Object -Property Name -ExpandProperty FileVersionInfo
@@ -149,6 +180,7 @@ Get-Help Select-Object -Parameter ExcludeProperty
 #region Creating calculated properties
 
 Get-Help Calculated_Properties -ShowWindow
+Get-Help Hash_Tables -ShowWindow
 # https://docs.microsoft.com/dotnet/standard/base-types/formatting-types
 
 Get-CimInstance Win32_LogicalDisk
@@ -159,6 +191,7 @@ Get-CimInstance Win32_LogicalDisk | Select-Object -Property DeviceID, $SizeGB
 $SizeGB.Format = 'N2'
 Get-CimInstance Win32_LogicalDisk | Format-Table -Property DeviceID, VolumeName, $SizeGB
 
+# https://learn.microsoft.com/powershell/module/microsoft.powershell.core/about/about_operators#format-operator--f
 $SizeGB = @{ Name = 'Size (GB)'; Expression = { '{0:n2}' -f ($_.Size / 1GB) } }
 Get-CimInstance Win32_LogicalDisk | Select-Object -Property DeviceID, $SizeGB | Get-Member
 
@@ -191,7 +224,7 @@ Get-Help Comparison -Category HelpFile -ShowWindow
 Get-Help Wildcards -ShowWindow
 Get-Help about_regular -ShowWindow
 
-3 -eq '3'
+3 -eq '3'   # right side type is converted to match left side
 
 '13' -gt 3
 13 -gt '3'
@@ -233,7 +266,10 @@ Get-Alias -Definition Where-Object
 
 Get-Service bits | Get-Member -Name Status
 [enum]::GetValues([System.ServiceProcess.ServiceControllerStatus])
-[System.ServiceProcess.ServiceControllerStatus]'Stopped'
+[System.ServiceProcess.ServiceControllerStatus] 'Stopped'
+
+# https://github.com/peetrike/PWAddins/blob/master/src/Public/Get-EnumValue.ps1
+[ServiceProcess.ServiceControllerStatus] | Get-EnumValue
 
 Get-Service p* | Where-Object -Property Status -EQ -Value 'Stopped'
 Get-Service p* | Where-Object Status -eq 'Stopped'
@@ -246,16 +282,22 @@ Get-ChildItem | Where-Object -Property PSIsContainer -EQ $true
 Get-ChildItem | where PSIsContainer -EQ $true
 dir | ? PSIsContainer
 
+    #Requires -Version 6.1
+Get-ChildItem | Where-Object -Not PSIsContainer
+
+
 #endregion
 
 #region Advanced filtering syntax
 
-Get-ChildItem | Where-Object -FilterScript { -not $_.PSIsContainer }
-Get-ChildItem | where { -not $PSItem.PSIsContainer }
+Get-ChildItem | Where-Object -FilterScript { -not $PSItem.PSIsContainer }
+Get-ChildItem | where { -not $_.PSIsContainer }
 gci | ? { ! $_.PSIsContainer }
 
 
 Get-ChildItem | Where-Object { ($_.Name.Length -ge 9) -and ($_.Length -ge 2KB) }
+
+Get-Service | Where-Object { $_.Status -in 'Running', 'StartPending' }
 
 'get-service', 'get-uhhuu', 'get-userprofile' | Where-Object { Get-Command $_ -ErrorAction SilentlyContinue }
 
@@ -263,21 +305,29 @@ Get-ChildItem | Where-Object { ($_.Name.Length -ge 9) -and ($_.Length -ge 2KB) }
 
 #region Optimizing filtering performance
 
-# https://docs.microsoft.com/powershell/scripting/learn/ps101/04-pipelines#filtering-left
+# https://learn.microsoft.com/powershell/scripting/learn/ps101/04-pipelines#filtering-left
 
+Get-ChildItem -Filter *.txt
+    #Requires -Version 3
 Get-ChildItem -File -Recurse
 Get-ChildItem -Directory # -Recurse
-Get-ChildItem -Filter *.txt
+
+Get-Help Get-ChildItem -Parameter *
 
 Get-ADUser -Identity adam
+
+Get-Help Measure-Command -ShowWindow
 Measure-Command {
-    Get-ADUser -Filter { Name -like 'Adam*' }
+    Get-ADUser -Identity Adrian
 }
 Measure-Command {
-    Get-ADUser -LDAPFilter '(Name=Adam*)'
+    Get-ADUser -Filter { Name -like 'Adrian*' }
 }
 Measure-Command {
-    Get-ADUser -Filter * | Where-Object Name -like 'Adam*'
+    Get-ADUser -LDAPFilter '(Name=Adrian*)'
+}
+Measure-Command {
+    Get-ADUser -Filter * | Where-Object Name -like 'Adrian*'
 }
 
     # negatiivne näide ka
@@ -320,6 +370,20 @@ Measure-Command {
 
 #region Lesson 4: Enumerating objects in the pipeline
 
+#region Purpose of enumeration
+
+1..3 | Start-Process notepad
+Get-Process notepad | Stop-Process
+Stop-Process -Name Notepad
+
+# https://learn.microsoft.com/powershell/scripting/learn/ps101/04-pipelines#the-pipeline
+(Get-Help Get-Process).returnValues
+(Get-Help Stop-Process).inputTypes
+
+Get-ChildItem -File | Get-Member -name Encrypt
+
+#endregion
+
 #region Basic enumeration syntax
 
 Get-Help Simplified_Syntax -ShowWindow
@@ -339,7 +403,8 @@ dir -File | % Decrypt -WhatIf
 #region Preparation
 'katse', 'kutse' | ForEach-Object { New-Item -ItemType Directory -Name $_ -ErrorAction SilentlyContinue }
 #endregion
-dir k* -Directory | % CreateSubdirectory -ArgumentList 'muu'
+Get-ChildItem k* -Directory | ForEach-Object CreateSubdirectory -ArgumentList 'muu'
+dir k* -Directory | % CreateSubdirectory 'muu'
 
 #endregion
 
@@ -347,7 +412,6 @@ dir k* -Directory | % CreateSubdirectory -ArgumentList 'muu'
 
 Get-ChildItem | ForEach-Object -Process { $_.Name }
 dir | foreach { $_.Name }
-dir | % Name
 
 Get-Service BITS | ForEach-Object { Stop-Service $_ -WhatIf }
 Get-Service BITS | Stop-Service -WhatIf
@@ -355,6 +419,8 @@ Get-Service BITS | Stop-Service -WhatIf
 Get-ChildItem -File |
     ForEach-Object -Begin { $summa = 0 } -Process { $summa += $_.Length } -End { Write-Output $summa }
 Get-ChildItem -File | Measure-Object -Sum
+
+1..10 | ForEach-Object { Get-Random }
 
 #endregion
 
@@ -379,9 +445,13 @@ dir >> kaustad.txt      # Out-File -Append
 Get-Help Set-Content -ShowWindow
 Get-Help Add-Content -ShowWindow
 
+Get-Process p* | Select-Object PSResources | Format-Table | Out-File protsessid.txt
+
 #endregion
 
 #region Converting output to CSV
+
+# https://en.wikipedia.org/wiki/Delimiter-separated_values
 
 Get-Help ConvertTo-Csv -ShowWindow
 Get-Help Export-Csv -ShowWindow
@@ -401,6 +471,8 @@ Get-Help Export-Csv -Parameter Delimiter
 
 #region Converting output to XML
 
+# http://www.w3.org/TR/xml/
+
 Get-Command -Noun *xml -Module Microsoft.PowerShell.Utility
 Get-Help Export-Clixml -ShowWindow
 Get-Help ConvertTo-Xml -ShowWindow
@@ -413,6 +485,9 @@ Get-ChildItem | Export-Clixml -Path failid.xml
 
 #region Converting output to JSON
 
+# https://www.json.org/
+
+    #Requires -Version 3
 Get-Help ConvertTo-Json -ShowWindow
 Get-ChildItem | Select-Object Name, Length, LastWriteTime | ConvertTo-Json
 Get-ChildItem |
@@ -422,9 +497,22 @@ Get-ChildItem |
 
 Get-Help ConvertTo-Json -Parameter Depth
 
+    # PS Version 2 and .NET 3.5
+Add-Type -AssemblyName System.Web.Extensions
+$Serializer = New-Object System.Web.Script.Serialization.Javascriptserializer
+$Serializer.Serialize
+$Serializer.Deserialize
+
+# https://github.com/peetrike/PWAddins/blob/master/src/Public/Get-TypeUrl.ps1
+$Serializer.GetType() | Get-TypeUrl -Invoke
+
+# https://www.newtonsoft.com/json
+
 #endregion
 
 #region Converting output to HTML
+
+# https://html.spec.whatwg.org/
 
 Get-Help ConvertTo-Html -ShowWindow
 Get-ChildItem |
@@ -432,9 +520,9 @@ Get-ChildItem |
     ConvertTo-Html -PreContent 'Here are some files' -Property Name, Length |
     Out-File -FilePath failid.htm -Encoding utf8
 
-# https://github.com/EvotecIT/PSWriteHTML
-# https://github.com/Stephanevg/PSHTML
+Find-Module PSWriteHTML -Repository PSGallery
 
+# https://github.com/Stephanevg/PSHTML
 # https://ironmansoftware.com/powershell-universal/
 
 #endregion
@@ -454,10 +542,166 @@ Get-ChildItem | Select-Object * | Out-GridView
 
 #region Extra: More export options
 
+Find-Module powershell-yaml -Repository PSGallery
+
 Find-Module ImportExcel -Repository PSGallery
-Find-Module ImportExcel -Repository PSGallery | Select ProjectUri
+Find-Module ImportExcel -Repository PSGallery | Select-Object ProjectUri
 
 # https://github.com/dfinke/ImportExcel/tree/master/Examples
+
+Find-Module PSWriteOffice -Repository PSGallery
+
+# https://evotec.xyz/merging-splitting-and-creating-pdf-files-with-powershell/
+
+#endregion
+
+#endregion
+
+#region Lesson 6: Passing pipeline data
+
+#region Pipeline parameter binding
+
+Get-Help about_Parameters -ShowWindow
+# https://docs.microsoft.com/powershell/module/microsoft.powershell.core/about/about_parameters#accepts-pipeline-input
+
+(Get-Command Set-ADUser).Parameters.Identity.ParameterType.FullName
+Get-Help Set-ADUser -Parameter Identity
+
+Get-ADUser -Filter { Name -like 'Adam*' } | Set-ADUser -City 'Tallinn'
+
+Get-Help Restart-Service -Parameter InputObject
+
+Get-Service B* | Restart-Service -WhatIf
+
+#endregion
+
+#region Identifying ByValue parameters
+
+(Get-Help Get-ADUser).returnValues.returnValue.type.name
+(Get-Help Set-ADUser).parameters.parameter |
+    Where-Object pipelineInput -like 'true*' |
+    Select-Object name, pipelineInput, type
+Get-Help Set-ADUser -Parameter Identity
+
+$type = (Get-Command Get-Service).OutputType.Type
+(Get-Command Restart-Service).Parameters.Values | Where-Object {
+    $_.Attributes.ValueFromPipeLine -and
+    $type.Name -like $_.ParameterType.Name.replace('[]', '')
+}
+Get-Help Restart-Service -Parameter InputObject
+
+# https://github.com/indented-automation/Indented.Profile/blob/master/Indented.Profile/public/Get-ParameterInfo.ps1
+Get-ParameterInfo -Name Sort-Object | Where-Object PipeLine -NotLike 'None'
+Get-Help Sort-Object -Parameter InputObject
+
+Get-Command -ParameterName InputObject | Measure-Object
+Get-Help * -Parameter InputObject | Measure-Object
+
+#endregion
+
+#region Passing data by using ByValue
+
+    # you can do this
+$Services = Get-Service p*
+Start-Service -InputObject $Services -WhatIf
+    # but this is more convenient
+Get-Service p* | Start-Service -WhatIf
+Get-Service bits | Set-Service -StartupType Automatic -WhatIf
+
+Get-Help Start-Service -Parameter Name
+'bits', 'winrm' | Start-Service
+
+Get-Help Get-Service -Online
+
+    # Exporting to CSV retains object type
+Get-Service p* | Export-Csv -Path Services.csv
+    #Requires -Version 7
+Get-Service p* | Export-Csv -Path Services.csv -IncludeTypeInformation
+Import-Csv Services.csv | Get-Member
+Import-Csv Services.csv | Start-Service -WhatIf
+
+#endregion
+
+#region Passing pipeline data ByPropertyName
+
+    # this doesn't work
+Get-ADComputer $env:COMPUTERNAME | Test-Connection -Count 1
+
+Get-ADComputer $env:COMPUTERNAME | Get-Member
+Get-Help Test-Connection -Parameter *
+
+    # but this does
+Get-ADComputer -Filter * |
+    Select-Object -Property @{n = 'ComputerName'; e = { $_.DnsHostName } } |
+    Test-Connection -Count 1
+Get-ADComputer -Filter * | Test-Connection -ComputerName { $_.DnsHostName } -Count 1
+
+# https://peterwawa.wordpress.com/2013/04/09/kasutajakontode-loomine-domeenis/
+
+#endregion
+
+#region Identifying ByPropertyName parameters
+
+Get-ParameterInfo -Name New-ADUser
+
+Get-Help Stop-Process -Parameter *
+Get-Help Stop-Service -Parameter *
+
+Get-Command -ParameterName ComputerName | Measure-Object
+
+#endregion
+
+#region Using manual parameters to override the pipeline
+
+    # this doesn't work
+'bits', 'winrm' | Start-Service -Name b* -WhatIf
+New-Object PSObject -Property @{ ComputerName = 'Lon-DC1' } |
+    Test-Connection -ComputerName 'lon-cl1'
+
+Get-ChildItem | Select-Object -First 1 | Stop-Service
+Get-Help Stop-Service -Parameter Name
+Get-ChildItem | Get-Member Name
+
+Start-Process notepad
+    # Wrong ParameterSet
+Get-Process -Name notepad | Stop-Process -Name notepad
+
+#endregion
+
+#region Using parenthetical commands
+
+'winrm', 'bits' | Get-Service -ComputerName (Get-Content masinad.txt)
+
+$kasutajad = Get-ADUser -Filter { City -like 'London' }
+Add-ADGroupMember 'London Users' -Members $kasutajad
+    # or
+Add-ADGroupMember 'London Users' -Members (Get-ADUser -Filter { City -like 'London' })
+Get-ADUser -Filter { city -like 'London' } |
+    Add-ADPrincipalGroupMembership -MemberOf 'London Users'
+
+    # same users to several groups
+Get-ADGroup -Filter { Name -like 'London*' } |
+    Add-ADGroupMember -Members $kasutajad
+
+#endregion
+
+#region Expanding property values
+
+'winrm', 'bits' |
+    Get-Service -ComputerName (
+        Get-ADComputer -Filter { Name -like '*srv*' } |
+            Select-Object -ExpandProperty DnsHostName
+    )
+
+Get-ADUser -Id Tia -Properties MemberOf |
+    Select-Object -ExpandProperty MemberOf |
+    Get-ADGroup
+
+$Property = 'MemberOf'
+(Get-ADUser -Id Tia -Properties $Property).$Property |
+    Get-ADGroup
+
+Get-ADUser -Id Tia | Get-ADPrincipalGroupMembership
 
 #endregion
 
