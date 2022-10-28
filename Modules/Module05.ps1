@@ -1,13 +1,15 @@
 <#
     .SYNOPSIS
-        Module 06 samples
+        Module 05 samples
     .DESCRIPTION
-        This file contains sample commands from course 10961 for
-        Module 06 - Querying management information by using CIM and WMI
+        This file contains sample commands from course AZ-040 for
+        Module 05 - Querying management information by using CIM and WMI
     .LINK
-        https://github.com/peetrike/10961-examples
+        https://learn.microsoft.com/training/paths/query-use-common-information-model-windows-management/
     .LINK
-        https://diigo.com/profile/peetrike/?query=%23MOC-10961+%23M6
+        https://github.com/peetrike/AZ-040-examples
+    .LINK
+        https://diigo.com/profile/peetrike/?query=%23AZ-040+%23M5
 #>
 
 #region Safety to prevent the entire script from being run instead of a selection
