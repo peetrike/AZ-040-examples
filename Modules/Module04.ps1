@@ -19,7 +19,13 @@
 
 #region Lesson 1: Using PSProviders
 
+#region What are PowerShell providers?
+
 Get-Help Providers -Category HelpFile -ShowWindow
+
+#endregion
+
+#region Different provider capabilities
 
 Get-Command -Noun PSProvider
 
@@ -27,10 +33,16 @@ Get-PSProvider
 Import-Module ActiveDirectory
 Get-PSProvider
 
+#endregion
+
+#region Accessing provider help
+
 Get-Help Function_ -Category HelpFile -ShowWindow
 Get-Help Variable_ -Category HelpFile -ShowWindow
 
 Get-Help about_*_provider
+
+#endregion
 
 #endregion
 
@@ -49,9 +61,8 @@ Get-Command -Noun PSDrive
 
 Get-Help Locations -Category HelpFile -ShowWindow
 
-Get-Command -Noun Item, ItemProperty*, Content, Location
+Get-Command -Noun Item, ItemProperty*, Content, Location, Path
 Get-Command -Noun ChildItem
-Get-Alias -Definition Get-ChildItem
 
 Get-Help New-PSDrive -ShowWindow
     #Requires -Version 3
@@ -66,6 +77,9 @@ Get-Help New-SmbMapping -Parameter Password
 #region Working with the file system
 
 Get-Help FileSystem -Category HelpFile -ShowWindow
+
+Get-Alias -Definition Get-ChildItem
+Get-Alias -Definition *-Item
 
 if (-not (Test-Path -Path temp:\)) {
     New-PSDrive -Name Temp -Root $env:TEMP -PSProvider FileSystem -Persist
@@ -128,7 +142,7 @@ Set-Location Cert:\LocalMachine\My
     #Requires -Version 3.0
 Get-ChildItem -ExpiringInDays 60 | Test-Certificate -User
 Get-ChildItem -Path Cert:\LocalMachine\my | Select-Object not*, haspr*
-# https://docs.microsoft.com/previous-versions/powershell/module/microsoft.powershell.security/about/about_certificate_provider?view=powershell-3.0#dynamic-parameters
+# https://learn.microsoft.com/previous-versions/powershell/module/microsoft.powershell.security/about/about_certificate_provider?view=powershell-3.0#dynamic-parameters
 
 Get-ChildItem -SSLServerAuthentication
 Get-ChildItem -Path Cert:\ -CodeSigningCert -Recurse
@@ -151,6 +165,7 @@ Get-Command -Noun Alias
 Get-Help Alias_ -Category HelpFile -ShowWindow
 New-Alias -Name minu -Value 'miski asi'
 Get-ChildItem Alias:\minu | Remove-Item
+Get-Command Remove-Alias -All
 
 Get-Help Environment -Category HelpFile
 Get-ChildItem Env:
