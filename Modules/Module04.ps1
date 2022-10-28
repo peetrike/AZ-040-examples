@@ -1,13 +1,15 @@
 <#
     .SYNOPSIS
-        Module 05 samples
+        Module 04 samples
     .DESCRIPTION
-        This file contains sample commands from course 10961 for
-        Module 05 - Using PSProviders and PSDrives
+        This file contains sample commands from course AZ-040 for
+        Module 04 - Using PSProviders and PSDrives
     .LINK
-        https://github.com/peetrike/10961-examples
+        https://learn.microsoft.com/training/paths/work-powershell-providers-powershell-drives-windows-powershell/
     .LINK
-        https://diigo.com/profile/peetrike/?query=%23MOC-10961+%23M5
+        https://github.com/peetrike/AZ-040-examples
+    .LINK
+        https://diigo.com/profile/peetrike/?query=%23AZ-040+%23M5
 #>
 
 #region Safety to prevent the entire script from being run instead of a selection
