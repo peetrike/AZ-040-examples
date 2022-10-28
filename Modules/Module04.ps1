@@ -9,7 +9,7 @@
     .LINK
         https://github.com/peetrike/AZ-040-examples
     .LINK
-        https://diigo.com/profile/peetrike/?query=%23AZ-040+%23M5
+        https://diigo.com/profile/peetrike/?query=%23AZ-040+%23M4
 #>
 
 #region Safety to prevent the entire script from being run instead of a selection
