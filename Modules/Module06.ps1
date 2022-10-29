@@ -1,13 +1,13 @@
 <#
     .SYNOPSIS
-        Module 07 samples
+        Module 06 samples
     .DESCRIPTION
-        This file contains sample commands from course 10961 for
-        Module 07 - Working with variables, arrays, and hash tables
+        This file contains sample commands from course AZ-040 for
+        Module 06 - Working with variables, arrays, and hash tables
     .LINK
-        https://github.com/peetrike/10961-examples
+        https://github.com/peetrike/AZ-040-examples
     .LINK
-        https://diigo.com/profile/peetrike/?query=%23MOC-10961+%23M7
+        https://diigo.com/profile/peetrike/?query=%23AZ-040+%23M6
 #>
 
 #region Safety to prevent the entire script from being run instead of a selection
