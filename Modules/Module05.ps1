@@ -39,6 +39,9 @@ Get-Command -noun Wmi*
 Get-Module CimCmdlets -ListAvailable
 Get-Command -Module CimCmdlets
 
+(Get-Command Get-NetAdapter).OutputType
+(Get-Command Get-UserProfile).OutputType
+
 #endregion
 
 #region Understanding the repository
@@ -51,10 +54,11 @@ Get-CimInstance -Namespace root\Microsoft\Windows -ClassName __Namespace
 
 #region Finding documentation
 
-# https://docs.microsoft.com/windows/win32/wmisdk/
-# https://docs.microsoft.com/previous-versions/windows/desktop/wmi_v2
-# https://docs.microsoft.com/windows/win32/srvnodes/wmi-mi-omi-providers
-# https://docs.microsoft.com/windows/win32/cimwin32prov/win32-provider
+# https://learn.microsoft.com/windows/win32/wmisdk/
+# https://learn.microsoft.com/previous-versions/windows/desktop/wmi_v2
+# https://learn.microsoft.com/windows/win32/cimwin32prov/win32-provider
+# https://learn.microsoft.com/windows/win32/wmisdk/wmi-providers
+# https://learn.microsoft.com/windows/win32/srvnodes/wmi-mi-omi-providers
 
 #endregion
 
@@ -87,11 +91,12 @@ code -r .\Get-CimNamespace.ps1
 .\Get-CimNamespace.ps1
 
 # https://github.com/peetrike/CimNamespace/blob/main/src/Public/Get-CimNamespace.ps1
+
 #endregion
 
 #region Listing classes
 
-Get-WmiObject -Namespace root\cimv2 –List
+Get-WmiObject -Namespace root\cimv2 -List
 Get-CimClass -ClassName Win32_* | Sort-Object CimClassName
 
     # don't use this
@@ -101,13 +106,14 @@ Get-CimClass -ClassName Win32_InstalledWin32Program
 
 Get-ChildItem 'HKLM:\SOFTWARE\Microsoft\Windows\CurrentVersion\Uninstall',
               'HKLM:\SOFTWARE\Wow6432Node\Microsoft\Windows\CurrentVersion\Uninstall'
+# https://github.com/peetrike/scripts/blob/master/src/ComputerManagement/Get-InstalledSoftware.ps1
 
 Find-Module msi -Repository PSGallery
 Get-MSIProductInfo
 
     # Microsoft Store apps
-    #Requires -RunAsAdministrator
 Get-CimClass -ClassName Win32_InstalledStoreProgram
+
 #endregion
 
 #region Querying instances
@@ -119,13 +125,13 @@ Get-WmiObject -Class Win32_LogicalDisk
 Get-CimInstance -ClassName Win32_LogicalDisk
 
 Get-Help wql -Category HelpFile -ShowWindow
-# https://docs.microsoft.com/powershell/module/microsoft.powershell.core/about/about_wql?view=powershell-5.1
+# https://learn.microsoft.com/powershell/module/microsoft.powershell.core/about/about_wql?view=powershell-5.1
 Get-CimInstance -Query @'
 SELECT DeviceId,Size,FreeSpace
 FROM Win32_LogicalDisk
 WHERE DriveType=3
 '@
-Get-CimInstance Win32_LogicalDisk –Filter "DriveType=3" -Property DeviceId, Size, FreeSpace -Verbose
+Get-CimInstance Win32_LogicalDisk -Filter "DriveType=3" -Property DeviceId, Size, FreeSpace -Verbose
 
 Get-CimInstance -ClassName Win32_Service -Filter 'Name="bits"'
 Get-Service BITS
@@ -159,11 +165,14 @@ if ($command = Get-Command Get-CimInstance -ErrorAction SilentlyContinue) {
 Get-Help Get-WmiObject -Parameter ComputerName
 Get-Help Get-CimInstance -Parameter ComputerName
 
-Get-WmiObject -Class Win32_OperatingSystem -ComputerName 'LON-DC1'
-Get-CimInstance -ClassName Win32_OperatingSystem -ComputerName 'LON-DC1'
+$Computer = 'SEA-DC1'
+Get-WmiObject -Class Win32_OperatingSystem -ComputerName $Computer
+Get-CimInstance -ClassName Win32_OperatingSystem -ComputerName $Computer
 
-Get-NetFirewallRule -Name wmi*-in-*
-Get-NetFirewallRule -Name winrm-http*
+    #Requires -RunAsAdministrator
+Get-NetFirewallRule -Name wmi*-in-* | Select-Object name, enabled, profile, action
+Get-NetFirewallRule -Name winrm-http* | Select-Object name, enabled, profile, action
+Get-NetFirewallRule -Name WINRM-HTTP-In* | Where-Object Profile -like 'Public' | Get-NetFirewallAddressFilter
 
 #endregion
 
@@ -175,6 +184,9 @@ Get-Help CimSession -Category HelpFile -ShowWindow
 Get-Command -Noun CimSession
 Get-Command -ParameterName 'CimSession' | Measure-Object
 
+if (-not (Test-Path -Path servers.txt -PathType Leaf)) {
+    'Sea-DC1' | Set-Content -Path servers.txt
+}
 $Session = New-CimSession -ComputerName (Get-Content servers.txt)
 $kettad = Get-CimInstance -CimSession $Session -ClassName Win32_LogicalDisk
 $malu = Get-CimInstance -CimSession $Session -ClassName Win32_PhysicalMemory
@@ -201,15 +213,38 @@ Get-CimClass -ClassName Win32_Service | Select-Object -ExpandProperty CimClassMe
 
 Get-CimClass -ClassName Win32_OperatingSystem | Select-Object -ExpandProperty CimClassMethods
 
-# https://docs.microsoft.com/windows/win32/cimwin32prov/win32shutdown-method-in-class-win32-operatingsystem
-# https://docs.microsoft.com/windows/win32/cimwin32prov/win32-service-methods
+# https://learn.microsoft.com/windows/win32/cimwin32prov/win32shutdown-method-in-class-win32-operatingsystem
+# https://learn.microsoft.com/windows/win32/cimwin32prov/win32-service-methods
 
 #endregion
 
 #region Invoking methods
 
+(Get-WmiObject win32_service -Filter 'Name="bits"').StopService()
+$Spooler = Get-WmiObject Win32_Service -Filter 'Name="spooler"'
+$Spooler.StopService()
+$Spooler
+$Spooler.Get()
+$Spooler
+
+$Spooler.ChangeStartMode('Manual')
+
+$Spooler.psbase | Get-Member -MemberType Method
+    # the following example gets parameters sorted by name
+$Spooler.GetMethodParameters('Change')
+$Spooler.Change
+# https://learn.microsoft.com/windows/win32/cimwin32prov/change-method-in-class-win32-service
+$Spooler.Change(
+    $null,      # DisplayName
+    $null,      # PathName
+    $null,      # ServiceType
+    $null,      # ErrorControl
+    'Disabled'  # StartMode
+)
+Get-Service spooler | Select-Object StartType
+
 Get-Help Invoke-WmiMethod -Parameter ArgumentList
-([Wmiclass]'Win32_Process').GetMethodParameters('Create')
+([Wmiclass]'Win32_Process').Create
 Invoke-WmiMethod -Class Win32_Process -Name Create -ArgumentList 'notepad.exe'
 
 Get-Help Invoke-CimMethod -Parameter Arguments
@@ -219,8 +254,6 @@ Get-CimClass -ClassName Win32_Process |
 Get-Process Notepad
 Get-CimInstance -ClassName Win32_Process -Filter "Name='notepad.exe'" |
     Invoke-CimMethod -MethodName Terminate
-
-(Get-WmiObject win32_service -Filter 'Name="bits"').StopService()
 
 #endregion
 
