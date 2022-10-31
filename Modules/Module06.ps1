@@ -30,7 +30,7 @@ Get-Command -Noun Variable
 
 #region Variable naming
 
-# https://docs.microsoft.com/powershell/module/microsoft.powershell.core/about/about_variables#variable-names-that-include-special-characters
+# https://learn.microsoft.com/powershell/module/microsoft.powershell.core/about/about_variables#variable-names-that-include-special-characters
 
     # variable names are not case sensitive, not even on Linux:
 $var = 'variable'
@@ -49,7 +49,7 @@ $minuOlulineInfo = 22       # Camel Case
 $minu_oluline_info = 43     # Snake Case
 
 # https://poshcode.gitbook.io/powershell-practice-and-style/style-guide/code-layout-and-formatting#capitalization-conventions
-# https://docs.microsoft.com/dotnet/standard/design-guidelines/capitalization-conventions
+# https://learn.microsoft.com/dotnet/standard/design-guidelines/capitalization-conventions
 
 #endregion
 
@@ -60,7 +60,15 @@ Set-Variable -Name uus -Value 'tere'
 
 Get-Help Assignment -Category HelpFile -ShowWindow
 $kasutaja = Get-ADUser meelis
-$MinuMuutuja += 10              # $MinuMuutuja = $MinuMuutuja + 10
+
+$uus
+Get-Variable -name MinuMuutuja
+Get-Item Variable:uus
+Get-Content Variable:\uus
+
+# https://learn.microsoft.com/powershell/module/microsoft.powershell.core/about/about_automatic_variables#null
+$MinuMuutuja = $null
+Clear-Variable -Name uus
 
 Set-Variable -Name täpi -Value (Get-Content tere.txt)
 
@@ -69,8 +77,8 @@ Get-Help numeric -Category HelpFile -ShowWindow
 
 #region Variable types
 
-# https://docs.microsoft.com/powershell/module/microsoft.powershell.core/about/about_variables#types-of-variables
-# https://docs.microsoft.com/dotnet/api/
+# https://learn.microsoft.com/powershell/module/microsoft.powershell.core/about/about_variables#types-of-variables
+# https://learn.microsoft.com/dotnet/api/
 
 $x = 7
 $x = 'tere'
@@ -80,6 +88,9 @@ Get-Help Type_Accelerator -ShowWindow
 [int] $Number = 5
 $Number = '4'
 $Number = 'neli'
+
+$date = [datetime] '2022.10.30'
+$date = 'tere'
 
 $Number | Get-Member
 $Number.GetType()
@@ -101,15 +112,16 @@ $set | Get-Member
 , $set | Get-Member
 $set.GetType()
 
-Start-Process ('https://docs.microsoft.com/dotnet/api/{0}' -f $set.GetType().BaseType.FullName)
-
-$set.SetValue
+$process = get-process -id $PID
+Start-Process ('https://docs.microsoft.com/dotnet/api/{0}' -f $process.GetType().FullName)
+# https://github.com/peetrike/PWAddins/blob/master/src/Public/Get-TypeUrl.ps1
+$process.WaitForExit
 
 #endregion
 
 #region Working with strings
 
-# https://docs.microsoft.com/dotnet/api/system.string
+# https://learn.microsoft.com/dotnet/api/system.string
 
 $tekst = 'tere'
 $tekst | Get-Member
@@ -122,10 +134,10 @@ $tekst.Length
 $PWD.ToString().Contains('\')
 $PWD.Path.Split('\')
 
-$env:Path.split(';')
+$env:Path.Split(';')
     # for multiplatform
-$env:PATH.split([io.path]::PathSeparator)
-$env:PATH -split [io.path]::PathSeparator
+$env:PATH.Split([IO.Path]::PathSeparator)
+$env:PATH -split [IO.Path]::PathSeparator
 
 #endregion
 
@@ -134,7 +146,7 @@ $env:PATH -split [io.path]::PathSeparator
 Get-Help Get-Date
 Get-Date
 
-# https://docs.microsoft.com/dotnet/api/system.datetime
+# https://learn.microsoft.com/dotnet/api/system.datetime
 
 [datetime]::Now
 $täna = [datetime]::Today
@@ -159,9 +171,12 @@ Invoke-WithCulture -Culture 'ja-jp' -ScriptBlock { Get-Date $date }
 [datetime]::Parse($date, [cultureinfo]'en-us')
 [datetime]::Parse($date, [cultureinfo]'ja-jp')
 
-# https://docs.microsoft.com/dotnet/api/system.timespan
-$aeg = New-TimeSpan -days 13
+# https://learn.microsoft.com/dotnet/api/system.timespan
+Get-Help New-TimeSpan -ShowWindow
+$aeg = New-TimeSpan -Start (Get-Item .\Module06.ps1).LastWriteTime
+$aeg = Get-Item .\Module06.ps1 | New-TimeSpan
 $aeg | Get-Member
+
 $täna - $aeg
 $täna.AddDays(-13)
 $täna.Subtract($aeg)
@@ -178,9 +193,9 @@ $täna.Add($aeg)
 
 Get-Help Arrays -ShowWindow
 
-# https://docs.microsoft.com/dotnet/api/system.array
+# https://learn.microsoft.com/dotnet/api/system.array
 
-$arvutid = 'Lon-cl1', 'Lon-svr1'
+$arvutid = 'Sea-cl1', 'Sea-svr1'
 $arvutid.Length
 $arvutid | Get-Member   # shows array member objects, not array itself
 $arvutid.GetType()
@@ -205,8 +220,8 @@ $arvutid[$arvutid.Count - 1]
 $arvutid[-1]
 $arvutid | Select-Object -Last 1
 
-$arvutid.Add('Lon-DC1')
-$arvutid += 'Lon-DC2'
+$arvutid.Add('Sea-DC1')
+$arvutid += 'Sea-DC2'
 $arvutid.Count
 $arvutid | Select-Object -First 2 -Skip 2
 
@@ -230,7 +245,7 @@ $numbrid.Count
 
 #region Working with ArrayLists
 
-# https://docs.microsoft.com/dotnet/api/system.collections.arraylist
+# https://learn.microsoft.com/dotnet/api/system.collections.arraylist
 
 $computers = [Collections.ArrayList] (Get-Content computers.txt)
 $computers.Add('Lon-DC1')
@@ -238,7 +253,7 @@ $computers.RemoveAt(1)
 
 # https://github.com/dotnet/platform-compat/blob/master/docs/DE0006.md
 
-# https://docs.microsoft.com/dotnet/api/system.collections.generic.list-1
+# https://learn.microsoft.com/dotnet/api/system.collections.generic.list-1
 
 $computers = [Collections.Generic.List[string]] (Get-Content computers.txt)
 , $computers | Get-Member
@@ -249,7 +264,7 @@ $computers[-1]
 $computers.RemoveAt
 $computers.Remove
 
-# https://docs.microsoft.com/dotnet/api/system.collections.objectmodel.collection-1
+# https://learn.microsoft.com/dotnet/api/system.collections.objectmodel.collection-1
 $computers = [Collections.ObjectModel.Collection[string]] (Get-Content computers.txt)
 , $computers | Get-Member
 $computers.Insert(1, 'Lon-DC1')
@@ -262,7 +277,7 @@ $computers[-1]
 
 Get-Help Hash_Table -ShowWindow
 
-# https://docs.microsoft.com/dotnet/api/system.collections.hashtable
+# https://learn.microsoft.com/dotnet/api/system.collections.hashtable
 
 $computers = @{
     'Lon-DC1' = '172.16.0.10'
@@ -291,20 +306,20 @@ Get-ADComputer -Filter * -Properties IPv4Address | ForEach-Object {
 }
 $computers.Add('Server2', '172.16.0.132')
 
-$computers['Lon-Cl1']
-$computers.'Lon-DC1'
+$computers['Sea-Cl1']
+$computers.'Sea-DC1'
 $computers.Server2
 $name = $computers.Keys | Get-Random
 $computers.$name
 $computers[$name]
 
-$computers.'lon-SVR3' = '172.16.0.126'
-$computers.Add('lon-svr2', '172.16.0.32')
+$computers.'Sea-SVR3' = '172.16.0.126'
+$computers.Add('Sea-SVR2', '172.16.0.32')
 $computers
-$computers.'lon-svr3'
+$computers.'Sea-SVR3'
 
 $computers.Keys -contains 'Server2'
-$computers.ContainsKey('Lon-svr1')
+$computers.ContainsKey('Sea-svr1')
 
     # create HashTable to find user accounts fast:
 $users = @{}
@@ -314,8 +329,8 @@ foreach ($u in get-aduser -Filter *) {
     #$users.Add($name, $u)
 }
 $users.administrator
-$users.tia
-$users.adam
+$users.marko
+$users.tomas
 
 #endregion
 
@@ -336,7 +351,7 @@ foreach ($u in users) {
         GivenName      = $u.Eesnimi
         #SurName        = $u.perenimi
         Name           = $u.eesnimi, $u.perenimi -join ' '
-        SamAccountName = $u.eesnimi.substring(0,4)
+        SamAccountName = $u.eesnimi.substring(0, 4)
     }
     if ($u.aadress) {
         $CreateProperties.StreetAddress = $u.aadress
