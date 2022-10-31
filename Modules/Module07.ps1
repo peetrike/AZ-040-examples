@@ -1,13 +1,13 @@
 <#
     .SYNOPSIS
-        Module 08 samples
+        Module 07 samples
     .DESCRIPTION
-        This file contains sample commands from course 10961 for
-        Module 08 - Basic scripting
+        This file contains sample commands from course AZ-040 for
+        Module 07 - PowerShell scripting
     .LINK
-        https://github.com/peetrike/10961-examples
+        https://github.com/peetrike/AZ-040-examples
     .LINK
-        https://diigo.com/profile/peetrike/?query=%23MOC-10961+%23M8
+        https://diigo.com/profile/peetrike/?query=%23AZ-040+%23M7
 #>
 
 #region Safety to prevent the entire script from being run instead of a selection
@@ -17,34 +17,35 @@
 
 #region Lesson 1: Introduction to scripting
 
-#region Overview of Windows PowerShell scripts
+#region Overview of PowerShell scripts
 
 Get-Help Scripts -Category HelpFile -ShowWindow
 
 get-date
-whoami
+whoami.exe
 Get-History -Count 2 |
     Select-Object -ExpandProperty Commandline |
-    Set-Content -Path käsud.txt -Encoding utf8
+    Set-Content -Path käsud.txt -Encoding default
 
     # from PowerShell
 Invoke-Expression (gc .\käsud.txt -Raw)
+Get-Content .\käsud.txt | Invoke-Expression
 Invoke-Item .\käsud.txt
 pwsh -c (gc .\käsud.txt -Raw)
 
     # from other shells
-powershell.exe -NoLogo -NoProfile < käsud.txt
+pwsh.exe -NoLogo -NoProfile < käsud.txt
 type .\käsud.txt | powershell.exe -Command -
 
 #endregion
 
-#region Modifying scripts
+#region Modifying/Creating scripts
 
 # https://code.visualstudio.com
 Get-Command code
 code -r käsud.txt
 
-# https://docs.microsoft.com/powershell/scripting/windows-powershell/ise/how-to-write-and-run-scripts-in-the-windows-powershell-ise
+# https://learn.microsoft.com/powershell/scripting/windows-powershell/ise/how-to-write-and-run-scripts-in-the-windows-powershell-ise
 Get-Command ise
 ise käsud.txt
 
@@ -57,7 +58,6 @@ ise käsud.txt
 # https://www.sublimetext.com/
 # https://atom.io/
 
-# https://code.labstack.com/powershell
 # https://poshgui.com/
 # https://docs.github.com/en/codespaces
 
@@ -70,7 +70,7 @@ ise käsud.txt
 #region What is the PowerShellGet module?
 
 # https://www.powershellgallery.com/
-# https://docs.microsoft.com/powershell/scripting/gallery/getting-started
+# https://learn.microsoft.com/powershell/scripting/gallery/getting-started
 
 Get-Module PowerShellGet -ListAvailable
 
@@ -83,12 +83,18 @@ if ($PSVersionTable.PSVersion.Major -lt 6) {
     }
 }
 
+# https://github.com/peetrike/scripts/blob/master/src/ComputerManagement/UserProfile/Install-UserProfile.ps1
+
 Find-Script Send-PasswordNotification -Repository PSGallery
 Find-Module UserProfile -Repository PSGallery | Update-Module
 Find-Module -Command get-user -Repository PSGallery
+Find-Module -Tag CrescendoBuilt -Repository PSGallery
 
 Get-InstalledScript
 Get-InstalledModule
+
+Get-Command -noun PSRepository
+Get-PSRepository
 
 #endregion
 
