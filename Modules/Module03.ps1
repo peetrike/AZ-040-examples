@@ -242,6 +242,7 @@ Get-Help Type_Operators -ShowWindow
 $a = Get-Date
 $a -is [datetime]
 
+Get-Help about_Booleans -ShowWindow
 'tere' -as [bool]
 (Get-ChildItem) -as [bool]
 1 -as [bool]
