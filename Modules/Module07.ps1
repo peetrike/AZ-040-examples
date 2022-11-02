@@ -101,15 +101,18 @@ Get-PSRepository
 #region Running scripts
 
 powershell.exe -?
+Get-Help PowerShell_exe -ShowWindow
+    #Requires -Version 7
+Get-Help pwsh -ShowWindow
 
     # this doesn't work
 powershell.exe -File käsud.txt
     # but this works
 Copy-Item -Path käsud.txt -Destination käsud.ps1
-powershell.exe -File käsud.ps1
-pwsh -f käsud.ps1
+powershell.exe -NoProfile -NonInteractive -File käsud.ps1
+pwsh -nop -f käsud.ps1
 
-powershell.exe -Command .\käsud.ps1
+powershell.exe -NoProfile -Command .\käsud.ps1
 .\käsud.ps1
 .\käsud
 käsud
@@ -117,8 +120,6 @@ käsud
 Get-Help Command_Precedence -ShowWindow
 
 Get-Help Run_With_PowerShell -ShowWindow
-
-Get-Help Unblock-File -ShowWindow
 
 #endregion
 
@@ -134,6 +135,8 @@ powershell.exe -ExecutionPolicy RemoteSigned -file käsud.ps1
 pwsh.exe -NoProfile -ExecutionPolicy AllSigned -c Get-ExecutionPolicy -List
 Set-ExecutionPolicy RemoteSigned -Scope Process     #DevSkim: ignore DS113853
 
+Get-Help Unblock-File -ShowWindow
+
 #endregion
 
 #region PowerShell and AppLocker/WDAC
@@ -142,7 +145,7 @@ Get-Help Language_Modes -ShowWindow
 
 $ExecutionContext.SessionState.LanguageMode
 
-# https://docs.microsoft.com/windows/security/threat-protection/windows-defender-application-control/select-types-of-rules-to-create#table-1-windows-defender-application-control-policy---policy-rule-options
+# https://learn.microsoft.com/windows/security/threat-protection/windows-defender-application-control/select-types-of-rules-to-create#windows-defender-application-control-file-rule-levels
 
 #endregion
 
@@ -181,12 +184,14 @@ foreach ($i in $numbers) {
 
 foreach ($file in Get-ChildItem -File) { $file.Name }
 $failid = Get-ChildItem -File
-foreach ($file in $failid)
-{
+foreach ($file in $failid) {
     $file.Name
 }
 
 Get-Help ForEach-Object -ShowWindow
+    #Requires -Version 7
+Get-Help ForEach-Object -Parameter parallel
+
 Get-Help Pipelines -Category HelpFile -ShowWindow
 
 #endregion
@@ -200,14 +205,18 @@ if ($a -gt 1) { 'a is greater' }
 elseif ($null -eq $b) { 'b is not set' }
 else { 'something else' }
 
-if (Get-ChildItem -File) { 'there are some files' }
-else { New-Item uus.txt }
+if (Get-ChildItem -File) { 'there are some files' } else { New-Item uus.txt }
 
 if (-not (Test-Path -Path käsud.txt -PathType Leaf )) {
     New-Item -Path käsud.txt -ItemType File
 }
 
 Test-Path HKLM:\SOFTWARE\
+
+    #Requires -Version 7
+$service = Get-Service BITS
+$service.Status -eq 'Running' ? (Stop-Service $service) : (Start-Service $service)
+
 #endregion
 
 #region Understanding the Switch construct
@@ -285,6 +294,10 @@ for (
     "Creating User $i"
 }
 
+for ($i = 1; ; Start-Sleep -Seconds 2) {
+    ($i++)
+}
+
 #endregion
 
 #region Understanding other loop constructs
@@ -320,10 +333,11 @@ while ($i--) {
 }
 
 Start-Process notepad
-while (get-process notepad -ErrorAction SilentlyContinue) {
-    write-verbose -Message 'Notepad töötab'
+while (Get-Process notepad -ErrorAction SilentlyContinue) {
+    Write-Verbose -Message 'Notepad works'
     Start-Sleep -Seconds 2
 }
+
 #endregion
 
 #region Understanding Break and Continue
@@ -340,7 +354,7 @@ foreach ($user in $users) {
 
 $max = 3
 $number = 0
-forEach ($user in $users) {
+foreach ($user in $users) {
     $number++
     "Modify User object $number"
     if ($number -ge $max) {
@@ -382,12 +396,14 @@ Get-Help Get-Content -ShowWindow
 Get-Content -Path .\* -Include *.txt, *.log -Exclude käsud*
 
 Get-Help Get-Content -Parameter TotalCount
-Get-Content Module08.ps1 -Head 7
+Get-Content Module07.ps1 -Head 7
 
 Get-Help Get-Content -Parameter Tail
-Get-Content Module08.ps1 -Tail 5
+Get-Content Module07.ps1 -Tail 5
 
 Get-Help Get-Content -Parameter ReadCount
+Get-Help Get-Content -Parameter Raw
+Get-Help Get-Content -Parameter Wait
 
 #endregion
 
@@ -417,12 +433,16 @@ Get-Command -Noun *xml -Module Microsoft.PowerShell.*
 Get-Help Import-Clixml -ShowWindow
 
 Get-Process p* | Export-Clixml -Path protsessid.xml
-Import-Clixml -Path protsessid.xml | get-member
+Import-Clixml -Path protsessid.xml | Get-Member
 Invoke-Item protsessid.xml
 
 $XmlKasutajad = Get-ADUser -filter { City -like 'Tallinn' } | ConvertTo-Xml
 $XmlKasutajad.OuterXml | Set-Content -Path kasutajad.xml -Encoding utf8
+
 $häälestus = [xml](Get-Content kasutajad.xml)
+$häälestus.GetType() | Get-TypeUrl -Invoke
+$häälestus.Load
+$häälestus.Save
 
 #endregion
 
@@ -450,14 +470,14 @@ $jsonInfo = Invoke-RestMethod -Uri $url
 $jsonInfo.ip
 $jsonInfo | Select-Object ip, hostname
 
-Invoke-RestMethod -Uri https://devblogs.microsoft.com/powershell/feed
+Invoke-RestMethod -Uri https://devblogs.microsoft.com/powershell/feed | Select-Object -First 3
 
 #endregion
 
 #endregion
 
 
-#region Using .PSD1 files as data source
+#region Extra: Using .PSD1 files as data source
 
 Get-Help Import-PowerShellDataFile -ShowWindow
 
