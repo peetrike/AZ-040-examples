@@ -537,6 +537,7 @@ $Credential = Get-Credential -Credential 'domain\user'
 $Credential.UserName
 
 code -r -g Connect-VM.ps1:61
+    #Requires -Version 3
 Get-Credential -Message 'Please enter secret' -UserName 'not used'
 
 $host.ui.PromptForCredential
@@ -544,13 +545,19 @@ $Credential = $host.ui.PromptForCredential(
     'Need credentials',
     'Please enter your user name and password.',
     'user',
-    'target'
+    'target'  # used as domain name, when username doesn't have one
 )
 
-Find-Module BetterCredentials -Repository PSGallery
-Find-Module Microsoft.PowerShell.SecretManagement -Repository PSGallery
+# https://learn.microsoft.com/powershell/module/microsoft.powershell.security/get-credential?view=powershell-5.1#example-4
+Get-ItemProperty 'HKLM:\SOFTWARE\Microsoft\PowerShell\1\ShellIds' -Name ConsolePrompting
 
-# https://docs.microsoft.com/powershell/scripting/learn/deep-dives/add-credentials-to-powershell-functions
+Find-Module BetterCredentials -Repository PSGallery
+
+Find-Module Microsoft.PowerShell.SecretManagement -Repository PSGallery
+Find-Module -tag SecretManagement -Repository PSGallery
+
+# https://peterwawa.wordpress.com/2010/04/28/powershell-ja-admin-oigused/
+# https://learn.microsoft.com/powershell/scripting/learn/deep-dives/add-credentials-to-powershell-functions
 
 #endregion
 
@@ -573,11 +580,10 @@ Get-ADUser -Filter { City -like 'Tallinn' } |
 # https://github.com/peetrike/Examples/blob/master/src/Gui/ToastNotification.ps1
 Find-Module burnttoast -Repository PSGallery
 
-#Requires -Version 6
-
+    #Requires -Version 6
 Find-Module Microsoft.PowerShell.ConsoleGuiTools -Repository PSGallery
 
-# https://blog.ironmansoftware.com/tui-powershell
+# https://gui-cs.github.io/Terminal.Gui
 
 #endregion
 
@@ -652,14 +658,14 @@ Write-Information -MessageData 'Teade' -InformationAction Continue
 Write-Information -MessageData 'Teade' -InformationAction Continue 6>> infotekst.txt
 Write-Host 'kah teade' 6>> infotekst.txt
 
-code -r events06.ps1
+code -r events05.ps1
 
-.\events06.ps1 -Verbose
-.\events06.ps1 -Debug
+.\events05.ps1 -Verbose
+.\events05.ps1 -Debug
 
 #endregion
 
-#region Using log files
+#region Extra: Using log files
 
 code -r .\write-log.ps1
 
@@ -680,8 +686,8 @@ Get-Command -Noun PSBreakpoint
 Get-Help Wait-Debugger -ShowWindow
 Get-Help Write-Debug -ShowWindow
 
-# https://docs.microsoft.com/powershell/module/microsoft.powershell.core/about/about_commonparameters#-debug
-# https://docs.microsoft.com/powershell/module/microsoft.powershell.core/about/about_preference_variables#debugpreference
+# https://learn.microsoft.com/powershell/module/microsoft.powershell.core/about/about_commonparameters#-debug
+# https://learn.microsoft.com/powershell/module/microsoft.powershell.core/about/about_preference_variables#debugpreference
 
 $DebugPreference
 
@@ -691,54 +697,23 @@ $DebugPreference = 'Break'
 Write-Debug -Message 'Stop here'
 $DebugPreference = $oldDebugPreference
 
-# https://docs.microsoft.com/powershell/scripting/dev-cross-plat/vscode/using-vscode#debugging-with-visual-studio-code
+# https://learn.microsoft.com/powershell/scripting/dev-cross-plat/vscode/using-vscode#debugging-with-visual-studio-code
 # https://code.visualstudio.com/docs/editor/debugging
 
 #endregion
 
 #region Understanding error actions
 
-# https://docs.microsoft.com/powershell/module/microsoft.powershell.core/about/about_commonparameters#-erroraction
-# https://docs.microsoft.com/powershell/module/microsoft.powershell.core/about/about_preference_variables#erroractionpreference
+# https://learn.microsoft.com/powershell/module/microsoft.powershell.core/about/about_commonparameters#-erroraction
+# https://learn.microsoft.com/powershell/module/microsoft.powershell.core/about/about_preference_variables#erroractionpreference
 
 $ErrorActionPreference
 $ErrorActionPreference | Get-Member
-[Management.Automation.ActionPreference]
-[enum]::GetValues([Management.Automation.ActionPreference])
+[Management.Automation.ActionPreference] | Get-EnumValue
 
 Get-ChildItem loll -ErrorAction SilentlyContinue
 
 Get-Help Write-Error -ShowWindow
-
-#endregion
-
-#region Using Try..Catch
-
-Get-Help about_try -ShowWindow
-Get-Help about_throw -ShowWindow
-
-try {
-    Get-CimInstance Win32_OperatingSystem -ComputerName lon-svr1, . -ErrorAction Stop
-} catch {
-    Write-Warning 'tekkis miski viga'
-    throw
-}
-
-#endregion
-
-#region Identifying specific errors to use with Try..Catch
-
-try {
-    New-Item -Path polesellist -Name katse.txt -ItemType File -ErrorAction Stop
-} catch [System.IO.DirectoryNotFoundException] {
-    Write-Warning -Message $_.Exception.Message
-    Write-Verbose -Message 'Creating missing folder'
-    $null = New-Item -Path polesellist -ItemType Directory
-} catch [System.IO.IOException] {
-    Write-Warning -Message $_.Exception.Message
-} catch {
-    Write-Warning -Message 'Something other happened'
-}
 
 #endregion
 
@@ -763,7 +738,7 @@ get-hello
 get-command get-hello
 get-item function:\get-hello | Remove-Item
 
-code -r events07.ps1
+code -r events06.ps1
 
 #endregion
 
@@ -783,7 +758,7 @@ function katse {
     param (
         $minuasi
     )
-    write-verbose -Message ('Minu asi on: {0}' -f $minuasi)
+    Write-Verbose -Message ('Minu asi on: {0}' -f $minuasi)
 
     $minuasi += " + katsetuse asi"
     <# return #> $minuasi
@@ -802,24 +777,24 @@ Get-Help about_return -ShowWindow
 
 # https://docs.microsoft.com/powershell/scripting/developer/module/how-to-write-a-powershell-script-module
 
-code -r events07.psm1
+code -r events06.psm1
 
 Get-Help Export-ModuleMember -ShowWindow
 
-Import-Module .\events07.psm1
-events07 -aeg ([datetime]::Now).AddHours(-2)
-Get-Command -Module events07
-Get-Help events07
-Remove-Module events07
+Import-Module .\events06.psm1
+events06 -aeg ([datetime]::Now).AddHours(-2)
+Get-Command -Module events06
+Get-Help events06
+Remove-Module events06
 
     # this is not module, it imports function to global scope
-Import-Module .\events07.ps1
-Get-Command events07 | Format-List
-Remove-Item -Path function:\events07
+Import-Module .\events06.ps1
+Get-Command events06 | Format-List
+Remove-Item -Path function:\events06
 
-Import-Module .\events07
-Get-Module events07 | Format-List
-Remove-Module events07
+Import-Module .\events06
+Get-Module events06 | Format-List
+Remove-Module events06
 
 New-Module -Name SayHello -ScriptBlock {
     function get-hello {
@@ -834,11 +809,11 @@ Remove-Module SayHello
 
 #region Using dot sourcing
 
-# https://docs.microsoft.com/powershell/module/microsoft.powershell.core/about/about_operators#dot-sourcing-operator-
+# https://learn.microsoft.com/powershell/module/microsoft.powershell.core/about/about_operators#dot-sourcing-operator-
 
-. .\events07.ps1
-Get-Command events07
-Get-Item function:\events07 | Remove-Item
+. .\events06.ps1
+Get-Command events06
+Get-Item function:\events06 | Remove-Item
 
 #endregion
 
