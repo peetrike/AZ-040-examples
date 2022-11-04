@@ -1,25 +1,6 @@
-﻿<#
-    .SYNOPSIS
-        otsib sündmuste logist asju
-    .DESCRIPTION
-        See skript otsib Application logist sündmusi, mille EventId on 15
-    .EXAMPLE
-        .\events05.ps1 -Aeg (Get-Date).AddDays(-3)
-
-        Leiab 3 päeva vanad sündmused
-    .LINK
-        Get-WinEvent
-    .LINK
-        http://www.ee
-    .NOTES
-        Author: Meelis Nigols
-#>
+﻿[CmdletBinding()]
 param (
-        [parameter(
-            Mandatory = $false
-        )]
         [datetime]
-        # aeg, millest alates sündmusi otsida
     $Aeg = [datetime]::Now.AddDays(-1),
         [ValidatePattern('Lon-*')]
         [Alias('CN')]
@@ -41,7 +22,10 @@ $EventParams = @{
     }
 }
 if ($ComputerName) {
+    Write-Verbose -Message ('Connecting to computer: {0}' -f $ComputerName)
     $EventParams.ComputerName = $ComputerName
+} else {
+    Write-Debug -Message 'Checking from local computer'
 }
 
 Get-WinEvent @EventParams
