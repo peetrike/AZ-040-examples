@@ -1,13 +1,13 @@
 <#
     .SYNOPSIS
-        Module 10 samples
+        Module 8 samples
     .DESCRIPTION
-        This file contains sample commands from course 10961 for
-        Module 10 - Administering remote computers
+        This file contains sample commands from course AZ-040 for
+        Module 8 - Administering remote computers
     .LINK
-        https://github.com/peetrike/10961-examples
+        https://github.com/peetrike/AZ-040-examples
     .LINK
-        https://diigo.com/profile/peetrike/?query=%23MOC-10961+%23M10
+        https://diigo.com/profile/peetrike/?query=%23AZ-040+%23M8
 #>
 
 #region Safety to prevent the entire script from being run instead of a selection
