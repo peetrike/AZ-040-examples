@@ -15,25 +15,28 @@
 #endregion
 
 
-#region Lesson 1: Using basic Windows PowerShell remoting
+#region Lesson 1: Use basic PowerShell remoting
 
 #region Remoting overview and architecture
 
 Get-Help about_Remote -ShowWindow
 Get-Help about_Remote_Requirements -ShowWindow
 
-# https://docs.microsoft.com/powershell/scripting/learn/remoting/SSH-Remoting-in-PowerShell-Core
+# https://learn.microsoft.com/powershell/scripting/learn/remoting/SSH-Remoting-in-PowerShell-Core
 
 #endregion
 
 #region Remoting vs. remote connectivity
 
-# https://docs.microsoft.com/powershell/scripting/learn/remoting/powershell-remoting-faq#do-all-remote-commands-require-powershell-remoting-
+# https://learn.microsoft.com/powershell/scripting/learn/remoting/powershell-remoting-faq#do-all-remote-commands-require-powershell-remoting-
 
 Get-Command -ParameterName ComputerName -Module microsoft.powershell.* | Measure-Object
 
 Get-Help CimSession -Category HelpFile -ShowWindow
 Get-Command -ParameterName CimSession
+
+Get-Command -ParameterName ComputerName |
+    Where-Object { -not ($_.Parameters.Keys -match 'Session$') }
 
     # PowerShell 7 tries to remove that parameter.
 Get-Command -ParameterName ComputerName
@@ -43,7 +46,7 @@ Get-Command -ParameterName Server
 
 #region Remoting security
 
-# https://docs.microsoft.com/powershell/scripting/learn/remoting/winrmsecurity
+# https://learn.microsoft.com/powershell/scripting/learn/remoting/winrmsecurity
 # http://peterwawa.wordpress.com/2013/10/02/powershell-remoting-ja-trustedhosts/
 
     # Service WinRM must work to get access to WSMan drive
@@ -68,7 +71,7 @@ Get-Help Set-WSManQuickConfig
 
 # https://devops-collective-inc.gitbook.io/secrets-of-powershell-remoting/configuring-remoting-via-gpo
 
-# https://docs.microsoft.com/powershell/scripting/learn/remoting/powershell-remoting-faq#can-i-test-remoting-on-a-single-computer-not-in-a-domain-
+# https://learn.microsoft.com/powershell/scripting/learn/remoting/powershell-remoting-faq#can-i-test-remoting-on-a-single-computer-not-in-a-domain-
 
 #endregion
 
@@ -87,9 +90,9 @@ Get-Help Enter-PSSession -Parameter Credential
 
 Get-Help Invoke-Command -ShowWindow
 
-Invoke-Command -ComputerName Lon-DC1 -ScriptBlock { whoami.exe }
-Invoke-Command -ComputerName Lon-DC1, Lon-CL1 -ScriptBlock { whoami.exe }
-Invoke-Command -ComputerName (get-content servers.txt) -ScriptBlock { whoami.exe }
+Invoke-Command -ComputerName Sea-DC1 -ScriptBlock { whoami.exe }
+Invoke-Command -ComputerName Sea-DC1, Sea-CL1 -ScriptBlock { whoami.exe }
+Invoke-Command -ComputerName (Get-Content servers.txt) -ScriptBlock { whoami.exe }
 
 Get-Help Invoke-Command -Parameter Credential
 
@@ -100,7 +103,7 @@ Get-Help Invoke-Command -Parameter Credential
     # remote command output
 Get-Help about_Remote_Output -ShowWindow
 
-# https://docs.microsoft.com/powershell/scripting/learn/remoting/powershell-remoting-faq#is-the-output-of-remote-commands-different-from-local-output-
+# https://learn.microsoft.com/powershell/scripting/learn/remoting/powershell-remoting-faq#is-the-output-of-remote-commands-different-from-local-output-
 
 Invoke-Command -ComputerName Lon-DC1 -ScriptBlock { 1..3 | start notepad.exe }
 Invoke-Command -ComputerName Lon-DC1 -ScriptBlock { Get-Process notepad } | Get-Member
@@ -116,7 +119,7 @@ Get-Process | Get-Member
 #endregion
 
 
-#region Lesson 2: Using advanced Windows PowerShell remoting
+#region Lesson 2: Using advanced  PowerShell remoting
 
 #region Common remoting options
 
@@ -150,18 +153,18 @@ Invoke-Command -ComputerName Lon-DC1 -ScriptBlock {
 
 Get-Help Scopes -ShowWindow
 
-# https://docs.microsoft.com/powershell/module/microsoft.powershell.core/about/about_scopes#the-using-scope-modifier
+# https://learn.microsoft.com/powershell/module/microsoft.powershell.core/about/about_scopes#the-using-scope-modifier
 
 #endregion
 
 #region Multi-hop remoting
 
-# https://docs.microsoft.com/powershell/scripting/learn/remoting/ps-remoting-second-hop
+# https://learn.microsoft.com/powershell/scripting/learn/remoting/ps-remoting-second-hop
 
 $credential = Get-Credential
 
-Invoke-Command -ComputerName Lon-DC1 -ScriptBlock {
-    Invoke-Command -ComputerName lon-Svr1 -Credential $using:Credential -ScriptBlock {
+Invoke-Command -ComputerName Sea-DC1 -ScriptBlock {
+    Invoke-Command -ComputerName Sea-Svr1 -Credential $using:Credential -ScriptBlock {
         'User: {0}, Computer: {1}' -f $env:USERNAME, $env:COMPUTERNAME
     }
 }
@@ -184,9 +187,9 @@ Get-Command -ParameterName Session -Module Microsoft.PowerShell.Core
 
 Get-Help New-PSSession -ShowWindow
 
-New-PSSession -ComputerName Lon-Svr1
+New-PSSession -ComputerName Sea-Svr1
 
-$dc = New-PSSession -ComputerName Lon-DC1
+$dc = New-PSSession -ComputerName Sea-DC1
 $dc | Get-Member
 
 #endregion
@@ -222,7 +225,7 @@ Get-Help Import-Module -Parameter PSSession
 Get-Help Import-PSSession -Parameter Module
 
 Get-Module ActiveDirectory -ListAvailable
-$dc = New-PSSession -ComputerName lon-dc1
+$dc = New-PSSession -ComputerName Sea-DC1
 Import-Module -PSSession $dc -Name ActiveDirectory -Prefix 'dc' -Function Get-ADUser
     # or
 Import-PSSession -Session $dc -Module ActiveDirectory -Prefix 'dc' -CommandName Get-ADUser
