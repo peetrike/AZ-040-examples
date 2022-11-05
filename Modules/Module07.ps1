@@ -5,6 +5,8 @@
         This file contains sample commands from course AZ-040 for
         Module 07 - PowerShell scripting
     .LINK
+        https://learn.microsoft.com/training/paths/create-modify-script-use-windows-powershell/
+    .LINK
         https://github.com/peetrike/AZ-040-examples
     .LINK
         https://diigo.com/profile/peetrike/?query=%23AZ-040+%23M7

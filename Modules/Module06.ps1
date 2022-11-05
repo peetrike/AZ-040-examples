@@ -5,6 +5,8 @@
         This file contains sample commands from course AZ-040 for
         Module 06 - Working with variables, arrays, and hash tables
     .LINK
+        https://learn.microsoft.com/training/paths/use-variables-arrays-hash-tables-windows-powershell/
+    .LINK
         https://github.com/peetrike/AZ-040-examples
     .LINK
         https://diigo.com/profile/peetrike/?query=%23AZ-040+%23M6
