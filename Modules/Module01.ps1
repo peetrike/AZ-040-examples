@@ -18,6 +18,8 @@
     .LINK
         https://aka.ms/pskoans
     .LINK
+        https://learn.microsoft.com/training/browse/?terms=PowerShell
+    .LINK
         https://docs.microsoft.com/powershell/#community-resources
 #>
 
