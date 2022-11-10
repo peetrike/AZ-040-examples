@@ -23,7 +23,7 @@
 [CmdletBinding(
     SupportsShouldProcess
 )]
-[OutputType([System.Management.Automation.Runspaces.PSSession])]
+[OutputType([Management.Automation.Runspaces.PSSession])]
 param (
         [Parameter(
             Mandatory,
@@ -36,14 +36,13 @@ param (
         [pscredential]
         [Management.Automation.Credential()]
         # Specifies the user account credentials to use when performing this task.
-    $Credential #= 'Adatum\Administrator'
+    $Credential
 )
 
 $CourseName = 'AZ-040T00'
 $CourseDomain = 'Contoso'
 
 if (-not $Credential) {
-    $SecretName = 'MOC-10961c'
     $CredentialProps = @{}
     if ($cmd = Get-Command Get-Secret -ErrorAction SilentlyContinue) {
         Write-Verbose -Message 'Using SecretManagement module'
