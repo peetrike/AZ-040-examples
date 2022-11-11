@@ -2,12 +2,14 @@
     .SYNOPSIS
         Module 11 samples
     .DESCRIPTION
-        This file contains sample commands from course 10961 for
+        This file contains sample commands from course AZ-040 for
         Module 11 - Using background jobs and scheduled jobs
     .LINK
-        https://github.com/peetrike/10961-examples
+        https://learn.microsoft.com/training/paths/work-powershell-providers-powershell-drives-windows-powershell/
     .LINK
-        https://diigo.com/profile/peetrike/?query=%23MOC-10961+%23M11
+        https://github.com/peetrike/AZ-040-examples
+    .LINK
+        https://diigo.com/profile/peetrike/?query=%23AZ-040+%23M11
 #>
 
 #region Safety to prevent the entire script from being run instead of a selection
