@@ -48,7 +48,9 @@ Get-Help Parsing -ShowWindow
 
 Get-Help _PowerShell -Category HelpFile
 
-# https://learn.microsoft.com/powershell/scripting/whats-new/what-s-new-in-powershell-72
+# https://learn.microsoft.com/powershell/scripting/install/powershell-support-lifecycle#release-history
+
+# https://learn.microsoft.com/powershell/scripting/whats-new/what-s-new-in-powershell-73
 
 # https://learn.microsoft.com/powershell/scripting/install/powershell-in-docker
 
