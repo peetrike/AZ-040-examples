@@ -55,6 +55,7 @@ Get-Help _PowerShell -Category HelpFile
 # https://learn.microsoft.com/powershell/scripting/install/powershell-in-docker
 
 # https://learn.microsoft.com/powershell/scripting/install/powershell-support-lifecycle
+# https://learn.microsoft.com/powershell/module/microsoft.powershell.core/about/about_update_notifications
 
 #endregion
 
