@@ -16,6 +16,7 @@
 throw "You're not supposed to run the entire script"
 #endregion
 
+# https://learn.microsoft.com/powershell/module/microsoft.powershell.core/about/about_windows_powershell_compatibility
 
 #region Lesson 1: Active Directory administration cmdlets
 
