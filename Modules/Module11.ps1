@@ -24,6 +24,8 @@
 Get-Help about_Jobs -ShowWindow
 Get-Help Job_Details -ShowWindow
 
+# https://learn.microsoft.com/powershell/module/microsoft.powershell.core/about/about_job_details#job-types
+
 Get-Command -Noun Job
 
 #endregion
@@ -35,7 +37,7 @@ Get-Help Start-Job -ShowWindow
 Start-Job -ScriptBlock { Get-CimInstance Win32_Processor }
 
 Get-Command -ParameterName AsJob
-Invoke-Command -ComputerName lon-dc1 -ScriptBlock { Get-CimInstance Win32_Processor } -AsJob
+Invoke-Command -ComputerName sea-dc1 -ScriptBlock { Get-CimInstance Win32_Processor } -AsJob
 Get-Volume -AsJob
 Get-WmiObject Win32_Processor -AsJob
 
@@ -63,6 +65,7 @@ Get-Help Remove-Job -ShowWindow
 #region Retrieving job results
 
 Get-Help Receive-Job -ShowWindow
+Get-Help Receive-Job -Parameter Keep
 Get-Job
 Receive-Job -id 0 -Keep
 
@@ -77,24 +80,24 @@ Receive-Job -id 0 -Keep
 
 Get-Command schtasks.exe
 schtasks.exe -?
+# https://learn.microsoft.com/windows/win32/taskschd/schtasks
 
-# https://docs.microsoft.com/windows/win32/taskschd/about-the-task-scheduler
+# https://learn.microsoft.com/windows/win32/taskschd/task-scheduler-objects
 $Scheduler = New-Object -ComObject 'Schedule.Service'
 $Scheduler | Get-Member
 $scheduler.Connect
 
 $rootFolder = $Scheduler.GetFolder('\')
 $rootFolder | Get-Member
-    # https://docs.microsoft.com/windows/win32/api/taskschd/nf-taskschd-itaskfolder-getfolders
+    # https://learn.microsoft.com/windows/win32/api/taskschd/nf-taskschd-itaskfolder-getfolders
 $rootFolder.GetFolders(0)
 $rootFolder.GetFolder('\meelis')
-    # https://docs.microsoft.com/windows/win32/api/taskschd/nf-taskschd-itaskfolder-gettasks
+    # https://learn.microsoft.com/windows/win32/api/taskschd/nf-taskschd-itaskfolder-gettasks
 $RootFolder.GetFolder('\meelis').GetTasks(1)
 
     # Windows 8/Server 2012 or newer
 Get-Command -Module ScheduledTasks
-# https://docs.microsoft.com/powershell/module/scheduledtasks
-# https://docs.microsoft.com/powershell/module/scheduledtasks/?view=winserver2012-ps
+# https://learn.microsoft.com/powershell/module/scheduledtasks
 
 Get-Help Get-ScheduledTask -ShowWindow
 
@@ -111,9 +114,9 @@ Get-Help Register-ScheduledTask -ShowWindow
 #region What are scheduled jobs?
 
 Get-Help about_Scheduled_Jobs -ShowWindow
-# https://docs.microsoft.com/powershell/module/psscheduledjob/about/about_scheduled_jobs
+# https://learn.microsoft.com/powershell/module/psscheduledjob/about/about_scheduled_jobs?view=powershell-5.1
 
-# https://docs.microsoft.com/previous-versions/powershell/module/psscheduledjob/?view=powershell-3.0
+# https://learn.microsoft.com/previous-versions/powershell/module/psscheduledjob/?view=powershell-3.0
 
     #Requires -Version 3
     # this module is removed from PowerShell 7
@@ -143,12 +146,12 @@ $trigger = New-ScheduledTaskTrigger -Weekly -DaysOfWeek Monday, Thursday -At '15
 #region Creating a scheduled task
 
 Get-Help Register-ScheduledTask -ShowWindow
-# https://docs.microsoft.com/powershell/module/scheduledtasks/register-scheduledtask
+# https://learn.microsoft.com/powershell/module/scheduledtasks/register-scheduledtask
 
 $Action = New-ScheduledTaskAction -Execute 'PowerShell.exe' -Argument '-Noninteractive -command c:\myscript.ps1'
 Register-ScheduledTask -TaskName 'SoftwareScan' -Action $Action # -Trigger $trigger
 
-$User = 'Adatum\Administrator'
+$User = 'Contoso\Administrator'
 $TaskCreateProps = @{
     Action   = $Action
     Trigger  = $trigger
@@ -156,6 +159,10 @@ $TaskCreateProps = @{
     #Principal = $User
 }
 New-ScheduledTask @TaskCreateProps | Register-ScheduledTask -TaskName 'PowerShell' -TaskPath '\meelis\'
+
+# https://learn.microsoft.com/powershell/module/microsoft.powershell.core/about/about_pwsh#-noninteractive---noni
+# https://learn.microsoft.com/powershell/module/microsoft.powershell.core/about/about_powershell_exe#-noprofile
+
 #endregion
 
 #endregion
