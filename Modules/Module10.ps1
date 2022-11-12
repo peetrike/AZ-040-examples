@@ -23,6 +23,7 @@
 
 # https://learn.microsoft.com/powershell/azure/active-directory/overview
 # https://learn.microsoft.com/en-us/powershell/microsoftgraph/overview
+# https://learn.microsoft.com/training/modules/introduction-to-microsoft-graph-powershell/
 
 #endregion
 
