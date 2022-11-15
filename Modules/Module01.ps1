@@ -83,6 +83,8 @@ bcdedit.exe --% /enum {current}
 
 Get-Command powershell
 Get-Command pwsh
+Get-Command ise
+Get-Command code
 
 Get-Command -Noun Transcript
 
@@ -157,6 +159,8 @@ $PSStyle
 
     #Requires -Version 7.2
 Get-ExperimentalFeature PSAnsiRenderingFileInfo
+# https://learn.microsoft.com/powershell/scripting/learn/experimental-features#psansirenderingfileinfo
+$PSStyle.FileInfo
 Find-Module terminal-icons -Repository PSGallery
 
     # Windows Terminal
@@ -251,7 +255,7 @@ Get-PSReadLineKeyHandler -Chord 'Tab', 'Shift-Tab', 'Ctrl- '
 
 # https://learn.microsoft.com/powershell/module/psreadline/about/about_psreadline#predictive-intellisense
 Get-PSReadLineKeyHandler -Chord 'F2'
-Get-PSReadLineOption | Select-Object PRediction*
+Get-PSReadLineOption | Select-Object Prediction*
 
 Get-Module PSReadLine
 Find-Module PSReadLine
@@ -354,6 +358,7 @@ Remove-Item alias:\ping
 ping www.ee
 
     # command parameter aliases
+dir /s
 Get-Help dir -Parameter Recurse
 (Get-Command Get-ChildItem).Parameters.Recurse
 (Get-Command Get-ChildItem).Parameters.Recurse.aliases
