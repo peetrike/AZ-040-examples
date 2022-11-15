@@ -20,6 +20,10 @@ throw "You're not supposed to run the entire script"
 
 #region Lesson 1: Active Directory administration cmdlets
 
+    #Requires -RunAsAdministrator
+Get-WindowsCapability -Online -Name Rsat.ActiveDirectory*
+    # on Windows Server
+Get-WindowsFeature -Name RSAT-AD-PowerShell
 Get-Command -Module ActiveDirectory | Measure-Object
 
 #region User management cmdlets
@@ -210,6 +214,10 @@ Get-NetUDPEndpoint -LocalPort 3389
 
 #region Group Policy Management cmdlets
 
+    #Requires -RunAsAdministrator
+Get-WindowsCapability -Online -Name Rsat.GroupPolicy.*
+Get-WindowsFeature -Name GPMC
+Get-WindowsOptionalFeature -Online -FeatureName *group*
 Get-Command -Module GroupPolicy
 
 Get-Help Get-GPO
@@ -237,7 +245,7 @@ Get-Command -Module Dism
 #region Hyper-V cmdlets
 Get-Command -Module Hyper-V
 
-Get-VM -Name 10961*
+Get-VM -Name AZ-040*
 
 Enter-PSSession -VMName MyVM -Credential 'computer\user'
 
@@ -268,6 +276,7 @@ Get-Command -Noun TimeZone
 Get-Command -Noun ControlPanel*
 Get-Command -Module Microsoft.PowerShell.Management -Noun Computer*
 Get-Command Get-HotFix
+Get-Command -Noun *Culture
 
 Get-Command -Module Microsoft.PowerShell.Diagnostics
 
@@ -279,7 +288,7 @@ Get-Module Microsoft.PowerShell.* -ListAvailable
 
 Get-Command -Noun Acl
 
-Find-Module NTFSSecurity
+Find-Module NTFSSecurity -Repository PSGallery
 Get-Command -Module NTFSSecurity
 
 New-Item -Name katse -ItemType Directory
