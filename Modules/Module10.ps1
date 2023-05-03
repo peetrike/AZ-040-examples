@@ -22,7 +22,7 @@
 #region Benefits of using PowerShell for Microsoft 365
 
 # https://learn.microsoft.com/powershell/azure/active-directory/overview
-# https://learn.microsoft.com/en-us/powershell/microsoftgraph/overview
+# https://learn.microsoft.com/powershell/microsoftgraph/overview
 # https://learn.microsoft.com/training/modules/introduction-to-microsoft-graph-powershell/
 
 #endregion
@@ -85,7 +85,7 @@ Find-Module Microsoft.Graph.DeviceManagement.Enrolment
 Get-Help Get-MgRoleManagementDirectoryRoleDefinition
 # https://learn.microsoft.com/graph/api/rbacapplication-list-roledefinitions?tabs=powershell
 
-get-help Get-MgRoleManagementDirectoryRoleAssignment
+Get-Help Get-MgRoleManagementDirectoryRoleAssignment
 # https://learn.microsoft.com/powershell/module/microsoft.graph.devicemanagement.enrolment/get-mgrolemanagementdirectoryroleassignment
 # https://learn.microsoft.com/graph/api/rbacapplication-list-roleassignments?tabs=powershell
 
