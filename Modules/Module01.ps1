@@ -20,7 +20,7 @@
     .LINK
         https://learn.microsoft.com/training/browse/?terms=PowerShell
     .LINK
-        https://docs.microsoft.com/powershell/#community-resources
+        https://learn.microsoft.com/powershell/#community-resources
 #>
 
 #region Safety to prevent the entire script from being run instead of a selection
