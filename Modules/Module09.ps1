@@ -101,7 +101,7 @@ Get-Help Connect-MgGraph -ShowWindow
 
 #region Features and tools for Azure Cloud Shell
 
-# https://learn.microsoft.com/en-us/azure/cloud-shell/features
+# https://learn.microsoft.com/azure/cloud-shell/features
 
 # https://shell.azure.com/powershell
 # https://learn.microsoft.com/learn/modules/introduction-to-powershell/3-exercise-powershell
