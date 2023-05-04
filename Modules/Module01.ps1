@@ -196,7 +196,7 @@ Get-PSReadLineKeyHandler -Chord 'Ctrl-c', 'Ctrl-C', 'Ctrl-v', 'Shift-Insert', 'C
 # https://code.visualstudio.com/docs/getstarted/themes
 # https://code.visualstudio.com/docs/getstarted/settings
 
-# https://docs.microsoft.com/powershell/scripting/dev-cross-plat/vscode/using-vscode#configuration-settings-for-visual-studio-code
+# https://learn.microsoft.com/powershell/scripting/dev-cross-plat/vscode/using-vscode#configuration-settings-for-visual-studio-code
 
 # https://code.visualstudio.com/docs/editor/accessibility#_zoom
 
@@ -322,12 +322,12 @@ Get-Command | Group-Object -Property CommandType
 
 # https://learn.microsoft.com/powershell/scripting/gallery/overview
 # https://learn.microsoft.com/powershell/module/powershellget/
-Get-Command -module PowerShellGet
+Get-Command -Module PowerShellGet
 Get-Help Find-Command
 Get-Help Install-Module
 
 # https://devblogs.microsoft.com/powershell/powershellget-3-0-preview-1/
-# https://devblogs.microsoft.com/powershell/powershellget-3-0-preview-17/
+# https://devblogs.microsoft.com/powershell/powershellget-3-0-preview-20/
 Get-Module PowerShellGet -ListAvailable
 
 #endregion
@@ -361,7 +361,7 @@ ping www.ee
 dir /s
 Get-Help dir -Parameter Recurse
 (Get-Command Get-ChildItem).Parameters.Recurse
-(Get-Command Get-ChildItem).Parameters.Recurse.aliases
+(Get-Command Get-ChildItem).Parameters.Recurse.Aliases
 dir -s
 
 #endregion
@@ -405,6 +405,10 @@ Get-Help Get-Command | Select-Object -ExpandProperty Syntax
 Get-Command Get-Command -Syntax
 
 Get-Command Get-Command | Select-Object -ExpandProperty ParameterSets | Format-Table
+# https://github.com/peetrike/CommandInfo/blob/master/src/Public/Get-ParameterInfo.ps1
+    #Requires -Modules CommandInfo
+Get-ParameterInfo -Name Get-Command
+Get-Command Get-Command | Get-Syntax
 
 Get-Help Get-WinEvent
 Get-WinEvent Application -MaxEvents 5
