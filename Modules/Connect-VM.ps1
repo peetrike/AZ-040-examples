@@ -36,11 +36,22 @@ param (
         [pscredential]
         [Management.Automation.Credential()]
         # Specifies the user account credentials to use when performing this task.
-    $Credential
+    $Credential,
+        [ValidateSet('AZ-040T00', '10961C')]
+        [string]
+    $CourseName = 'AZ-040T00'
 )
 
-$CourseName = 'AZ-040T00'
-$CourseDomain = 'Contoso'
+switch ($CourseName) {
+    'AZ-040T00' {
+        $CourseDomain = 'Contoso'
+        $VMCity = 'SEA'
+    }
+    default {
+        $CourseDomain = 'Adatum'
+        $VMCity = 'LON'
+    }
+}
 
 if (-not $Credential) {
     $CredentialProps = @{}
@@ -83,7 +94,7 @@ if (-not $Credential) {
 }
 
 if ($Credential) {
-    $Name = '{0}-SEA-{1}' -f $CourseName, $VmName
+    $Name = '{0}-{1}-{2}' -f $CourseName, $VMCity, $VmName
 
     New-PSSession -Name $VmName -VMName $Name -Credential $Credential
 }
