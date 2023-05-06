@@ -185,6 +185,10 @@ Get-Command -Module NetSecurity
 Get-NetFirewallRule -Name WINRM-HTTP-In-TCP*
 Get-NetFirewallRule -Group '@FirewallAPI.dll,-30267'
 
+Get-NetFirewallPortFilter -Protocol tcp |
+    Where-Object LocalPort -eq 3389 |
+    Get-NetFirewallRule
+
 $AddressFilter = Get-NetFirewallRule -Name WINRM-HTTP-In-TCP | Get-NetFirewallAddressFilter
 $AddressFilter
 $AddressFilter.RemoteAddress
@@ -221,6 +225,9 @@ Get-WindowsOptionalFeature -Online -FeatureName *group*
 Get-Command -Module GroupPolicy
 
 Get-Help Get-GPO
+
+Get-GPO -All |
+    Set-GPPermissions -PermissionLevel GpoEdit -TargetName 'MyGroup' -TargetType group
 
 Get-Help Invoke-GPUpdate
 
