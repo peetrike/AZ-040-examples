@@ -364,6 +364,10 @@ Get-Help dir -Parameter Recurse
 (Get-Command Get-ChildItem).Parameters.Recurse.Aliases
 dir -s
 
+# https://github.com/peetrike/CommandInfo/blob/master/src/Public/Get-ParameterAlias.ps1
+    #Requires -Modules CommandInfo
+Get-Command Get-ChildItem | Get-ParameterAlias -ParameterName Recurse
+
 #endregion
 
 #region Using Show-Command
