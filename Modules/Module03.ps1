@@ -338,6 +338,7 @@ Get-Help Get-ChildItem -Parameter *
 Get-CimInstance -ClassName Win32_UserAccount | Where-Object SID -Like '*-500'
 Get-CimInstance -ClassName Win32_UserAccount -Filter "SID Like '%-500'"
 Get-CimInstance -ClassName Win32_UserAccount -Filter "LocalAccount=True and SID Like '%-500'"
+    #Requires -Modules Microsoft.PowerShell.LocalAccounts
 Get-LocalUser | where SID -Like '*-500'
 
 Get-ADUser -Identity adam
