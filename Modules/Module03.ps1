@@ -37,7 +37,7 @@ Get-ChildItem |
     # unfinished line
 Get-ChildItem |
 
-Get-PSReadLineOption | Select-Object *Prompt
+Get-PSReadLineOption | Select-Object *Prompt* | Format-List
 Get-Help Set-PSReadLineOption -Parameter ContinuationPrompt
 
 #endregion
@@ -45,6 +45,8 @@ Get-Help Set-PSReadLineOption -Parameter ContinuationPrompt
 #region Pipeline output
 
 Get-Help Objects -Category HelpFile -ShowWindow
+
+Get-ChildItem | Out-GridView
 
 #endregion
 
@@ -70,7 +72,7 @@ Get-Command -Verb Format -Module Microsoft.PowerShell.Utility
 Get-Help Format.ps1xml -ShowWindow
 
 # https://peterwawa.wordpress.com/2021/06/10/objektide-kuvamisest/
-Get-FormatData -TypeName System.Diagnostics.Process |
+Get-FormatData -TypeName System.Diagnostics.Process* |
     Select-Object -ExpandProperty FormatViewDefinition
 
 Get-Process p* | Format-Table -View StartTime
@@ -94,7 +96,10 @@ Get-ChildItem |
     Sort-Object -Property @{ Expression = { $_.LastWriteTime - $_.CreationTime }; Descending = $false } |
     Format-Table Name, CreationTime, LastWriteTime
 
-Get-ChildItem | Sort-Object -Property Name -Culture en-us
+New-Item -Name täpid.txt -ItemType File
+New-Item -Name topid.txt -ItemType File
+Get-ChildItem t* | Sort-Object -Property Name
+Get-ChildItem t* | Sort-Object -Property Name -Culture en-us
 
     # the following discovers sort order for alphabet
 Get-Culture
@@ -116,7 +121,7 @@ Get-Service c* | Group-Object Status -NoElement
 
 Get-Help Measure-Object -ShowWindow
 
-Get-ChildItem | Measure-Object -Property Length -Sum
+Get-ChildItem -File | Measure-Object -Property Length -Sum
 
 Get-Content module03.ps1 | Measure-Object -Word -Line
 
@@ -136,10 +141,10 @@ net.exe localgroup administrators | Select-Object -Skip 6 | Select-Object -SkipL
     #region Selecting unique objects
     Get-Help Select-Object -Parameter Unique
 
-    #region ettevalmistus
+    #region Preparation
         New-ADGroup Katse1 -GroupScope Global
         New-ADGroup Katse2 -GroupScope Global
-        Get-ADUser adam | Add-ADPrincipalGroupMembership -MemberOf katse1, katse2
+        Get-ADUser Adrian | Add-ADPrincipalGroupMembership -MemberOf katse1, katse2
     #endregion
     Get-ADGroup -Filter { Name -like 'katse*' } | Get-ADGroupMember | Select-Object -Unique
 
@@ -161,11 +166,12 @@ net.exe localgroup administrators | Select-Object -Skip 6 | Select-Object -SkipL
 
 Get-ChildItem | Select-Object -Property Name, LastWriteTime | Get-Member
 
+Get-ChildItem | Select-Object -Property Name, *Time | Out-GridView
+
+Get-Process p* | Get-Member -MemberType PropertySet
 Get-Process p* | Select-Object -Property PSResources
 Get-Process p* |
     Select-Object -Property PSConfiguration
-
-Get-ChildItem | Select-Object -Property Name, *Time | Out-GridView
 
 Get-ADComputer sea-cl1 | Select-Object -Property DnsHostName | Get-Member
 Get-ADComputer sea-cl1 | Select-Object -ExpandProperty DnsHostName | Get-Member
@@ -188,6 +194,7 @@ Get-CimInstance Win32_LogicalDisk
 $SizeGB = @{ Name = 'Size (GB)'; Expression = { $_.Size / 1GB } }
 Get-CimInstance Win32_LogicalDisk | Select-Object -Property DeviceID, $SizeGB
 
+# https://learn.microsoft.com/dotnet/standard/base-types/standard-numeric-format-strings#standard-format-specifiers
 $SizeGB.Format = 'N2'
 Get-CimInstance Win32_LogicalDisk | Format-Table -Property DeviceID, VolumeName, $SizeGB
 
@@ -204,6 +211,20 @@ $MemberProps = @{
 Get-CimInstance Win32_LogicalDisk |
     Add-Member @MemberProps -PassThru |
     Select-Object DeviceID, Size*
+
+# https://peterwawa.wordpress.com/2023/03/29/os-inventuur-ad-objektide-baasil/
+$OSVersion = @{
+    Name       = 'OSVersion'
+    Expression = { [version]($_.OperatingSystemVersion -replace '(\d+\.\d+) \((\d+)\)', '$1.$2') }
+}
+$ComputerProps.Properties = 'OperatingSystem', 'OperatingSystemVersion'
+$ComputerProps.Filter = {
+    Enabled -eq $true -and
+    OperatingSystem -like 'Windows S*'
+}
+Get-ADComputer @ComputerProps |
+    Select-Object Name, DnsHostName, OperatingSystem, $OSVersion |
+    Sort-Object $OSVersion.Name
 
 #endregion
 
@@ -286,7 +307,6 @@ dir | ? PSIsContainer
     #Requires -Version 6.1
 Get-ChildItem | Where-Object -Not PSIsContainer
 
-
 #endregion
 
 #region Advanced filtering syntax
@@ -295,10 +315,9 @@ Get-ChildItem | Where-Object -FilterScript { -not $PSItem.PSIsContainer }
 Get-ChildItem | where { -not $_.PSIsContainer }
 gci | ? { ! $_.PSIsContainer }
 
-
 Get-ChildItem | Where-Object { ($_.Name.Length -ge 9) -and ($_.Length -ge 2KB) }
 
-Get-Service | Where-Object { $_.Status -in 'Running', 'StartPending' }
+Get-Service p* | Where-Object { $_.Status -in 'Running', 'StartPending' }
 
 'get-service', 'get-uhhuu', 'get-userprofile' | Where-Object { Get-Command $_ -ErrorAction SilentlyContinue }
 
@@ -314,6 +333,11 @@ Get-ChildItem -File -Recurse
 Get-ChildItem -Directory # -Recurse
 
 Get-Help Get-ChildItem -Parameter *
+
+Get-CimInstance -ClassName Win32_UserAccount | Where-Object SID -Like '*-500'
+Get-CimInstance -ClassName Win32_UserAccount -Filter "SID Like '%-500'"
+Get-CimInstance -ClassName Win32_UserAccount -Filter "LocalAccount=True and SID Like '%-500'"
+Get-LocalUser | where SID -Like '*-500'
 
 Get-ADUser -Identity adam
 
@@ -419,7 +443,7 @@ Get-Service BITS | Stop-Service -WhatIf
 
 Get-ChildItem -File |
     ForEach-Object -Begin { $summa = 0 } -Process { $summa += $_.Length } -End { Write-Output $summa }
-Get-ChildItem -File | Measure-Object -Sum
+Get-ChildItem -File | Measure-Object -Property Length -Sum
 
 1..10 | ForEach-Object { Get-Random }
 
@@ -522,6 +546,7 @@ Get-ChildItem |
     Out-File -FilePath failid.htm -Encoding utf8
 
 Find-Module PSWriteHTML -Repository PSGallery
+Find-Module -Tag html -Repository PSGallery
 
 # https://github.com/Stephanevg/PSHTML
 # https://ironmansoftware.com/powershell-universal/
@@ -533,6 +558,7 @@ Find-Module PSWriteHTML -Repository PSGallery
 Get-Command -Verb Out
 
 Get-Help Out-Host -Parameter Paging
+Get-Command more
 
 Get-Help Out-Printer -ShowWindow
 Get-Help Out-String -ShowWindow
@@ -558,13 +584,15 @@ Find-Module PSWriteOffice -Repository PSGallery
 
 #endregion
 
+
 #region Lesson 6: Passing pipeline data
 
 #region Pipeline parameter binding
 
 Get-Help about_Parameters -ShowWindow
-# https://docs.microsoft.com/powershell/module/microsoft.powershell.core/about/about_parameters#accepts-pipeline-input
+# https://learn.microsoft.com/powershell/module/microsoft.powershell.core/about/about_parameters#accepts-pipeline-input
 
+Get-ParameterInfo Set-ADUser -ParameterName Identity
 (Get-Command Set-ADUser).Parameters.Identity.ParameterType.FullName
 Get-Help Set-ADUser -Parameter Identity
 
@@ -630,12 +658,18 @@ Get-ADComputer $env:COMPUTERNAME | Test-Connection -Count 1
 
 Get-ADComputer $env:COMPUTERNAME | Get-Member
 Get-Help Test-Connection -Parameter *
+Get-ParameterInfo Test-Connection | Where-Object Pipeline -like '*ByPropertyName'
 
     # but this does
 Get-ADComputer -Filter * |
     Select-Object -Property @{n = 'ComputerName'; e = { $_.DnsHostName } } |
     Test-Connection -Count 1
 Get-ADComputer -Filter * | Test-Connection -ComputerName { $_.DnsHostName } -Count 1
+
+    #Requires -Version 3
+Get-ADComputer $env:COMPUTERNAME |
+    Update-TypeData -MemberType AliasProperty -MemberName ComputerName -Value DnsHostName
+Get-ADComputer -Filter * | Test-Connection -Count 1
 
 # https://peterwawa.wordpress.com/2013/04/09/kasutajakontode-loomine-domeenis/
 
