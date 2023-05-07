@@ -37,6 +37,7 @@ Get-ChildItem |
     # unfinished line
 Get-ChildItem |
 
+    #Requires -Modules PSReadLine
 Get-PSReadLineOption | Select-Object *Prompt* | Format-List
 Get-Help Set-PSReadLineOption -Parameter ContinuationPrompt
 
