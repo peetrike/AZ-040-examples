@@ -157,10 +157,9 @@ Get-PSReadLineOption | Select-Object *color
 Get-Help ANSI_Terminals -ShowWindow
 $PSStyle
 
-    #Requires -Version 7.2
-Get-ExperimentalFeature PSAnsiRenderingFileInfo
-# https://learn.microsoft.com/powershell/scripting/learn/experimental-features#psansirenderingfileinfo
+    #Requires -Version 7.3
 $PSStyle.FileInfo
+
 Find-Module terminal-icons -Repository PSGallery
 
     # Windows Terminal
