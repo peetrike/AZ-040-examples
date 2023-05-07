@@ -188,7 +188,7 @@ Get-Help Select-Object -Parameter ExcludeProperty
 
 Get-Help Calculated_Properties -ShowWindow
 Get-Help Hash_Tables -ShowWindow
-# https://docs.microsoft.com/dotnet/standard/base-types/formatting-types
+# https://learn.microsoft.com/dotnet/standard/base-types/formatting-types
 
 Get-CimInstance Win32_LogicalDisk
 
