@@ -706,7 +706,7 @@ Get-Process -Name notepad | Stop-Process -Name notepad
 #endregion
 
 #region Using parenthetical commands
-
+    # in PS 7 the -ComputerName parameter was removed from several commands
 'winrm', 'bits' | Get-Service -ComputerName (Get-Content masinad.txt)
 
 $kasutajad = Get-ADUser -Filter { City -like 'London' }
