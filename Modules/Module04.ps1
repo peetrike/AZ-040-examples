@@ -42,6 +42,8 @@ Get-Help Variable_ -Category HelpFile -ShowWindow
 
 Get-Help about_*_provider
 
+# https://learn.microsoft.com/et-ee/sql/powershell/sql-server-powershell-provider
+
 #endregion
 
 #endregion
@@ -109,6 +111,9 @@ Get-ChildItem -Recurse | Unblock-File
 
     #Requires -Version 5.0
 Get-Command -Noun Archive
+
+    # for long path support
+Get-Command -Module NTFSSecurity -Noun *2
 
 #endregion
 
