@@ -24,11 +24,11 @@
 # CIM - Common Information Model: http://www.dmtf.org/standards/cim/
 # For Linux: OMI - Open Management Infrastructure: https://collaboration.opengroup.org/omi/
 # Windows Remote Management (WinRM), based on Web Services Management (WS-Man)
-#   * https://docs.microsoft.com/windows/win32/winrm
+#   * https://learn.microsoft.com/windows/win32/winrm
 #   * https://www.dmtf.org/standards/ws-man
 
 # WMI - Windows Management Instrumentation, based on WBEM
-#   * https://docs.microsoft.com/windows/win32/wmisdk/wmi-start-page
+#   * https://learn.microsoft.com/windows/win32/wmisdk
 # Web-Based Enterprise Management (WBEM): https://www.dmtf.org/standards/wbem
 # Desktop Management Interface (DMI): https://www.dmtf.org/sites/default/files/standards/documents/DSP0005.pdf
 
@@ -131,7 +131,7 @@ SELECT DeviceId,Size,FreeSpace
 FROM Win32_LogicalDisk
 WHERE DriveType=3
 '@
-Get-CimInstance Win32_LogicalDisk -Filter "DriveType=3" -Property DeviceId, Size, FreeSpace -Verbose
+Get-CimInstance Win32_LogicalDisk -Filter 'DriveType=3' -Property DeviceId, Size, FreeSpace -Verbose
 
 Get-CimInstance -ClassName Win32_Service -Filter 'Name="bits"'
 Get-Service BITS
@@ -155,6 +155,9 @@ if ($command = Get-Command Get-CimInstance -ErrorAction SilentlyContinue) {
     $queryParam.Class = 'Win32_LogicalDisk'
 }
 & $command @queryParam
+
+    # alternative
+[wmi] 'Win32_LogicalDisk.DeviceID="C:"'
 
 #endregion
 
@@ -183,6 +186,7 @@ Get-Help CimSession -Category HelpFile -ShowWindow
 
 Get-Command -Noun CimSession
 Get-Command -ParameterName 'CimSession' | Measure-Object
+Get-Help * -Parameter CimSession | Group-Object ModuleName -NoElement
 
 if (-not (Test-Path -Path servers.txt -PathType Leaf)) {
     'Sea-DC1' | Set-Content -Path servers.txt
