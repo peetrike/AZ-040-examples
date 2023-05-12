@@ -115,7 +115,7 @@ $set | Get-Member
 $set.GetType()
 
 $process = get-process -id $PID
-Start-Process ('https://docs.microsoft.com/dotnet/api/{0}' -f $process.GetType().FullName)
+Start-Process ('https://learn.microsoft.com/dotnet/api/{0}' -f $process.GetType().FullName)
 # https://github.com/peetrike/PWAddins/blob/master/src/Public/Get-TypeUrl.ps1
 $process.WaitForExit
 
@@ -209,7 +209,7 @@ $dates = @(
 )
 $dates
 
-@(Get-ADUser -filter { City -like 'tallinn' })
+@(Get-ADUser -Filter { City -like 'tallinn' })
 
 #endregion
 
@@ -360,6 +360,9 @@ foreach ($u in users) {
     }
     New-ADUser @CreateProperties
 }
+
+# https://peterwawa.wordpress.com/2012/05/10/powershell-ja-ksurea-argumendid/
+
 #endregion
 
 #endregion
