@@ -194,6 +194,7 @@ $täna.Add($aeg)
 #region What is an array?
 
 Get-Help Arrays -ShowWindow
+# https://learn.microsoft.com/powershell/scripting/lang-spec/chapter-09
 
 # https://learn.microsoft.com/dotnet/api/system.array
 
@@ -278,6 +279,7 @@ $computers[-1]
 #region What is a hash table?
 
 Get-Help Hash_Table -ShowWindow
+# https://learn.microsoft.com/powershell/scripting/lang-spec/chapter-10
 
 # https://learn.microsoft.com/dotnet/api/system.collections.hashtable
 
