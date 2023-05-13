@@ -593,6 +593,7 @@ Find-Module PSWriteOffice -Repository PSGallery
 
 Get-Help about_Parameters -ShowWindow
 # https://learn.microsoft.com/powershell/module/microsoft.powershell.core/about/about_parameters#accepts-pipeline-input
+# https://learn.microsoft.com/powershell/scripting/lang-spec/chapter-08#814-parameter-binding
 
 Get-ParameterInfo Set-ADUser -ParameterName Identity
 (Get-Command Set-ADUser).Parameters.Identity.ParameterType.FullName
