@@ -52,20 +52,23 @@ Get-Command ise
 ise käsud.txt
 
 # https://www.sapien.com/software/powershell_studio
+# https://ironmansoftware.com/powershell-pro-tools/#psscriptpad
 # https://visualstudio.microsoft.com/vs/community/
 
-# https://github.com/neoclide/coc.nvim
-# https://emacs-lsp.github.io/lsp-mode/
-# https://plugins.jetbrains.com/plugin/10249
-# https://www.sublimetext.com/
-# https://atom.io/
+# https://www.powershellgallery.com/packages/psedit
 
 # https://poshgui.com/
 # https://docs.github.com/en/codespaces
 
+# https://github.com/neoclide/coc.nvim
+# https://emacs-lsp.github.io/lsp-mode/
+# https://plugins.jetbrains.com/plugin/10249
+
 # https://notepad-plus-plus.org/
 
 # https://github.com/janikvonrotz/awesome-powershell#editors-and-ides
+
+# https://github.com/search?q=language:PowerShell
 
 #endregion
 
@@ -176,6 +179,7 @@ Get-Command -Noun FileCatalog
 #region Understanding foreach loops
 
 Get-Help about_Foreach -Category HelpFile -ShowWindow
+# https://learn.microsoft.com/powershell/scripting/lang-spec/chapter-08#844-the-foreach-statement
 
 $numbers = 1..10
 foreach ($i in $numbers) {
@@ -201,6 +205,7 @@ Get-Help Pipelines -Category HelpFile -ShowWindow
 #region Understanding the If construct
 
 Get-Help about_If -ShowWindow
+# https://learn.microsoft.com/powershell/scripting/lang-spec/chapter-08#83-the-if-statement
 
 $a = 0
 if ($a -gt 1) { 'a is greater' }
@@ -224,6 +229,7 @@ $service.Status -eq 'Running' ? (Stop-Service $service) : (Start-Service $servic
 #region Understanding the Switch construct
 
 Get-Help Switch -Category HelpFile -ShowWindow
+# https://learn.microsoft.com/powershell/scripting/lang-spec/chapter-08#86-the-switch-statement
 
 $choice = Get-Random -Maximum 4
 switch ($choice) {
@@ -285,6 +291,7 @@ switch ($numbers) {
 #region Understanding the For construct
 
 Get-Help about_For -ShowWindow
+# https://learn.microsoft.com/powershell/scripting/lang-spec/chapter-08#843-the-for-statement
 
 for ($i = 1; $i -le 10; $i++) { "Creating User $i" }
 
@@ -305,7 +312,9 @@ for ($i = 1; ; Start-Sleep -Seconds 2) {
 #region Understanding other loop constructs
 
 Get-Help about_Do -ShowWindow
+# https://learn.microsoft.com/powershell/scripting/lang-spec/chapter-08842-the-do-statement
 Get-Help about_While -ShowWindow
+# https://learn.microsoft.com/powershell/scripting/lang-spec/chapter-08#841-the-while-statement
 
 do {
     'Script block to process'
@@ -345,7 +354,9 @@ while (Get-Process notepad -ErrorAction SilentlyContinue) {
 #region Understanding Break and Continue
 
 Get-Help about_Break -ShowWindow
+# https://learn.microsoft.com/powershell/scripting/lang-spec/chapter-08#851-the-break-statement
 Get-Help about_Continue -ShowWindow
+# https://learn.microsoft.com/powershell/scripting/lang-spec/chapter-08#852-the-continue-statement
 
 $users = Get-ADUser -Filter * -ResultSetSize 20
 
@@ -360,7 +371,7 @@ foreach ($user in $users) {
     $number++
     "Modify User object $number"
     if ($number -ge $max) {
-        "breaking out"
+        'breaking out'
         break
     }
 }
@@ -389,6 +400,8 @@ switch -Regex ($ip) {
 
 
 #region Lesson 3: Importing data from files
+
+Get-Help Encoding -Category HelpFile -ShowWindow
 
 #region Using Get-Content
 
@@ -476,9 +489,6 @@ Invoke-RestMethod -Uri https://devblogs.microsoft.com/powershell/feed | Select-O
 
 #endregion
 
-#endregion
-
-
 #region Extra: Using .PSD1 files as data source
 
 Get-Help Import-PowerShellDataFile -ShowWindow
@@ -504,6 +514,8 @@ $myConfig
 
 #endregion
 
+#endregion
+
 
 #region Lesson 4: Accepting user input
 
@@ -526,6 +538,8 @@ code -r events02.ps1
 Get-Help Read-Host -ShowWindow
 $UserName = Read-Host -Prompt 'Enter user name for the server'
 $Password = Read-Host -Prompt 'Enter the password' -AsSecureString
+    #Requires -Version 7
+$ClearPass = Read-Host -Prompt 'Enter the password' -MaskInput
 
 #endregion
 
@@ -556,7 +570,7 @@ Get-ItemProperty 'HKLM:\SOFTWARE\Microsoft\PowerShell\1\ShellIds' -Name ConsoleP
 Find-Module BetterCredentials -Repository PSGallery
 
 Find-Module Microsoft.PowerShell.SecretManagement -Repository PSGallery
-Find-Module -tag SecretManagement -Repository PSGallery
+Find-Module -Tag SecretManagement -Repository PSGallery
 
 # https://peterwawa.wordpress.com/2010/04/28/powershell-ja-admin-oigused/
 # https://learn.microsoft.com/powershell/scripting/learn/deep-dives/add-credentials-to-powershell-functions
@@ -591,6 +605,11 @@ Find-Module Microsoft.PowerShell.ConsoleGuiTools -Repository PSGallery
 
 #region Passing parameters to a script
 
+Get-Help about_Parameters -ShowWindow
+# https://learn.microsoft.com/powershell/scripting/lang-spec/chapter-08#8109-param-block
+# https://learn.microsoft.com/powershell/scripting/lang-spec/chapter-08#8103-argument-processing
+
+get-help
 code -r events03.ps1
 
 .\events03.ps1
@@ -641,12 +660,14 @@ Get-Help Preference -Category HelpFile -ShowWindow
 Get-Help redirect -ShowWindow
 Get-Help Write-Host -ShowWindow
 
-write-error "suur viga"
+write-error 'suur viga'
 $Error[0]
-write-error "suur viga" 2>> vealogi.txt
+write-error 'suur viga' 2>> vealogi.txt
+write-error 'suur viga' -ErrorVariable +viga
 
 Write-Warning -Message 'Fail juba olemas, kirjutan üle'
 Write-Warning -Message 'Fail juba olemas, kirjutan üle' 3>> hoiatuslogi.txt
+Write-Warning -Message 'Fail juba olemas, kirjutan üle' -WarningVariable +hoiatus
 
 $asi = 13
 Write-Verbose -Message ('Muutuja väärtus: {0}, toimetan edasi' -f $asi) -Verbose
@@ -657,11 +678,14 @@ Write-Debug -Message 'Arendajale mõeldud teade' -Debug 5>> debuglogi.txt
 
     #Requires -Version 5
 Write-Information -MessageData 'Teade' -InformationAction Continue
-Write-Information -MessageData 'Teade' -InformationAction Continue 6>> infotekst.txt
+Write-Information -MessageData 'Teade' 6>> infotekst.txt
+Write-Information -MessageData 'Teade 2' -InformationVariable +info
+
 Write-Host 'kah teade' 6>> infotekst.txt
 
 code -r events05.ps1
 
+# https://learn.microsoft.com/powershell/module/microsoft.powershell.core/about/about_commonparameters#-verbose
 .\events05.ps1 -Verbose
 .\events05.ps1 -Debug
 
@@ -675,8 +699,10 @@ get-help .\write-log.ps1
 .\write-log.ps1 -Level Warning -Message 'Midagi on viltu'
 
 Find-Module -Command Write-PSFMessage -Repository PSGallery
-Write-PSFMessage 'Teade logisse'
+Write-PSFMessage -Message 'Teade logisse'
 Get-PSFMessage
+
+# https://peterwawa.wordpress.com/2015/02/26/powershell-ja-sndmuste-logid/#kirjutamine
 
 #endregion
 
@@ -732,6 +758,7 @@ $func = { 'Hello' }
 
 Get-Command help
 (Get-Command c:).Definition
+(Get-Command pause).Definition
 
 Get-Help about_Functions -ShowWindow
 
@@ -772,16 +799,20 @@ $minuasi = katse -minuasi $minuasi -Verbose
 $minuasi
 
 Get-Help about_return -ShowWindow
+# https://learn.microsoft.com/powershell/scripting/lang-spec/chapter-08#854-the-return-statement
 
 #endregion
 
 #region Creating a module
 
-# https://docs.microsoft.com/powershell/scripting/developer/module/how-to-write-a-powershell-script-module
+# https://learn.microsoft.com/powershell/scripting/developer/module/how-to-write-a-powershell-script-module
+# https://learn.microsoft.com/powershell/scripting/lang-spec/chapter-11
 
 code -r events06.psm1
 
 Get-Help Export-ModuleMember -ShowWindow
+
+Get-Help modules -Category HelpFile -ShowWindow
 
 Import-Module .\events06.psm1
 events06 -aeg ([datetime]::Now).AddHours(-2)
@@ -811,6 +842,7 @@ Remove-Module SayHello
 
 #region Using dot sourcing
 
+# https://learn.microsoft.com/powershell/scripting/lang-spec/chapter-03#355-dot-source-notation
 # https://learn.microsoft.com/powershell/module/microsoft.powershell.core/about/about_operators#dot-sourcing-operator-
 
 . .\events06.ps1
