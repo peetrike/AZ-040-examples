@@ -22,6 +22,7 @@
 #region What are variables?
 
 Get-Help variables -Category HelpFile
+# https://learn.microsoft.com/powershell/scripting/lang-spec/chapter-02#232-variables
 
 Get-Help variable_ -Category HelpFile -ShowWindow
 Get-ChildItem Variable:
