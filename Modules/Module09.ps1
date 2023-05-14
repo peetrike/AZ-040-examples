@@ -30,6 +30,7 @@
 #region What is the Azure Az PowerShell module?
 
 # https://learn.microsoft.com/powershell/azure/new-azureps-module-az
+# https://learn.microsoft.com/powershell/azure/release-notes-azureps
 
 Find-Module az -Repository PSGallery
 Find-Module az -Repository PSGallery -IncludeDependencies | Measure-Object
@@ -111,7 +112,7 @@ Get-Help Connect-MgGraph -ShowWindow
 #endregion
 
 
-#region Lesson 3: Manage Azure VMs with PowerShell
+#region Lesson 3: Manage Azure resources with PowerShell
 
 #region Creating Azure VMs with PowerShell
 
@@ -158,11 +159,6 @@ Get-Help New-AzDisk
 Get-Help Add-AzVMDataDisk
 
 #endregion
-
-#endregion
-
-
-#region Lesson 4: Manage storage and subscriptions
 
 #region Managing storage with Azure PowerShell
 
