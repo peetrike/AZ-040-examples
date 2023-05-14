@@ -61,6 +61,9 @@ Set-PSSessionConfiguration -Name microsoft.powerShell -ShowSecurityDescriptorUI
 Get-LocalGroup 'Remote Management Users'
 Get-LocalGroup 'Remote Management Users' | Get-LocalGroupMember
 
+# https://learn.microsoft.com/windows-server/administration/openssh/openssh_server_configuration#allowgroups-allowusers-denygroups-denyusers
+# https://learn.microsoft.com/windows-server/administration/openssh/openssh_keymanagement#about-key-pairs
+
 #endregion
 
 #region Enabling remoting
@@ -70,6 +73,10 @@ Get-Help Enable-PSRemoting -ShowWindow
 Enable-PSRemoting
 
 Get-Help Set-WSManQuickConfig
+
+Get-NetFirewallRule -Name WINRM-HTTP-In-TCP*
+Get-NetFirewallRule -Group '@FirewallAPI.dll,-30267'
+Get-NetFirewallRule -Name WINRM-HTTP-In* | Where-Object Profile -like 'Public' | Get-NetFirewallAddressFilter
 
 # https://devops-collective-inc.gitbook.io/secrets-of-powershell-remoting/configuring-remoting-via-gpo
 
@@ -92,9 +99,10 @@ Get-Help Enter-PSSession -Parameter Credential
 
 Get-Help Invoke-Command -ShowWindow
 
-Invoke-Command -ComputerName Sea-DC1 -ScriptBlock { whoami.exe }
-Invoke-Command -ComputerName Sea-DC1, Sea-CL1 -ScriptBlock { whoami.exe }
-Invoke-Command -ComputerName (Get-Content servers.txt) -ScriptBlock { whoami.exe }
+# https://github.com/peetrike/Examples/blob/main/src/Functions/Get-CurrentUser.ps1
+Invoke-Command -ComputerName Sea-DC1 -ScriptBlock { [Security.Principal.WindowsIdentity]::GetCurrent() }
+Invoke-Command -ComputerName Sea-DC1, Sea-CL1 -ScriptBlock { $env:COMPUTERNAME }
+Invoke-Command -ComputerName (Get-Content servers.txt) -ScriptBlock { $env:COMPUTERNAME }
 
 Get-Help Invoke-Command -Parameter Credential
 
@@ -138,24 +146,26 @@ Get-Help New-PSSessionOption -ShowWindow
 
 #region Sending parameters to remote computers
 
-Get-Help Remote_Variables -ShowWindow
+# https://learn.microsoft.com/powershell/module/microsoft.powershell.core/about/about_remote_variables#using-local-variables-with-argumentlist-parameter
 
 $ServiceName = 'Bits'
-    #Requires -Version 3
-Invoke-Command -ComputerName Lon-DC1 -ScriptBlock { get-service $using:ServiceName }
     #Requires -Version 2
 Invoke-Command -ComputerName Lon-DC1 -ScriptBlock {
     param ($sn)
     Get-Service $sn
 } -ArgumentList $ServiceName
 
+    #Requires -Version 3
+Invoke-Command -ComputerName Lon-DC1 -ScriptBlock { Get-Service $using:ServiceName }
+
 #endregion
 
-#region Windows PowerShell scopes
+#region PowerShell scopes
 
 Get-Help Scopes -ShowWindow
-
 # https://learn.microsoft.com/powershell/module/microsoft.powershell.core/about/about_scopes#the-using-scope-modifier
+
+Get-Help Remote_Variables -ShowWindow
 
 #endregion
 
@@ -183,9 +193,12 @@ Invoke-Command -ComputerName Sea-DC1 -ScriptBlock {
 Get-Command -Noun PSSession
 Get-Command -ParameterName Session -Module Microsoft.PowerShell.Core
 
+    #Requires -RunAsAdministrator
+Get-ChildItem -Path WSMan:\localhost\Shell
+
 #endregion
 
-#region Creating a PSSession
+#region Creating and using a PSSession
 
 Get-Help New-PSSession -ShowWindow
 
@@ -194,16 +207,16 @@ New-PSSession -ComputerName Sea-Svr1
 $dc = New-PSSession -ComputerName Sea-DC1
 $dc | Get-Member
 
-#endregion
-
-#region Using a PSSession
-
+Get-Help Enter-PSSession -Parameter Session
 $dc | Enter-PSSession
 Enter-PSSession -Session $dc
 Get-PSSession -ComputerName Lon-DC1 | Enter-PSSession
 
-Get-PSSession | Invoke-Command -ScriptBlock { $env:COMPUTERNAME }
+Get-Help Invoke-Command -Parameter Session
 Invoke-Command -Session $dc -ScriptBlock { whoami.exe }
+Get-PSSession | ForEach-Object {
+    Invoke-Command -Session $_ -ScriptBlock { $env:COMPUTERNAME }
+}
 
 #endregion
 
