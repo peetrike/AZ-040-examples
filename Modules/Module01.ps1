@@ -69,6 +69,8 @@ Get-Command Get-VpnConnection
 Get-Module ActiveDirectory -ListAvailable
 Get-Module Dism -ListAvailable
 
+Get-Command Test-NetConnection
+
 $PSHOME
 $env:PSModulePath -split [IO.Path]::PathSeparator | Where-Object { $_ -like "$PSHOME*" }
 $env:PSModulePath -split [IO.Path]::PathSeparator | Where-Object { $_ -like "$env:windir*" }
@@ -143,6 +145,9 @@ Start-Process -Verb RunAs -FilePath pwsh
 
 Get-Help Execution_Policies -ShowWindow
 Get-Command -Noun ExecutionPolicy
+
+get-command runas.exe
+runas /?
 
 #endregion
 
@@ -299,6 +304,10 @@ Get-ADUser
     #Requires -Modules PowerShellGet
 Find-Module -Name UserProfile -Repository PSGallery
 Get-InstalledModule
+
+    # need kaks käsurida on samaväärsed
+Find-Module -Name UserProfile -Repository PSGallery | Install-Module
+Install-Module -Name UserProfile -Repository PSGallery
 
 #endregion
 
