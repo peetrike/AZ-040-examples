@@ -92,6 +92,11 @@ Get-ADGroup IT | Add-ADGroupMember -Members 'Mati'
 
 Get-ADUser Adam | Get-ADPrincipalGroupMembership | Select-Object Name
 
+Get-ADUser Adam |
+    Get-ADPrincipalGroupMembership |
+    Where-Object Name -like 'Managers' |
+    Get-ADGroup -Properties description
+
 #endregion
 
 #region Computer object management cmdlets
@@ -308,6 +313,9 @@ Get-Command -Noun NTFSAccess
 Get-Command -Noun NTFSAudit
 Get-Command -Noun NTFSOwner
 Get-Command -Noun NTFSInheritance
+
+    # Long Path support
+Get-Command -Module ntfsSecurity -noun *2
 
 #endregion
 
