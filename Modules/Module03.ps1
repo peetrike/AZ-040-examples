@@ -78,6 +78,9 @@ Get-FormatData -TypeName System.Diagnostics.Process* |
 
 Get-Process p* | Format-Table -View StartTime
 
+    # format destroys objects - replaces them with formatting objects
+Get-ChildItem | Format-List | Get-Member
+
 #endregion
 
 #endregion
@@ -102,6 +105,8 @@ New-Item -Name topid.txt -ItemType File
 Get-ChildItem t* | Sort-Object -Property Name
 Get-ChildItem t* | Sort-Object -Property Name -Culture en-us
 
+Get-ChildItem t* | Sort-Object -Property Length, Name -Descending
+
     # the following discovers sort order for alphabet
 Get-Culture
 Get-UICulture
@@ -115,6 +120,8 @@ Get-Service c* | Sort-Object Status | Format-Table -GroupBy Status
 Get-Help Group-Object -ShowWindow
 Get-Service c* | Group-Object Status
 Get-Service c* | Group-Object Status -NoElement
+
+Get-Service c* | Group-Object Status | ForEach-Object { $_.group | Get-Random -Count 3 }
 
 #endregion
 
@@ -133,14 +140,14 @@ Get-Content module03.ps1 | Measure-Object -Word -Line
 Get-Help Select-Object -ShowWindow
 
 Get-ChildItem | Sort-Object -Property Length | Select-Object -Last 1
-Get-ChildItem | Sort-Object -Property Length | Select-Object -First 2
+Get-ChildItem | Sort-Object -Property Length -Descending | Select-Object -First 2
 Get-ChildItem | Sort-Object -Property Length | Select-Object -Skip 1 -First 1
 
     #Requires -Version 5
 net.exe localgroup administrators | Select-Object -Skip 6 | Select-Object -SkipLast 2
 
     #region Selecting unique objects
-    Get-Help Select-Object -Parameter Unique
+Get-Help Select-Object -Parameter Unique
 
     #region Preparation
         New-ADGroup Katse1 -GroupScope Global
@@ -175,10 +182,12 @@ Get-Process p* |
     Select-Object -Property PSConfiguration
 
 Get-ADComputer sea-cl1 | Select-Object -Property DnsHostName | Get-Member
-Get-ADComputer sea-cl1 | Select-Object -ExpandProperty DnsHostName | Get-Member
+Get-ADComputer -filter * | Select-Object -ExpandProperty DnsHostName | Get-Member
 
 Get-Command powershell |
     Select-Object -Property Name -ExpandProperty FileVersionInfo
+        # see on eelmisega samaväärne
+(Get-Command powershell).FileVersionInfo
 
 Get-Help Select-Object -Parameter ExcludeProperty
 
@@ -294,9 +303,9 @@ Get-Service bits | Get-Member -Name Status
 # https://github.com/peetrike/PWAddins/blob/master/src/Public/Get-EnumValue.ps1
 [ServiceProcess.ServiceControllerStatus] | Get-EnumValue
 
-Get-Service p* | Where-Object -Property Status -EQ -Value 'Stopped'
+Get-Service -Name p* | Where-Object -Property Status -EQ -Value 'Stopped'
 Get-Service p* | Where-Object Status -eq 'Stopped'
-Get-Service p* | where Status -like 'Run*'
+Get-Service p* | where Status -like 'Sto*'
 gsv p* | ? Status -eq 1
 [System.ServiceProcess.ServiceControllerStatus]1
 [System.ServiceProcess.ServiceControllerStatus]::Stopped.value__
@@ -315,6 +324,8 @@ Get-ChildItem | Where-Object -Not PSIsContainer
 Get-ChildItem | Where-Object -FilterScript { -not $PSItem.PSIsContainer }
 Get-ChildItem | where { -not $_.PSIsContainer }
 gci | ? { ! $_.PSIsContainer }
+    #Requires -Version 3
+gci -di
 
 Get-ChildItem | Where-Object { ($_.Name.Length -ge 9) -and ($_.Length -ge 2KB) }
 
@@ -348,13 +359,13 @@ Measure-Command {
     Get-ADUser -Identity Adrian
 }
 Measure-Command {
-    Get-ADUser -Filter { Name -like 'Adrian*' }
+    Get-ADUser -Filter { Name -like 'Ad*' }
 }
 Measure-Command {
-    Get-ADUser -LDAPFilter '(Name=Adrian*)'
+    Get-ADUser -LDAPFilter '(Name=Ad*)'
 }
 Measure-Command {
-    Get-ADUser -Filter * | Where-Object Name -like 'Adrian*'
+    Get-ADUser -Filter * | Where-Object Name -like 'Ad*'
 }
 
     # negatiivne näide ka
