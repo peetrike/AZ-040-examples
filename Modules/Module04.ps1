@@ -68,7 +68,7 @@ Get-Command -Noun ChildItem
 
 Get-Help New-PSDrive -ShowWindow
     #Requires -Version 3
-New-PSDrive -Name 's' -Root '\\server\share\folder' -Persist -Credential 'domain\user' -PSProvider FileSystem
+New-PSDrive -Name 's' -PSProvider FileSystem -Root '\\server\share\folder' -Credential 'domain\user' -Persist
     #Requires -Modules SmbShare
 New-SmbMapping -LocalPath 's:' -RemotePath '\\lon-dc1\netlogon' -Persistent $false
 Get-Help New-SmbMapping -Parameter UserName
@@ -84,7 +84,7 @@ Get-Alias -Definition Get-ChildItem
 Get-Alias -Definition *-Item
 
 if (-not (Test-Path -Path temp:\)) {
-    New-PSDrive -Name Temp -Root $env:TEMP -PSProvider FileSystem -Persist
+    New-PSDrive -Name Temp -Root $env:TEMP -PSProvider FileSystem
 }
 Get-ChildItem temp:\
 
