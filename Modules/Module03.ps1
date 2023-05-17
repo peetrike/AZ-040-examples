@@ -410,7 +410,9 @@ Measure-Command {
 
 #region Purpose of enumeration
 
+    # see ei tööta päris nii nagu vaja...
 1..3 | Start-Process notepad
+
 Get-Process notepad | Stop-Process
 Stop-Process -Name Notepad
 
@@ -429,20 +431,20 @@ Get-Help Simplified_Syntax -ShowWindow
 Get-Help ForEach-Object -ShowWindow
 Get-Alias -Definition ForEach-Object
 
-dir -File | ForEach-Object -MemberName Name | Get-Member
+Get-ChildItem -File | ForEach-Object -MemberName Name | Get-Member
     #the following do the same
 dir *.txt | Select-Object -ExpandProperty Name
     #Requires -Version 3
 (dir *.txt).Name
 
 dir -File | foreach Encrypt -WhatIf
-dir -File | % Decrypt -WhatIf
+ls -File | % Decrypt -WhatIf
 
 #region Preparation
 'katse', 'kutse' | ForEach-Object { New-Item -ItemType Directory -Name $_ -ErrorAction SilentlyContinue }
 #endregion
-Get-ChildItem k* -Directory | ForEach-Object CreateSubdirectory -ArgumentList 'muu'
-dir k* -Directory | % CreateSubdirectory 'muu'
+Get-ChildItem k?tse -Directory | ForEach-Object CreateSubdirectory -ArgumentList 'muu'
+ls k* -Directory | % CreateSubdirectory 'muu'
 
 #endregion
 
@@ -553,7 +555,7 @@ $Serializer.GetType() | Get-TypeUrl -Invoke
 # https://html.spec.whatwg.org/
 
 Get-Help ConvertTo-Html -ShowWindow
-Get-ChildItem |
+Get-ChildItem -File |
     Select-Object -First 4 |
     ConvertTo-Html -PreContent 'Here are some files' -Property Name, Length |
     Out-File -FilePath failid.htm -Encoding utf8
@@ -747,6 +749,10 @@ Get-ADUser -Id Tia -Properties MemberOf |
     Get-ADGroup
 
 $Property = 'MemberOf'
+Get-ADUser -Id Tia -Properties $Property |
+    Select-Object -ExpandProperty $Property |
+    Get-ADGroup
+
 (Get-ADUser -Id Tia -Properties $Property).$Property |
     Get-ADGroup
 
