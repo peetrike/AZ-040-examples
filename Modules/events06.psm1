@@ -34,3 +34,8 @@
 
     Get-WinEvent @EventParams
 }
+
+$MinuMoodul = 'events06'
+New-Alias -Name syndmus -Value events06
+
+#Export-ModuleMember -Variable MinuMoodul -Function events06 -Alias syndmus

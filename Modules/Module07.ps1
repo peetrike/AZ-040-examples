@@ -182,11 +182,15 @@ Get-Help about_Foreach -Category HelpFile -ShowWindow
 # https://learn.microsoft.com/powershell/scripting/lang-spec/chapter-08#844-the-foreach-statement
 
 $numbers = 1..10
-foreach ($i in $numbers) {
+$vastused = foreach ($i in $numbers) {
     'number on {0}' -f ($i * 2)
 }
+$vastused | Out-File vastused.txt
 
-1..10 | ForEach-Object { 'Number on {0}' -f ($_ * 2) }
+1..10 | ForEach-Object {
+    $i = $_
+    'Number on {0}' -f ($i * 2)
+} | Out-File vastused.txt
 
 foreach ($file in Get-ChildItem -File) { $file.Name }
 $failid = Get-ChildItem -File
@@ -212,9 +216,17 @@ if ($a -gt 1) { 'a is greater' }
 elseif ($null -eq $b) { 'b is not set' }
 else { 'something else' }
 
+if ($a -gt 1) {
+    'a is greater'
+} elseif ($null -eq $b) {
+    'b is not set'
+} else {
+    'something else'
+}
+
 if (Get-ChildItem -File) { 'there are some files' } else { New-Item uus.txt }
 
-if (-not (Test-Path -Path käsud.txt -PathType Leaf )) {
+if (-not (Test-Path -Path käsud.txt -PathType Leaf)) {
     New-Item -Path käsud.txt -ItemType File
 }
 
@@ -326,7 +338,7 @@ do {
     $answer = Read-Host -Prompt 'Go or Stop'
 } until ($answer -eq 'stop')
 
-Remove-Variable -Name i
+Remove-Variable -Name id
 while (++$i -le 10) {
     'number on {0}' -f $i
 }
@@ -782,20 +794,41 @@ $local:minuasi
 $script:minuasi
 $global:minuasi
 
+
+function asi {
+    'Asi on: {0}' -f $minuasi
+    'Muudame'
+    $minuasi = 'asja asi'
+    'Asi on nüüd: {0}' -f $minuasi
+}
+
+function asi2 {
+    'Asi on: {0}' -f $minuasi
+    'Muudame'
+    $global:minuasi = 'asja asi'
+    'Asi on nüüd: {0}' -f $minuasi
+}
+
 function katse {
     [CmdletBinding()]
     param (
-        $minuasi
+        $inputobject,
+            [switch]
+        $PassThru
     )
-    Write-Verbose -Message ('Minu asi on: {0}' -f $minuasi)
+    Write-Verbose -Message ('Minu asi on: {0}' -f $inputobject)
 
-    $minuasi += " + katsetuse asi"
-    <# return #> $minuasi
+    $inputobject += " + katsetuse asi"
+    Write-Verbose ('Nüüd on asi:{0}' -f $inputobject)
+    if ($PassThru) {
+        <# return #> $inputobject
+    }
 }
 
 katse -minuasi $minuasi -Verbose
+katse -minuasi $minuasi -Verbose -PassThru
 
-$minuasi = katse -minuasi $minuasi -Verbose
+$minuasi = katse -minuasi $minuasi -Verbose -PassThru
 $minuasi
 
 Get-Help about_return -ShowWindow

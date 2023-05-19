@@ -1,7 +1,7 @@
 ﻿param (
-        <# [parameter(
+        [parameter(
             Mandatory
-        )] #>
+        )]
         [datetime]
     $Aeg = [datetime]::Now.AddDays(-1),
         [ValidateScript({
@@ -13,7 +13,7 @@
 )
 
 #region User preference variables
-$EventID = 15
+$EventID = 16384
 $LogName = 'Application'
 #endregion
 
