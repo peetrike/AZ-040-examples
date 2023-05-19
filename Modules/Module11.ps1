@@ -69,7 +69,18 @@ Get-Help Receive-Job -Parameter Keep
 Get-Job
 Receive-Job -id 0 -Keep
 
+Start-Job -Name ajutine -ScriptBlock {
+    for ($i = 1; $i -lt 11; $i++) {
+        'jooksen {0}' -f $i
+        Start-Sleep -Seconds 6
+    }
+}
+Receive-Job -Name ajutine
+Get-Job -Name ajutine
 #endregion
+
+Find-Module *threadjob -Repository PSGallery
+Find-Module PoshRSJob -Repository PSGallery
 
 #endregion
 
