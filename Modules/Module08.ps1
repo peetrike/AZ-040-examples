@@ -100,7 +100,9 @@ Get-Help Enter-PSSession -Parameter Credential
 Get-Help Invoke-Command -ShowWindow
 
 # https://github.com/peetrike/Examples/blob/main/src/Functions/Get-CurrentUser.ps1
-Invoke-Command -ComputerName Sea-DC1 -ScriptBlock { [Security.Principal.WindowsIdentity]::GetCurrent() }
+Invoke-Command -ComputerName Sea-DC1 -ScriptBlock {
+    [Security.Principal.WindowsIdentity]::GetCurrent()
+}
 Invoke-Command -ComputerName Sea-DC1, Sea-CL1 -ScriptBlock { $env:COMPUTERNAME }
 Invoke-Command -ComputerName (Get-Content servers.txt) -ScriptBlock { $env:COMPUTERNAME }
 
@@ -232,6 +234,13 @@ Get-PSSession -ComputerName $DcName
 Get-PSSession -ComputerName $DcName | Connect-PSSession
 Get-PSSession
 
+$s = Invoke-Command -ComputerName Lon-DC1 -InDisconnectedSession -ScriptBlock {
+    start-sleep -Seconds 100
+    'valmis'
+}
+Start-Sleep -Seconds 120
+Receive-PSSession -Session $s
+
 #endregion
 
 #region Implicit remoting
@@ -240,7 +249,7 @@ Get-Help Import-Module -Parameter PSSession
 Get-Help Import-PSSession -Parameter Module
 
 Get-Module ActiveDirectory -ListAvailable
-$dc = New-PSSession -ComputerName Sea-DC1
+$dc = New-PSSession -ComputerName Lon-DC1
 Import-Module -PSSession $dc -Name ActiveDirectory -Prefix 'dc' -Function Get-ADUser
     # or
 Import-PSSession -Session $dc -Module ActiveDirectory -Prefix 'dc' -CommandName Get-ADUser
