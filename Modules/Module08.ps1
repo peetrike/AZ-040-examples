@@ -266,3 +266,9 @@ Get-dcADUser administrator # creates a new session
 #endregion
 
 #endregion
+
+#region Lab
+
+# https://github.com/MicrosoftLearning/AZ-040T00-Automating-Administration-with-PowerShell/blob/master/Instructions/Labs/LAB_08_Performing_remote_administration_with_PowerShell.md
+
+#endregion
