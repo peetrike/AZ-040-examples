@@ -179,3 +179,10 @@ $env:COMPUTERNAME
 #endregion
 
 #endregion
+
+
+#region Lab
+
+# https://github.com/MicrosoftLearning/AZ-040T00-Automating-Administration-with-PowerShell/blob/master/Instructions/Labs/LAB_04_Using_PSProviders_and_PSDrives.md
+
+#endregion
