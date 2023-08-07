@@ -214,7 +214,7 @@ else { 'something else' }
 
 if (Get-ChildItem -File) { 'there are some files' } else { New-Item uus.txt }
 
-if (-not (Test-Path -Path käsud.txt -PathType Leaf )) {
+if (-not (Test-Path -Path käsud.txt -PathType Leaf)) {
     New-Item -Path käsud.txt -ItemType File
 }
 
@@ -785,17 +785,23 @@ $global:minuasi
 function katse {
     [CmdletBinding()]
     param (
-        $minuasi
+        $InputObject,
+            [switch]
+        $PassThru
     )
-    Write-Verbose -Message ('Minu asi on: {0}' -f $minuasi)
+    Write-Verbose -Message ('Minu asi on: {0}' -f $InputObject)
 
-    $minuasi += " + katsetuse asi"
-    <# return #> $minuasi
+    $InputObject += ' + katsetuse asi'
+    Write-Verbose ('Nüüd on asi: {0}' -f $InputObject)
+    if ($PassThru) {
+        <# return #> $InputObject
+    }
 }
 
-katse -minuasi $minuasi -Verbose
+katse -InputObject $minuasi -Verbose
+katse -InputObject $minuasi -Verbose -PassThru
 
-$minuasi = katse -minuasi $minuasi -Verbose
+$minuasi = katse -InputObject $minuasi -Verbose -PassThru
 $minuasi
 
 Get-Help about_return -ShowWindow
