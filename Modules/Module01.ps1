@@ -451,3 +451,10 @@ Get-Help Update-Help -Parameter Scope
 #endregion
 
 #endregion
+
+#region Lab
+
+# You can do the lab on your own computer
+# https://github.com/MicrosoftLearning/AZ-040T00-Automating-Administration-with-PowerShell/blob/master/Instructions/Labs/LAB_01_Configuring_Windows_PowerShell_finding_and_running_commands.md
+
+#endregion
