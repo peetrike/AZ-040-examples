@@ -394,6 +394,11 @@ Measure-Command {
 
 #endregion
 
+#region Lab 3A
+
+# https://github.com/MicrosoftLearning/AZ-040T00-Automating-Administration-with-PowerShell/blob/master/Instructions/Labs/LAB_03A_Working_with_Windows_PowerShell_Pipeline.md
+
+#endregion
 
 #region Lesson 4: Enumerating objects in the pipeline
 
@@ -742,5 +747,11 @@ $Property = 'MemberOf'
 Get-ADUser -Id Tia | Get-ADPrincipalGroupMembership
 
 #endregion
+
+#endregion
+
+#region Lab 3B
+
+# https://github.com/MicrosoftLearning/AZ-040T00-Automating-Administration-with-PowerShell/blob/master/Instructions/Labs/LAB_03B_Working_with_Windows_PowerShell_Pipeline.md
 
 #endregion
