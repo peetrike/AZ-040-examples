@@ -174,6 +174,10 @@ Invoke-WithCulture -Culture 'ja-jp' -ScriptBlock { Get-Date $date }
 [datetime]::Parse($date, [cultureinfo]'en-us')
 [datetime]::Parse($date, [cultureinfo]'ja-jp')
 
+#endregion
+
+#region Working with timespans
+
 # https://learn.microsoft.com/dotnet/api/system.timespan
 Get-Help New-TimeSpan -ShowWindow
 $aeg = New-TimeSpan -Start (Get-Item .\Module06.ps1).LastWriteTime
@@ -229,6 +233,7 @@ $arvutid += 'Sea-DC2'
 $arvutid.Count
 $arvutid | Select-Object -First 2 -Skip 2
 
+# https://github.com/peetrike/Examples/blob/main/src/Performance/Test-Array.benchmark.ps1
 $numbrid = @()
 $MaxNumber = 10000
 Measure-Command {
@@ -247,14 +252,9 @@ $numbrid.Count
 
 #endregion
 
-#region Working with ArrayLists
+#region Working with generic Lists
 
 # https://learn.microsoft.com/dotnet/api/system.collections.arraylist
-
-$computers = [Collections.ArrayList] (Get-Content computers.txt)
-$computers.Add('Lon-DC1')
-$computers.RemoveAt(1)
-
 # https://github.com/dotnet/platform-compat/blob/master/docs/DE0006.md
 
 # https://learn.microsoft.com/dotnet/api/system.collections.generic.list-1
