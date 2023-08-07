@@ -852,3 +852,10 @@ Get-Item function:\events06 | Remove-Item
 #endregion
 
 #endregion
+
+
+#region Lab
+
+# https://github.com/MicrosoftLearning/AZ-040T00-Automating-Administration-with-PowerShell/blob/master/Instructions/Labs/LAB_07_Windows_PowerShell_Scripting.md
+
+#endregion
