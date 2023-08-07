@@ -141,6 +141,9 @@ Get-Help pwsh -ShowWindow
 Start-Process -Verb RunAs -FilePath powershell.exe
 Start-Process -Verb RunAs -FilePath pwsh
 
+Get-Command runas.exe
+runas.exe -?
+
 Get-Help Execution_Policies -ShowWindow
 Get-Command -Noun ExecutionPolicy
 
