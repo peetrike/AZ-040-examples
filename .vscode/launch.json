@@ -37,12 +37,6 @@
       "name": "PowerShell Attach to Host Process",
       "processId": "${command:PickPSHostProcess}",
       "runspaceId": 1
-    },
-    {
-      "type": "PowerShell",
-      "request": "launch",
-      "name": "PowerShell Interactive Session",
-      "cwd": "${workspaceRoot}"
     }
   ]
 }

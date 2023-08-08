@@ -14,7 +14,7 @@
   "windows": {
     "options": {
       "shell": {
-        "executable": "C:\\Windows\\System32\\WindowsPowerShell\\v1.0\\powershell.exe",
+        "executable": "C:/Program Files/PowerShell/7/pwsh.exe",
         "args": [
           "-NoProfile",
           "-ExecutionPolicy",
@@ -57,6 +57,14 @@
         "isDefault": true
       },
       "problemMatcher": [
+        "$pester"
+      ]
+    },
+    {
+      "label": "Publish",
+      "type": "shell",
+      "command": "Publish-Script -Path ${file} -Repository ${input:Repository}",
+      "problemMatcher": [
         {
           "owner": "powershell",
           "fileLocation": [
@@ -65,110 +73,81 @@
           "severity": "error",
           "pattern": [
             {
-              "regexp": "^\\s*(\\[-\\]\\s*.*?)(\\d+)ms\\s*$",
+              "regexp": "(.+)",
               "message": 1
             },
             {
-              "regexp": "(.*)",
-              "code": 1
+              "regexp": "At (.*\\.ps1):(\\d*) char:(\\d*)(.*)",
+              "file": 1,
+              "line": 2,
+              "column": 3
             },
             {
-              "regexp": "^.*,\\s*(.*):(\\s*line\\s*)?(\\d+).*",
-              "file": 1,
-              "line": 3
+              "regexp": "\\+ (.*)",
+              "code": 1
             }
           ]
         }
       ]
     },
     {
-      "label": "Publish",
-      "type": "shell",
-      "command": "Publish-Script -Path ${file} -Repository ${input:Repository}",
-      "problemMatcher": [
-      {
-        "owner": "powershell",
-        "fileLocation": [
-          "absolute"
-        ],
-        "severity": "error",
-        "pattern": [
-          {
-            "regexp": "(.+)",
-            "message": 1
-          },
-          {
-            "regexp": "At (.*\\.ps1):(\\d*) char:(\\d*)(.*)",
-            "file": 1,
-            "line": 2,
-            "column": 3
-          },
-          {
-            "regexp": "\\+ (.*)",
-            "code": 1
-          }
-        ]
-      }
-      ]
-    },
-    {
       "label": "Add script",
       "type": "shell",
-      "command": "Invoke-PSMDTemplate -TemplateName PWScript -OutPath ${input:Folder}",
+      "command": "Import-Module PWBuild; Invoke-PSMDTemplate -TemplateName PWScript -OutPath ${input:Folder}",
       "problemMatcher": [
-      {
-        "owner": "powershell",
-        "fileLocation": [
-          "absolute"
-        ],
-        "severity": "error",
-        "pattern": [
-          {
-            "regexp": "(.+)",
-            "message": 1
-          },
-          {
-            "regexp": "At (.*\\.ps1):(\\d*) char:(\\d*)(.*)",
-            "file": 1,
-            "line": 2,
-            "column": 3
-          },
-          {
-            "regexp": "\\+ (.*)",
-            "code": 1
-          }
-        ]
-      }
+        {
+          "owner": "powershell",
+          "fileLocation": [
+            "absolute"
+          ],
+          "severity": "error",
+          "pattern": [
+            {
+              "regexp": "(.+)",
+              "message": 1
+            },
+            {
+              "regexp": "At (.*\\.ps1):(\\d*) char:(\\d*)(.*)",
+              "file": 1,
+              "line": 2,
+              "column": 3
+            },
+            {
+              "regexp": "\\+ (.*)",
+              "code": 1
+            }
+          ]
+        }
       ]
     },
     {
       "label": "Add function",
       "type": "shell",
-      "command": "Invoke-PSMDTemplate -TemplateName PWFunction -OutPath ${input:Folder}",
+      "command": "Import-Module PWBuild; Invoke-PSMDTemplate -TemplateName PWFunction -OutPath ${input:Folder}",
       "problemMatcher": [
-      {
-        "owner": "powershell",
-        "fileLocation": [
-          "absolute"
-        ],
-        "severity": "error",
-        "pattern": [
-          {
-            "regexp": "(.+)",
-            "message": 1
-          },
-          {
-            "regexp": "At (.*\\.ps1):(\\d*) char:(\\d*)(.*)",
-            "file": 1,
-            "line": 2,
-            "column": 3
-          },
-          {
-            "regexp": "\\+ (.*)",
-            "code": 1
-          }
-        ]
-      }
+        {
+          "owner": "powershell",
+          "fileLocation": [
+            "absolute"
+          ],
+          "severity": "error",
+          "pattern": [
+            {
+              "regexp": "(.+)",
+              "message": 1
+            },
+            {
+              "regexp": "At (.*\\.ps1):(\\d*) char:(\\d*)(.*)",
+              "file": 1,
+              "line": 2,
+              "column": 3
+            },
+            {
+              "regexp": "\\+ (.*)",
+              "code": 1
+            }
+          ]
+        }
       ]
     }
   ],

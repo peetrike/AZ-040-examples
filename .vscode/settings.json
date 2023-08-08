@@ -5,9 +5,11 @@
   "files.defaultLanguage": "powershell",
 
   "powershell.codeFormatting.preset": "OTBS",
+  "powershell.codeFormatting.pipelineIndentationStyle": "IncreaseIndentationForFirstPipeline",
   "powershell.scriptAnalysis.settingsPath": "PSScriptAnalyzerSettings.psd1",
 
   "[powershell]": {
+    "editor.rulers": [ 80, 115 ],
     "files.trimFinalNewlines": true
   },
 }
