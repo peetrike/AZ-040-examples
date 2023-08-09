@@ -151,7 +151,7 @@ Get-Command -Noun ExecutionPolicy
 
 #region Configuring the console
 
-# https://docs.microsoft.com/previous-versions/windows/it-pro/windows-powershell-1.0/ee692799(v=technet.10)
+# https://learn.microsoft.com/previous-versions/windows/it-pro/windows-powershell-1.0/ee692799(v=technet.10)
 $Host.PrivateData
 $Host.UI.RawUI
 Get-PSReadLineOption | Select-Object *color
@@ -188,7 +188,7 @@ Get-PSReadLineKeyHandler -Chord 'Ctrl-c', 'Ctrl-C', 'Ctrl-v', 'Shift-Insert', 'C
 
 #endregion
 
-#region Visual Studio Code
+#region Using Visual Studio Code with PowerShell
 
 # http://code.visualstudio.com
 # https://learn.microsoft.com/powershell/scripting/dev-cross-plat/vscode/using-vscode
@@ -248,12 +248,13 @@ Get-Help Get-Command -Parameter Verb
 
 #region Tab completion
 
-# https://docs.microsoft.com/powershell/module/microsoft.powershell.core/about/about_tab_expansion
+Get-Help Tab_Expansion -ShowWindow
 
 Get-Help PSReadLine -Category HelpFile -ShowWindow
 Get-Command -Module PSReadLine
 
 Get-PSReadLineKeyHandler -Chord 'Tab', 'Shift-Tab', 'Ctrl- '
+# https://learn.microsoft.com/powershell/module/psreadline/about/about_psreadline_functions#completion-functions
 
 # https://learn.microsoft.com/powershell/module/psreadline/about/about_psreadline#predictive-intellisense
 Get-PSReadLineKeyHandler -Chord 'F2'
@@ -329,8 +330,9 @@ Get-Help Find-Command
 Get-Help Install-Module
 
 # https://devblogs.microsoft.com/powershell/powershellget-3-0-preview-1/
-# https://devblogs.microsoft.com/powershell/powershellget-3-0-preview-20/
+# https://devblogs.microsoft.com/powershell/psresourceget-preview-is-now-available/
 Get-Module PowerShellGet -ListAvailable
+Get-Module *PSResourceGet -ListAvailable
 
 #endregion
 
@@ -342,7 +344,7 @@ dir
 ls
 
 Get-Command -Noun Alias
-get-help Get-Alias -ShowWindow
+Get-Help Get-Alias -ShowWindow
 
 Get-Alias dir
 Get-Alias -Definition Get-ChildItem
@@ -356,7 +358,9 @@ New-Alias -Name ping -Definition Test-Connection
 Set-Alias ping Test-Connection
 Get-Command ping
 ping www.ee
-Remove-Item alias:\ping
+    # PowerShell < 6.0 does not have Remove-Alias cmdlet
+    # https://github.com/peetrike/PWAddins/blob/master/src/Public/remove-alias.ps1
+Remove-Item -Path alias:\ping
 ping www.ee
 
     # command parameter aliases
@@ -397,14 +401,18 @@ Get-Help Get-Help -Detailed
 Get-Help Get-Help -Full
 Get-Help Get-Process -Online
 
-# https://github.com/peetrike/Examples/tree/main/CommandLine
+    # Get-Help uses substring search, the following commands produce same result
+Get-Help process
+Get-Help *process*
+
+# https://github.com/peetrike/Examples/blob/main/CommandLine/README.md#command-line-samples
 
 #endregion
 
 #region Interpreting the help syntax
 
 Get-Help Command_Syntax -Category HelpFile -ShowWindow
-# https://docs.microsoft.com/powershell/module/microsoft.powershell.core/about/about_command_syntax#parameters
+# https://learn.microsoft.com/powershell/module/microsoft.powershell.core/about/about_command_syntax#parameters
 
 Get-Help Get-Command | Select-Object -ExpandProperty Syntax
 (Get-Help Get-Command).Syntax
@@ -454,6 +462,7 @@ Get-Help Update-Help -Parameter Scope
 #endregion
 
 #endregion
+
 
 #region Lab
 
