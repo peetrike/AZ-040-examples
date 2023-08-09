@@ -43,7 +43,6 @@ Search-ADAccount -UsersOnly -AccountExpiring -TimeSpan $DaysAgo
 
 Get-Help Search-ADAccount -ShowWindow
 
-
     # https://peterwawa.wordpress.com/2014/01/11/kontode-muutmine-domeenis/
 $longAgo = (Get-Date) - $DaysAgo
 Get-ADUser -Filter { LogonCount -ge 1 -and LastLogonDate -le $longAgo } |
@@ -144,10 +143,10 @@ Search-ADAccount -AccountDisabled -UsersOnly
 #region Lesson 2: Network configuration cmdlets
 
 Get-Module Net* -ListAvailable
-Get-Command -Module NetTCPIP
 
 #region Managing IP addresses
 
+Get-Command -Module NetTCPIP
 Get-Command -Module NetAdapter
 
 Get-NetIPAddress -AddressFamily IPv4
@@ -176,6 +175,7 @@ Resolve-DnsName -Name ttu.ee -Type mx
 
 Get-DnsClientCache
 Clear-DnsClientCache
+
 Get-DnsClient -InterfaceAlias 'Wi-Fi'
 Get-DnsClientServerAddress -AddressFamily IPv4
 Get-DnsClientGlobalSetting
@@ -255,6 +255,11 @@ Get-Command -Module Dism
 #endregion
 
 #region Hyper-V cmdlets
+
+    #Requires -RunAsAdministrator
+Get-WindowsFeature -Name Hyper-V-PowerShell
+Get-WindowsOptionalFeature -Online -FeatureName *Hyper-V*PowerShell
+
 Get-Command -Module Hyper-V
 
 Get-VM -Name AZ-040*
@@ -268,6 +273,8 @@ Enter-PSSession -VMName MyVM -Credential 'computer\user'
 Get-Module *Administration -ListAvailable
 Get-Command -Module WebAdministration
 Get-Command -Module IISAdministration
+
+Find-Module -Name IISAdministration
 
 #endregion
 
@@ -320,6 +327,7 @@ Get-Command -Module NTFSSecurity -Noun *2
 #endregion
 
 #endregion
+
 
 #region Lab
 
