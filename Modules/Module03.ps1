@@ -116,6 +116,19 @@ Get-Help Group-Object -ShowWindow
 Get-Service c* | Group-Object Status
 Get-Service c* | Group-Object Status -NoElement
 
+# https://peterwawa.wordpress.com/2023/03/29/os-inventuur-ad-objektide-baasil/
+
+$ComputerProps = @{
+    Filter     = {
+        Enabled -eq $true -and
+        OperatingSystem -like 'Windows*'
+    }
+    Properties = 'OperatingSystemVersion'
+}
+Get-ADComputer @ComputerProps |
+    Group-Object { $_.OperatingSystemVersion.Split('.')[0] } -NoElement |
+    Sort-Object { [int] $_.Name } -Descending
+
 #endregion
 
 #region Measuring objects
@@ -174,8 +187,9 @@ Get-Process p* | Select-Object -Property PSResources
 Get-Process p* |
     Select-Object -Property PSConfiguration
 
-Get-ADComputer sea-cl1 | Select-Object -Property DnsHostName | Get-Member
-Get-ADComputer sea-cl1 | Select-Object -ExpandProperty DnsHostName | Get-Member
+$ComputerName = 'sea-cl1'
+Get-ADComputer $ComputerName | Select-Object -Property DnsHostName | Get-Member
+Get-ADComputer $ComputerName | Select-Object -ExpandProperty DnsHostName | Get-Member
 
 Get-Command powershell |
     Select-Object -Property Name -ExpandProperty FileVersionInfo
@@ -251,7 +265,7 @@ Get-Help about_regular -ShowWindow
 '13' -gt 3
 13 -gt '3'
 
-    # arrays in comparison, look also: Module 12
+    # arrays in comparison
 2 -in 1, 2, 3, 4
 1, 2, 3, 4 -contains 3
 
@@ -288,8 +302,8 @@ Get-Help Where-Object -ShowWindow
 Get-Alias -Definition Where-Object
 
 Get-Service bits | Get-Member -Name Status
-[enum]::GetValues([System.ServiceProcess.ServiceControllerStatus])
-[System.ServiceProcess.ServiceControllerStatus] 'Stopped'
+[enum]::GetValues([ServiceProcess.ServiceControllerStatus])
+[ServiceProcess.ServiceControllerStatus] 'Stopped'
 
 # https://github.com/peetrike/PWAddins/blob/master/src/Public/Get-EnumValue.ps1
 [ServiceProcess.ServiceControllerStatus] | Get-EnumValue
@@ -298,8 +312,8 @@ Get-Service p* | Where-Object -Property Status -EQ -Value 'Stopped'
 Get-Service p* | Where-Object Status -eq 'Stopped'
 Get-Service p* | where Status -like 'Run*'
 gsv p* | ? Status -eq 1
-[System.ServiceProcess.ServiceControllerStatus]1
-[System.ServiceProcess.ServiceControllerStatus]::Stopped.value__
+[ServiceProcess.ServiceControllerStatus]1
+[ServiceProcess.ServiceControllerStatus]::Stopped.value__
 
 Get-ChildItem | Where-Object -Property PSIsContainer -EQ $true
 Get-ChildItem | where PSIsContainer -EQ $true
@@ -490,7 +504,7 @@ Get-Process p* | Select-Object PSResources | Format-Table | Out-File protsessid.
 Get-Help ConvertTo-Csv -ShowWindow
 Get-Help Export-Csv -ShowWindow
 
-Get-ChildItem | Export-Csv -Path failid.csv -Encoding default -UseCulture
+Get-ChildItem | Export-Csv -Path failid.csv -Encoding utf8 -UseCulture
 Get-ChildItem |
     ConvertTo-Csv -UseCulture -NoTypeInformation |
     Out-File -Encoding utf8 -FilePath failid.csv
@@ -679,7 +693,7 @@ Get-ParameterInfo Test-Connection | Where-Object Pipeline -like '*ByPropertyName
 
     # but this does
 Get-ADComputer -Filter * |
-    Select-Object -Property @{n = 'ComputerName'; e = { $_.DnsHostName } } |
+    Select-Object -Property @{ n = 'ComputerName'; e = { $_.DnsHostName } } |
     Test-Connection -Count 1
 Get-ADComputer -Filter * | Test-Connection -ComputerName { $_.DnsHostName } -Count 1
 
