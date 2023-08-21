@@ -42,7 +42,7 @@ Get-Help Variable_ -Category HelpFile -ShowWindow
 
 Get-Help about_*_provider
 
-# https://learn.microsoft.com/et-ee/sql/powershell/sql-server-powershell-provider
+# https://learn.microsoft.com/sql/powershell/sql-server-powershell-provider
 
 #endregion
 
@@ -86,7 +86,7 @@ Get-Alias -Definition *-Item
 if (-not (Test-Path -Path Temp:\)) {
     New-PSDrive -Name Temp -Root $env:TEMP -PSProvider FileSystem
 }
-Get-ChildItem Tmemp:\
+Get-ChildItem Temp:\
 
 Get-ChildItem | Where-Object { $_.PSIsContainer }
     #Requires -Version 3.0
