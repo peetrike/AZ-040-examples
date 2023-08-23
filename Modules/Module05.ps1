@@ -205,6 +205,8 @@ $Session | Remove-CimSession
 
 Get-CimInstance -ClassName Win32_OperatingSystem | Get-Member -Name ForegroundApplicationBoost
 
+Get-Help Set-CimInstance -ShowWindow
+
 #region Discovering methods
 
 Get-WmiObject -Class Win32_Service | Get-Member -MemberType Method
