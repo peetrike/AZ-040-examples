@@ -22,7 +22,7 @@
 #region What are variables?
 
 Get-Help variables -Category HelpFile
-# https://learn.microsoft.com/powershell/scripting/lang-spec/chapter-02#232-variables
+# https://learn.microsoft.com/powershell/scripting/lang-spec/chapter-05
 
 Get-Help variable_ -Category HelpFile -ShowWindow
 Get-ChildItem Variable:
@@ -33,6 +33,7 @@ Get-Command -Noun Variable
 
 #region Variable naming
 
+# https://learn.microsoft.com/powershell/scripting/lang-spec/chapter-02#232-variables
 # https://learn.microsoft.com/powershell/module/microsoft.powershell.core/about/about_variables#variable-names-that-include-special-characters
 
     # variable names are not case sensitive, not even on Linux:
@@ -113,9 +114,10 @@ Get-Help enum -Category HelpFile -ShowWindow
 $set = 1, 2, 3
 $set | Get-Member
 , $set | Get-Member
+Get-Member -InputObject $set
 $set.GetType()
 
-$process = get-process -id $PID
+$process = Get-Process -Id $PID
 Start-Process ('https://learn.microsoft.com/dotnet/api/{0}' -f $process.GetType().FullName)
 # https://github.com/peetrike/PWAddins/blob/master/src/Public/Get-TypeUrl.ps1
 $process.WaitForExit
@@ -176,7 +178,7 @@ Invoke-WithCulture -Culture 'ja-jp' -ScriptBlock { Get-Date $date }
 
 #endregion
 
-#region Working with timespans
+#region Extra: Working with timespans
 
 # https://learn.microsoft.com/dotnet/api/system.timespan
 Get-Help New-TimeSpan -ShowWindow
@@ -328,14 +330,14 @@ $computers.ContainsKey('Sea-svr1')
 
     # create HashTable to find user accounts fast:
 $users = @{}
-foreach ($u in get-aduser -Filter *) {
-    $name = $u.samaccountname
+foreach ($u in Get-ADUser -Filter *) {
+    $name = $u.SamAccountName
     $users.$name = $u
     #$users.Add($name, $u)
 }
 $users.administrator
-$users.marko
-$users.tomas
+$users.Marko
+$users.Tomas
 
 #endregion
 
