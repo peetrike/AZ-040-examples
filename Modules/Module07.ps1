@@ -23,7 +23,7 @@
 
 Get-Help Scripts -Category HelpFile -ShowWindow
 
-get-date
+Get-Date
 whoami.exe
 Get-History -Count 2 |
     Select-Object -ExpandProperty Commandline |
@@ -82,10 +82,8 @@ Get-Module PowerShellGet -ListAvailable
 Get-Command -Noun Module, Script
 
 if ($PSVersionTable.PSVersion.Major -lt 6) {
-    if (-not ([Net.ServicePointManager]::SecurityProtocol -band [Net.SecurityProtocolType]::Tls12)) {
-        [Net.ServicePointManager]::SecurityProtocol =
-            [Net.ServicePointManager]::SecurityProtocol -bor [Net.SecurityProtocolType]::Tls12
-    }
+    [Net.ServicePointManager]::SecurityProtocol =
+        [Net.ServicePointManager]::SecurityProtocol -bor [Net.SecurityProtocolType]::Tls12
 }
 
 # https://github.com/peetrike/scripts/blob/master/src/ComputerManagement/UserProfile/Install-UserProfile.ps1
@@ -131,14 +129,14 @@ Get-Help Run_With_PowerShell -ShowWindow
 #region The script execution policy
 
 Get-Help Execution_Policies -ShowWindow
-Get-Command -noun ExecutionPolicy
+Get-Command -Noun ExecutionPolicy
 Get-ExecutionPolicy -List
 
-Set-ExecutionPolicy Restricted -Scope Process       #DevSkim: ignore DS113853
+Set-ExecutionPolicy -ExecutionPolicy Restricted -Scope Process  #DevSkim: ignore DS113853
 .\käsud.ps1
 powershell.exe -ExecutionPolicy RemoteSigned -file käsud.ps1
 pwsh.exe -NoProfile -ExecutionPolicy AllSigned -c Get-ExecutionPolicy -List
-Set-ExecutionPolicy RemoteSigned -Scope Process     #DevSkim: ignore DS113853
+Set-ExecutionPolicy RemoteSigned -Scope Process                 #DevSkim: ignore DS113853
 
 Get-Help Unblock-File -ShowWindow
 
@@ -185,7 +183,6 @@ $numbers = 1..10
 foreach ($i in $numbers) {
     'number on {0}' -f ($i * 2)
 }
-
 1..10 | ForEach-Object { 'Number on {0}' -f ($_ * 2) }
 
 foreach ($file in Get-ChildItem -File) { $file.Name }
@@ -196,9 +193,7 @@ foreach ($file in $failid) {
 
 Get-Help ForEach-Object -ShowWindow
     #Requires -Version 7
-Get-Help ForEach-Object -Parameter parallel
-
-Get-Help Pipelines -Category HelpFile -ShowWindow
+Get-Help ForEach-Object -Parameter Parallel
 
 #endregion
 
@@ -303,9 +298,20 @@ for (
     "Creating User $i"
 }
 
+for ($i = 1) {
+    $i
+    $i++
+    Start-Sleep -Seconds 2
+}
 for ($i = 1; ; Start-Sleep -Seconds 2) {
     ($i++)
 }
+Remove-Variable -Name i
+for () {
+    (++$i)
+    Start-Sleep -Seconds 2
+}
+
 
 #endregion
 
@@ -377,7 +383,7 @@ foreach ($user in $users) {
 }
 'After loop'
 
-$ip = '10.1.2.3', '300.3.986.4', '10.3.4.5', '10.2.3.7', '13.9.4.5'
+$ip = '10.1.2.3', '300.3.986.4', '100.10.4.5', '10.2.3.7', '13.9.4.5'
 switch -Regex ($ip) {
     '^10\.1' {
         "$_ is in London"
