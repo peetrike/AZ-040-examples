@@ -73,7 +73,7 @@ Get-Help Enable-PSRemoting -ShowWindow
 Enable-PSRemoting
 
 Get-Help Set-WSManQuickConfig
-
+    #Requires -RunAsAdministrator
 Get-NetFirewallRule -Name WINRM-HTTP-In-TCP*
 Get-NetFirewallRule -Group '@FirewallAPI.dll,-30267'
 Get-NetFirewallRule -Name WINRM-HTTP-In* | Where-Object Profile -like 'Public' | Get-NetFirewallAddressFilter
@@ -88,7 +88,7 @@ Get-NetFirewallRule -Name WINRM-HTTP-In* | Where-Object Profile -like 'Public' |
 
 Get-Help Enter-PSSession -ShowWindow
 
-Enter-PSSession -ComputerName Lon-DC1
+Enter-PSSession -ComputerName Sea-DC1
 exit
 
 Get-Help Enter-PSSession -Parameter Credential
@@ -106,7 +106,11 @@ Invoke-Command -ComputerName Sea-DC1 -ScriptBlock {
 Invoke-Command -ComputerName Sea-DC1, Sea-CL1 -ScriptBlock { $env:COMPUTERNAME }
 Invoke-Command -ComputerName (Get-Content servers.txt) -ScriptBlock { $env:COMPUTERNAME }
 
+Get-Help Invoke-Command -Parameter ThrottleLimit
+
 Get-Help Invoke-Command -Parameter Credential
+
+Get-Help Invoke-Command -Parameter ComputerName
 
 #endregion
 
@@ -117,9 +121,9 @@ Get-Help about_Remote_Output -ShowWindow
 
 # https://learn.microsoft.com/powershell/scripting/learn/remoting/powershell-remoting-faq#is-the-output-of-remote-commands-different-from-local-output-
 
-Invoke-Command -ComputerName Lon-DC1 -ScriptBlock { 1..3 | start notepad.exe }
-Invoke-Command -ComputerName Lon-DC1 -ScriptBlock { Get-Process notepad } | Get-Member
-Invoke-Command -ComputerName Lon-DC1 -ScriptBlock {
+Invoke-Command -ComputerName Sea-DC1 -ScriptBlock { 1..3 | start notepad.exe }
+Invoke-Command -ComputerName Sea-DC1 -ScriptBlock { Get-Process notepad } | Get-Member
+Invoke-Command -ComputerName Sea-DC1 -ScriptBlock {
     Get-Process notepad | Select-Object -Property ProcessName, Id, Path
 } |
     Get-Member
@@ -139,6 +143,9 @@ Get-Command -ParameterName Credential -Module microsoft.powershell.core
 Get-Command -ParameterName Port -Module microsoft.powershell.core
 Get-Command -ParameterName UseSSL -Module microsoft.powershell.core
 Get-Command -ParameterName ConfigurationName -Module microsoft.powershell.core
+
+Get-Command -ParameterName SessionOption -Module microsoft.powershell.core
+
 Get-Command -Noun PSSessionConfiguration
 
 Get-Help New-PSSession -Parameter SessionOption
@@ -182,6 +189,10 @@ Invoke-Command -ComputerName Sea-DC1 -ScriptBlock {
         'User: {0}, Computer: {1}' -f $env:USERNAME, $env:COMPUTERNAME
     }
 }
+
+# https://learn.microsoft.com/powershell/scripting/learn/remoting/jea/overview
+
+# https://learn.microsoft.com/windows-server/manage/windows-admin-center/overview
 
 #endregion
 
@@ -227,7 +238,7 @@ Get-PSSession | ForEach-Object {
 Get-Help Disconnected -ShowWindow
 Get-Command -noun PSSession -Verb *Connect
 
-$DcName = 'lon-dc1'
+$DcName = 'Sea-DC1'
 $dc = New-PSSession -ComputerName $DcName
 Disconnect-PSSession -Session $dc
 Get-PSSession -ComputerName $DcName
@@ -266,6 +277,7 @@ Get-dcADUser administrator # creates a new session
 #endregion
 
 #endregion
+
 
 #region Lab
 
