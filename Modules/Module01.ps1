@@ -225,8 +225,7 @@ Get-Command -Verb Get -Noun *User
 Find-Command Get-User -Repository PSGallery
 
     # when cmdlet names in different modules are same, you can use fully qualified cmdlet name
-    #Requires -Modules BetterCredentials
-Get-Command Get-Credential -All
+Find-Command -Name Get-Credential
 Get-Command Microsoft.PowerShell.Security\Get-Credential
 
 #endregion
