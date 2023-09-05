@@ -16,6 +16,7 @@
     throw "You're not supposed to run the entire script"
 #endregion
 
+
 #region Lesson 1: Understanding the pipeline
 
 #region What is the pipeline?
@@ -48,6 +49,7 @@ Get-Help Set-PSReadLineOption -Parameter ContinuationPrompt
 Get-Help Objects -Category HelpFile -ShowWindow
 
 Get-ChildItem | Out-GridView
+Get-ChildItem | Select-Object -Property * | Out-GridView
 
 #endregion
 
@@ -60,9 +62,9 @@ Get-Command | Get-Member
 Get-ChildItem
 Get-ChildItem | Get-Member
 
-Get-ADUser -Identity Administrator
-Get-ADUser -Identity Administrator | Get-Member
-Get-ADUser -Identity Administrator -Properties * | Get-Member
+Get-ADUser -Identity $env:USERNAME
+Get-ADUser -Identity $env:USERNAME | Get-Member
+Get-ADUser -Identity $env:USERNAME -Properties * | Get-Member
 
 #endregion
 
@@ -317,7 +319,7 @@ gsv p* | ? Status -eq 1
 
 Get-ChildItem | Where-Object -Property PSIsContainer -EQ $true
 Get-ChildItem | where PSIsContainer -EQ $true
-dir | ? PSIsContainer
+ls | ? PSIsContainer
 
     #Requires -Version 6.1
 Get-ChildItem | Where-Object -Not PSIsContainer
@@ -355,20 +357,22 @@ Get-CimInstance -ClassName Win32_UserAccount -Filter "LocalAccount=True and SID 
     #Requires -Modules Microsoft.PowerShell.LocalAccounts
 Get-LocalUser | where SID -Like '*-500'
 
-Get-ADUser -Identity adam
+Get-ADUser -Identity $env:USERNAME
+$User = Get-ADUser -Identity $env:USERNAME
+$NameFilter = $user.GivenName + '*'
 
 Get-Help Measure-Command -ShowWindow
 Measure-Command {
-    Get-ADUser -Identity Adrian
+    Get-ADUser -Identity $env:USERNAME
 }
 Measure-Command {
-    Get-ADUser -Filter { Name -like 'Adrian*' }
+    Get-ADUser -Filter { Name -like $NameFilter }
 }
 Measure-Command {
-    Get-ADUser -LDAPFilter '(Name=Adrian*)'
+    Get-ADUser -LDAPFilter "(Name=$NameFilter)"
 }
 Measure-Command {
-    Get-ADUser -Filter * | Where-Object Name -like 'Adrian*'
+    Get-ADUser -Filter * | Where-Object Name -like $NameFilter
 }
 
     # negatiivne näide ka
