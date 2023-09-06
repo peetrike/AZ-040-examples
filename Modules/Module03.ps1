@@ -25,6 +25,7 @@ Get-Help Pipelines -Category HelpFile -ShowWindow
 
 1..3 | ForEach-Object { Start-Process notepad.exe }
 Get-Process notepad | Stop-Process
+Stop-Process -Name notepad
 
 Get-ChildItem | Sort-Object Length -Descending | Select-Object -First 3 | Remove-Item -WhatIf
 
@@ -65,6 +66,7 @@ Get-ChildItem | Get-Member
 Get-ADUser -Identity $env:USERNAME
 Get-ADUser -Identity $env:USERNAME | Get-Member
 Get-ADUser -Identity $env:USERNAME -Properties * | Get-Member
+Get-ADUser -Identity $env:USERNAME -Properties mail, lastLogonDate
 
 #endregion
 
@@ -79,6 +81,9 @@ Get-FormatData -TypeName System.Diagnostics.Process* |
     Select-Object -ExpandProperty FormatViewDefinition
 
 Get-Process p* | Format-Table -View StartTime
+
+
+dir | Format-List -Property *
 
 #endregion
 
@@ -146,9 +151,10 @@ Get-Content module03.ps1 | Measure-Object -Word -Line
 #region Selecting a subset of objects
 
 Get-Help Select-Object -ShowWindow
+get-alias -Definition Select-Object
 
 Get-ChildItem | Sort-Object -Property Length | Select-Object -Last 1
-Get-ChildItem | Sort-Object -Property Length | Select-Object -First 2
+Get-ChildItem | Sort Length | Select -First 2
 Get-ChildItem | Sort-Object -Property Length | Select-Object -Skip 1 -First 1
 
     #Requires -Version 5
@@ -184,6 +190,9 @@ Get-ChildItem | Select-Object -Property Name, LastWriteTime | Get-Member
 
 Get-ChildItem | Select-Object -Property Name, *Time | Out-GridView
 
+get-aduser $env:USERNAME | select name, enabled | Out-GridView
+
+
 Get-Process p* | Get-Member -MemberType PropertySet
 Get-Process p* | Select-Object -Property PSResources
 Get-Process p* |
@@ -209,7 +218,12 @@ Get-Help Hash_Tables -ShowWindow
 Get-CimInstance Win32_LogicalDisk
 
 $SizeGB = @{ Name = 'Size (GB)'; Expression = { $_.Size / 1GB } }
-Get-CimInstance Win32_LogicalDisk | Select-Object -Property DeviceID, $SizeGB
+$SizeGB = @{
+    Name       = 'Size (GB)'
+    Expression = { $_.Size / 1GB }
+}
+$FreeGB = @{ Name = 'Free (GB)'; Expression = { $PSItem.FreeSpace / 1GB } }
+Get-CimInstance Win32_LogicalDisk | Select-Object -Property DeviceID, $SizeGB, $FreeGB
 
 # https://learn.microsoft.com/dotnet/standard/base-types/standard-numeric-format-strings#standard-format-specifiers
 $SizeGB.Format = 'N2'
@@ -313,7 +327,7 @@ Get-Service bits | Get-Member -Name Status
 Get-Service p* | Where-Object -Property Status -EQ -Value 'Stopped'
 Get-Service p* | Where-Object Status -eq 'Stopped'
 Get-Service p* | where Status -like 'Run*'
-gsv p* | ? Status -eq 1
+gsv p* | ? Status -eq 4
 [ServiceProcess.ServiceControllerStatus]1
 [ServiceProcess.ServiceControllerStatus]::Stopped.value__
 
@@ -324,13 +338,17 @@ ls | ? PSIsContainer
     #Requires -Version 6.1
 Get-ChildItem | Where-Object -Not PSIsContainer
 
+    #requires -Version 3
+Get-ChildItem -Directory
+Get-ChildItem -File
+
 #endregion
 
 #region Advanced filtering syntax
 
 Get-ChildItem | Where-Object -FilterScript { -not $PSItem.PSIsContainer }
 Get-ChildItem | where { -not $_.PSIsContainer }
-gci | ? { ! $_.PSIsContainer }
+gci|?{!$_.PSIsContainer}
 
 Get-ChildItem | Where-Object { ($_.Name.Length -ge 9) -and ($_.Length -ge 2KB) }
 
@@ -424,7 +442,7 @@ Measure-Command {
 
 #region Purpose of enumeration
 
-1..3 | Start-Process notepad
+1..3 | ForEach-Object { Start-Process notepad }
 Get-Process notepad | Stop-Process
 Stop-Process -Name Notepad
 
@@ -432,7 +450,7 @@ Stop-Process -Name Notepad
 (Get-Help Get-Process).returnValues
 (Get-Help Stop-Process).inputTypes
 
-Get-ChildItem -File | Get-Member -name Encrypt
+Get-ChildItem -File | Get-Member -Name Encrypt
 
 #endregion
 
@@ -455,7 +473,7 @@ dir -File | % Decrypt -WhatIf
 #region Preparation
 'katse', 'kutse' | ForEach-Object { New-Item -ItemType Directory -Name $_ -ErrorAction SilentlyContinue }
 #endregion
-Get-ChildItem k?tse -Directory | ForEach-Object CreateSubdirectory -ArgumentList 'muu'
+Get-ChildItem k?tse -Directory | ForEach-Object -MemberName CreateSubdirectory -ArgumentList 'muu'
 dir k* -Directory | % CreateSubdirectory 'muu'
 
 #endregion
@@ -472,7 +490,10 @@ Get-ChildItem -File |
     ForEach-Object -Begin { $summa = 0 } -Process { $summa += $_.Length } -End { Write-Output $summa }
 Get-ChildItem -File | Measure-Object -Property Length -Sum
 
-1..10 | ForEach-Object { Get-Random }
+$ammu = (Get-Date).AddDays(-90)
+Get-ADUser -Filter { LastLogonDate -lt $ammu } -Properties mail | ForEach-Object {
+    Send-MailMessage -To $_.mail -Subject 'test' -Body 'Sa pole kaua sisse loginud'
+}
 
 #endregion
 
