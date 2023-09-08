@@ -70,7 +70,7 @@ Get-Help New-PSDrive -ShowWindow
     #Requires -Version 3
 New-PSDrive -Name 's' -Root '\\server\share\folder' -PSProvider FileSystem -Credential 'domain\user' -Persist
     #Requires -Modules SmbShare
-New-SmbMapping -LocalPath 's:' -RemotePath '\\lon-dc1\netlogon' -Persistent $false
+New-SmbMapping -LocalPath 's:' -RemotePath '\\sea-dc1\netlogon' -Persistent $false
 Get-Help New-SmbMapping -Parameter UserName
 Get-Help New-SmbMapping -Parameter Password
 

@@ -258,7 +258,7 @@ switch -Regex (Get-Random -Maximum 11) {
     default { Write-Warning -Message 'Missed it' }
 }
 
-$computer = 'LON-CL1'
+$computer = 'Sea-Cl1'
 $role = 'unknown role'
 $location = 'unknown location'
 switch -WildCard ($computer) {
