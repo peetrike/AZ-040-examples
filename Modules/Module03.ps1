@@ -198,7 +198,7 @@ Get-Process p* | Select-Object -Property PSResources
 Get-Process p* |
     Select-Object -Property PSConfiguration
 
-$ComputerName = 'sea-cl1'
+$ComputerName = 'Sea-Cl1'
 Get-ADComputer $ComputerName | Select-Object -Property DnsHostName | Get-Member
 Get-ADComputer $ComputerName | Select-Object -ExpandProperty DnsHostName | Get-Member
 
@@ -648,6 +648,7 @@ Get-Help about_Parameters -ShowWindow
 # https://learn.microsoft.com/powershell/module/microsoft.powershell.core/about/about_parameters#accepts-pipeline-input
 # https://learn.microsoft.com/powershell/scripting/lang-spec/chapter-08#814-parameter-binding
 
+# https://github.com/peetrike/CommandInfo/master/src/Public/Get-ParameterInfo.ps1
 Get-ParameterInfo Set-ADUser -ParameterName Identity
 (Get-Command Set-ADUser).Parameters.Identity.ParameterType.FullName
 Get-Help Set-ADUser -Parameter Identity
@@ -666,7 +667,6 @@ Get-Service B* | Restart-Service -WhatIf
 (Get-Help Set-ADUser).parameters.parameter |
     Where-Object pipelineInput -like 'true*' |
     Select-Object name, pipelineInput, type
-Get-Help Set-ADUser -Parameter Identity
 
 $type = (Get-Command Get-Service).OutputType.Type
 (Get-Command Restart-Service).Parameters.Values | Where-Object {
@@ -717,10 +717,10 @@ Get-Help Test-Connection -Parameter *
 Get-ParameterInfo Test-Connection | Where-Object Pipeline -like '*ByPropertyName'
 
     # but this does
-Get-ADComputer -Filter * |
+Get-ADComputer $env:COMPUTERNAME |
     Select-Object -Property @{ n = 'ComputerName'; e = { $_.DnsHostName } } |
     Test-Connection -Count 1
-Get-ADComputer -Filter * | Test-Connection -ComputerName { $_.DnsHostName } -Count 1
+Get-ADComputer $env:COMPUTERNAME | Test-Connection -ComputerName { $_.DnsHostName } -Count 1
 
     #Requires -Version 3
 Get-ADComputer $env:COMPUTERNAME |
@@ -746,8 +746,8 @@ Get-Command -ParameterName ComputerName | Measure-Object
 
     # this doesn't work
 'bits', 'winrm' | Start-Service -Name b* -WhatIf
-New-Object PSObject -Property @{ ComputerName = 'Lon-DC1' } |
-    Test-Connection -ComputerName 'lon-cl1'
+New-Object PSObject -Property @{ ComputerName = 'Sea-DC1' } |
+    Test-Connection -ComputerName 'Sea-Cl1'
 
 Get-ChildItem | Select-Object -First 1 | Stop-Service
 Get-Help Stop-Service -Parameter Name
@@ -767,6 +767,13 @@ $kasutajad = Get-ADUser -Filter { City -like 'London' }
 Add-ADGroupMember 'London Users' -Members $kasutajad
     # or
 Add-ADGroupMember 'London Users' -Members (Get-ADUser -Filter { City -like 'London' })
+Add-ADGroupMember 'London Users' -Members @(
+    Get-ADUser -Filter { City -like 'London' } -Properties lastLogonDate |
+        sort lastLogonDate |
+        Tee-Object -FilePath asjad
+    get-aduser -Filter { city -like 'Tallinn' }
+)
+
 Get-ADUser -Filter { city -like 'London' } |
     Add-ADPrincipalGroupMembership -MemberOf 'London Users'
 
