@@ -227,6 +227,24 @@ Get-CimInstance Win32_LogicalDisk |
     Add-Member @MemberProps -PassThru |
     Select-Object DeviceID, Size*
 
+    #Requires -Modules Storage
+Get-Volume
+Get-Volume | Get-Member
+Get-Volume | Select-Object DriveLetter, Size, SizeRemaining
+
+Get-FormatData -TypeName *MSFT_Volume
+(Get-FormatData -TypeName *MSFT_Volume).FormatViewDefinition
+(Get-FormatData -TypeName *MSFT_Volume).FormatViewDefinition.Control
+(Get-FormatData -TypeName *MSFT_Volume).FormatViewDefinition.Control.Rows
+(Get-FormatData -TypeName *MSFT_Volume).FormatViewDefinition.Control.Rows.Columns
+(Get-FormatData -TypeName *MSFT_Volume).FormatViewDefinition.Control.Rows.Columns | Select-Object -Last 2
+(Get-FormatData -TypeName *MSFT_Volume).FormatViewDefinition.Control.Rows.Columns |
+    Select-Object -Last 2 -ExpandProperty DisplayEntry
+(Get-FormatData -TypeName *MSFT_Volume).FormatViewDefinition.Control.Rows.Columns |
+    Select-Object -Last 2 -ExpandProperty DisplayEntry |
+    Select-Object -ExpandProperty | Value
+
+
 # https://peterwawa.wordpress.com/2023/03/29/os-inventuur-ad-objektide-baasil/
 $OSVersion = @{
     Name       = 'OSVersion'
@@ -420,7 +438,7 @@ Measure-Command {
 
 #region Purpose of enumeration
 
-1..3 | Start-Process notepad
+1..3 | ForEach-Object { Start-Process notepad }
 Get-Process notepad | Stop-Process
 Stop-Process -Name Notepad
 
@@ -742,7 +760,7 @@ $kasutajad = Get-ADUser -Filter { City -like 'London' }
 Add-ADGroupMember 'London Users' -Members $kasutajad
     # or
 Add-ADGroupMember 'London Users' -Members (Get-ADUser -Filter { City -like 'London' })
-Get-ADUser -Filter { city -like 'London' } |
+Get-ADUser -Filter { City -like 'London' } |
     Add-ADPrincipalGroupMembership -MemberOf 'London Users'
 
     # same users to several groups
@@ -752,6 +770,8 @@ Get-ADGroup -Filter { Name -like 'London*' } |
 #endregion
 
 #region Expanding property values
+
+Get-Help Select-Object -Parameter ExpandProperty
 
 'winrm', 'bits' |
     Get-Service -ComputerName (
