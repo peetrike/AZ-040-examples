@@ -100,6 +100,10 @@ $Number | Get-Member
 $Number.GetType()
 
 Get-Help enum -Category HelpFile -ShowWindow
+$ErrorActionPreference.GetType()
+$ErrorActionPreference
+$ErrorActionPreference.value__
+$ErrorActionPreference -as [int]
 
 #endregion
 
