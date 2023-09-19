@@ -65,7 +65,7 @@ Get-Command -Noun PSDrive
 
 Get-Help Locations -Category HelpFile -ShowWindow
 
-Get-Command -Noun Item, ItemProperty*, Content, Location, Path
+Get-Command -Noun Item, ItemProperty*, Content, Location, Path -Module Microsoft.PowerShell.Management
 Get-Command -Noun ChildItem
 
 Get-Help New-PSDrive -ShowWindow
@@ -89,6 +89,7 @@ if (-not (Test-Path -Path Temp:\)) {
     New-PSDrive -Name Temp -Root $env:TEMP -PSProvider FileSystem
 }
 Get-ChildItem Temp:\
+Get-ChildItem Temp:/
 
 Get-ChildItem | Where-Object { $_.PSIsContainer }
     #Requires -Version 3.0
@@ -104,7 +105,7 @@ New-Item -ItemType File -Name minufail.txt -Path uus
 New-Item -Name kaust -ItemType Junction -Target uus
 
 Set-Location kaust
-New-Item -ItemType HardLink -Name teinefail.txt -Value ..\uus\minufail.txt
+    New-Item -ItemType HardLink -Name teinefail.txt -Value .\uus\minufail.txt
     #Requires -RunAsAdministrator
 New-Item -ItemType SymbolicLink -Name link.txt -Value minufail.txt
 
