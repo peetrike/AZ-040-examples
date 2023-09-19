@@ -67,6 +67,7 @@ Get-CimInstance -Namespace root\Microsoft\Windows -ClassName __Namespace
 Get-Command wbemtest, wmic
 wbemtest.exe
 
+    # wmic.exe is deprecated since v21H1
 WMIC.exe /?
 WMIC.exe alias /?
 WMIC.exe alias list brief
