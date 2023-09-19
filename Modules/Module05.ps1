@@ -251,7 +251,7 @@ $Spooler.Change(
 Get-Service spooler | Select-Object StartType
 
 Get-Help Invoke-WmiMethod -Parameter ArgumentList
-([Wmiclass]'Win32_Process').Create
+([wmiclass]'Win32_Process').Create
 Invoke-WmiMethod -Class Win32_Process -Name Create -ArgumentList 'notepad.exe'
 
 Get-Help Invoke-CimMethod -Parameter Arguments
