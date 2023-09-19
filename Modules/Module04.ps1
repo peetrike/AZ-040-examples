@@ -32,6 +32,8 @@ Get-Command -Noun PSProvider
 Get-PSProvider
 Import-Module ActiveDirectory
 Get-PSProvider
+Remove-Module ActiveDirectory
+Get-PSProvider
 
 #endregion
 
@@ -164,7 +166,7 @@ Get-Service WinRM # must be running
 Get-ChildItem WSMan:\localhost\Client\
 Get-Item WSMan:\localhost\Client\TrustedHosts
     #Requires -RunAsAdministrator
-Set-Item WSMan:\localhost\Client\TrustedHosts -Value 'server1,server2'
+Set-Item WSMan:\localhost\Client\TrustedHosts -Value 'NewServer' -Concatenate
 
 Get-Command -Noun Alias
 Get-Help Alias_ -Category HelpFile -ShowWindow
