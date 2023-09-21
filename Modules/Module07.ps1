@@ -58,6 +58,7 @@ ise käsud.txt
 # https://www.powershellgallery.com/packages/psedit
 
 # https://poshgui.com/
+# https://vscode.dev
 # https://docs.github.com/en/codespaces
 
 # https://github.com/neoclide/coc.nvim
@@ -311,7 +312,6 @@ for () {
     (++$i)
     Start-Sleep -Seconds 2
 }
-
 
 #endregion
 
