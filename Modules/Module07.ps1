@@ -109,7 +109,7 @@ Get-Help PowerShell_exe -ShowWindow
     #Requires -Version 7
 Get-Help pwsh -ShowWindow
 
-    # this doesn't work
+    # this doesn't work on Windows
 powershell.exe -File käsud.txt
     # but this works
 Copy-Item -Path käsud.txt -Destination käsud.ps1
