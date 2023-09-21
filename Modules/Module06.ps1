@@ -250,8 +250,8 @@ Measure-Command {
 $numbrid.Count
 
 Measure-Command {
-    $numbrid = foreach ($number in 1..$MaxNumber) {
-        $number
+    $numbrid = 1..$MaxNumber | ForEach-Object {
+        $_
     }
 }
 $numbrid.Count
@@ -362,7 +362,7 @@ foreach ($u in users) {
         GivenName      = $u.Eesnimi
         #SurName        = $u.perenimi
         Name           = $u.eesnimi, $u.perenimi -join ' '
-        SamAccountName = $u.eesnimi.substring(0, 4)
+        SamAccountName = $u.eesnimi.substring(0, 4) + $u.perenimi.substring(0,2)
     }
     if ($u.aadress) {
         $CreateProperties.StreetAddress = $u.aadress
