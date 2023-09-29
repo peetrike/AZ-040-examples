@@ -472,7 +472,7 @@ $häälestus.Save
 Get-Command -Noun Json
 Get-Help ConvertFrom-Json -ShowWindow
 
-Get-Process p* | ConvertTo-Json | Set-Content -Path protsessid.json
+Get-Process p* | ConvertTo-Json | Set-Content -Path protsessid.json -Encoding utf8
 Invoke-Item protsessid.json
 
     #Requires -Version 7
