@@ -159,13 +159,13 @@ Get-Help New-PSSessionOption -ShowWindow
 
 $ServiceName = 'Bits'
     #Requires -Version 2
-Invoke-Command -ComputerName Lon-DC1 -ScriptBlock {
+Invoke-Command -ComputerName Sea-DC1 -ScriptBlock {
     param ($sn)
     Get-Service $sn
 } -ArgumentList $ServiceName
 
     #Requires -Version 3
-Invoke-Command -ComputerName Lon-DC1 -ScriptBlock { Get-Service $using:ServiceName }
+Invoke-Command -ComputerName Sea-DC1 -ScriptBlock { Get-Service $using:ServiceName }
 
 #endregion
 
@@ -223,7 +223,7 @@ $dc | Get-Member
 Get-Help Enter-PSSession -Parameter Session
 $dc | Enter-PSSession
 Enter-PSSession -Session $dc
-Get-PSSession -ComputerName Lon-DC1 | Enter-PSSession
+Get-PSSession -ComputerName Sea-DC1 | Enter-PSSession
 
 Get-Help Invoke-Command -Parameter Session
 Invoke-Command -Session $dc -ScriptBlock { whoami.exe }
