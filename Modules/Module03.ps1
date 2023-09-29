@@ -187,7 +187,7 @@ Get-Process p* | Select-Object -Property PSResources
 Get-Process p* |
     Select-Object -Property PSConfiguration
 
-$ComputerName = 'sea-cl1'
+$ComputerName = 'Sea-Cl1'
 Get-ADComputer $ComputerName | Select-Object -Property DnsHostName | Get-Member
 Get-ADComputer $ComputerName | Select-Object -ExpandProperty DnsHostName | Get-Member
 
@@ -739,8 +739,8 @@ Get-Command -ParameterName ComputerName | Measure-Object
 
     # this doesn't work
 'bits', 'winrm' | Start-Service -Name b* -WhatIf
-New-Object PSObject -Property @{ ComputerName = 'Lon-DC1' } |
-    Test-Connection -ComputerName 'lon-cl1'
+New-Object PSObject -Property @{ ComputerName = 'Sea-DC1' } |
+    Test-Connection -ComputerName 'Sea-Cl1'
 
 Get-ChildItem | Select-Object -First 1 | Stop-Service
 Get-Help Stop-Service -Parameter Name
