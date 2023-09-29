@@ -641,6 +641,7 @@ Get-Help about_Parameters -ShowWindow
 # https://learn.microsoft.com/powershell/module/microsoft.powershell.core/about/about_parameters#accepts-pipeline-input
 # https://learn.microsoft.com/powershell/scripting/lang-spec/chapter-08#814-parameter-binding
 
+# https://github.com/peetrike/CommandInfo/master/src/Public/Get-ParameterInfo.ps1
 Get-ParameterInfo Set-ADUser -ParameterName Identity
 (Get-Command Set-ADUser).Parameters.Identity.ParameterType.FullName
 Get-Help Set-ADUser -Parameter Identity
@@ -710,15 +711,15 @@ Get-Help Test-Connection -Parameter *
 Get-ParameterInfo Test-Connection | Where-Object Pipeline -like '*ByPropertyName'
 
     # but this does
-Get-ADComputer -Filter * |
+Get-ADComputer $env:COMPUTERNAME |
     Select-Object -Property @{ n = 'ComputerName'; e = { $_.DnsHostName } } |
     Test-Connection -Count 1
-Get-ADComputer -Filter * | Test-Connection -ComputerName { $_.DnsHostName } -Count 1
+Get-ADComputer $env:COMPUTERNAME | Test-Connection -ComputerName { $_.DnsHostName } -Count 1
 
     #Requires -Version 3
 Get-ADComputer $env:COMPUTERNAME |
     Update-TypeData -MemberType AliasProperty -MemberName ComputerName -Value DnsHostName
-Get-ADComputer -Filter * | Test-Connection -Count 1
+Get-ADComputer $env:COMPUTERNAME | Test-Connection -Count 1
 
 # https://peterwawa.wordpress.com/2013/04/09/kasutajakontode-loomine-domeenis/
 
