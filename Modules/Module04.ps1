@@ -86,7 +86,9 @@ Get-Alias -Definition *-Item
 if (-not (Test-Path -Path Temp:\)) {
     New-PSDrive -Name Temp -Root $env:TEMP -PSProvider FileSystem
 }
+    # both directory separators are supported in all platforms
 Get-ChildItem Temp:\
+Get-ChildItem Temp:/
 
 Get-ChildItem | Where-Object { $_.PSIsContainer }
     #Requires -Version 3.0
