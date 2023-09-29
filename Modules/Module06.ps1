@@ -357,11 +357,11 @@ foreach ($u in users) {
     $CreateProperties = @{
         GivenName      = $u.Eesnimi
         #SurName        = $u.perenimi
-        Name           = $u.eesnimi, $u.perenimi -join ' '
-        SamAccountName = $u.eesnimi.substring(0, 4)
+        Name           = $u.Eesnimi, $u.Perenimi -join ' '
+        SamAccountName = $u.Eesnimi.SubString(0, 4) + $u.Perenimi.SubString(0, 2)
     }
-    if ($u.aadress) {
-        $CreateProperties.StreetAddress = $u.aadress
+    if ($u.Aadress) {
+        $CreateProperties.StreetAddress = $u.Aadress
     }
     New-ADUser @CreateProperties
 }
