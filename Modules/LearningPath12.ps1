@@ -15,7 +15,7 @@
 #endregion
 
 
-#region Lesson 1: Creating profile scripts
+#region Module 1: Creating profile scripts
 
 #region What is a profile script?
 
@@ -50,7 +50,7 @@ Get-Help about_Execution_Policies -ShowWindow
 #endregion
 
 
-#region Lesson 2: Using advanced techniques
+#region Module 2: Using advanced techniques
 
 #region Passwords and secure strings
 $password = Get-RandomString -Length 15

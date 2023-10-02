@@ -16,7 +16,7 @@
     throw "You're not supposed to run the entire script"
 #endregion
 
-#region Lesson 1: Understanding the pipeline
+#region Module 1: Understanding the pipeline
 
 #region What is the pipeline?
 
@@ -83,7 +83,7 @@ Get-Process p* | Format-Table -View StartTime
 #endregion
 
 
-#region Lesson 2: Selecting, sorting, and measuring objects
+#region Module 2: Selecting, sorting, and measuring objects
 
 #region Sorting objects by a property
 
@@ -264,7 +264,7 @@ Get-ADComputer @ComputerProps |
 #endregion
 
 
-#region Lesson 3: Filtering objects out of the pipeline
+#region Module 3: Filtering objects out of the pipeline
 
 #region Comparison operators
 
@@ -434,7 +434,7 @@ Measure-Command {
 #endregion
 
 
-#region Lesson 4: Enumerating objects in the pipeline
+#region Module 4: Enumerating objects in the pipeline
 
 #region Purpose of enumeration
 
@@ -493,7 +493,7 @@ Get-ChildItem -File | Measure-Object -Property Length -Sum
 #endregion
 
 
-#region Lesson 5: Sending pipeline data as output
+#region Module 5: Sending pipeline data as output
 
 Get-Help Encoding -Category HelpFile -ShowWindow
 Get-Command -ParameterName Encoding
@@ -633,7 +633,7 @@ Find-Module PSWriteOffice -Repository PSGallery
 #endregion
 
 
-#region Lesson 6: Passing pipeline data
+#region Module 6: Passing pipeline data
 
 #region Pipeline parameter binding
 

@@ -17,7 +17,7 @@
 #endregion
 
 
-#region Lesson 1: Understanding CIM and WMI
+#region Module 1: Understanding CIM and WMI
 
 #region Architecture and technologies
 
@@ -79,7 +79,7 @@ WMIC.exe OS get Version
 #endregion
 
 
-#region Lesson 2: Querying data by using CIM and WMI
+#region Module 2: Querying data by using CIM and WMI
 
 #region Listing namespaces
 
@@ -201,7 +201,7 @@ $Session | Remove-CimSession
 #endregion
 
 
-#region Lesson 3: Making changes by using CIM and WMI
+#region Module 3: Making changes by using CIM and WMI
 
 Get-CimInstance -ClassName Win32_OperatingSystem | Get-Member -Name ForegroundApplicationBoost
 

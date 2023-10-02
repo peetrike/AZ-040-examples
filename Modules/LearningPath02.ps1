@@ -18,7 +18,7 @@ throw "You're not supposed to run the entire script"
 
 # https://learn.microsoft.com/powershell/module/microsoft.powershell.core/about/about_windows_powershell_compatibility
 
-#region Lesson 1: Active Directory administration cmdlets
+#region Module 1: Active Directory administration cmdlets
 
     #Requires -RunAsAdministrator
 Get-WindowsCapability -Online -Name Rsat.ActiveDirectory*
@@ -140,7 +140,7 @@ Search-ADAccount -AccountDisabled -UsersOnly
 #endregion
 
 
-#region Lesson 2: Network configuration cmdlets
+#region Module 2: Network configuration cmdlets
 
 Get-Module Net* -ListAvailable
 
@@ -219,7 +219,7 @@ Get-NetUDPEndpoint -LocalPort 3389
 #endregion
 
 
-#region Lesson 3: Other server administration cmdlets
+#region Module 3: Other server administration cmdlets
 
 #region Group Policy Management cmdlets
 
@@ -281,7 +281,7 @@ Find-Module -Name IISAdministration
 #endregion
 
 
-#region Lesson 4: Windows PowerShell in Windows 10
+#region Module 4: Windows PowerShell in Windows 10
 
 #region Managing Windows 10 using PowerShell
 

@@ -17,7 +17,7 @@
 #endregion
 
 
-#region Lesson 1: Using PSProviders
+#region Module 1: Using PSProviders
 
 #region What are PowerShell providers?
 
@@ -49,7 +49,7 @@ Get-Help about_*_provider
 #endregion
 
 
-#region Lesson 2: Using PSDrives
+#region Module 2: Using PSDrives
 
 #region What are PSDrives?
 

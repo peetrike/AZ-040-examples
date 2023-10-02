@@ -28,7 +28,7 @@
 #endregion
 
 
-#region Lesson 1 - Overview of Windows PowerShell
+#region Module 1 - Overview of Windows PowerShell
 
 #region PowerShell Introduction
 
@@ -207,7 +207,7 @@ Get-PSReadLineKeyHandler -Chord 'Ctrl-c', 'Ctrl-C', 'Ctrl-v', 'Shift-Insert', 'C
 #endregion
 
 
-#region Lesson 2: Understand PowerShell command syntax
+#region Module 2: Understand PowerShell command syntax
 
 #region Cmdlet structure
 
@@ -279,7 +279,7 @@ Get-Help beep
 #endregion
 
 
-#region Lesson 3: Finding commands
+#region Module 3: Finding commands
 
 #region What are modules?
 

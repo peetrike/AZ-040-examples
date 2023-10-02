@@ -17,7 +17,7 @@
 #endregion
 
 
-#region Lesson 1: Using background jobs
+#region Module 1: Using background jobs
 
 #region What are background jobs?
 
@@ -86,7 +86,7 @@ Find-Module PoshRSJob -Repository PSGallery
 #endregion
 
 
-#region Lesson 2: Using scheduled jobs
+#region Module 2: Using scheduled jobs
 
 #region Running Windows PowerShell scripts as scheduled tasks
 

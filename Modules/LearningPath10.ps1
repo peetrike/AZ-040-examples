@@ -17,7 +17,7 @@
 #endregion
 
 
-#region Lesson 1: Manage Microsoft 365 user accounts, licenses, and groups with PowerShell
+#region Module 1: Manage Microsoft 365 user accounts, licenses, and groups with PowerShell
 
 #region Benefits of using PowerShell for Microsoft 365
 
@@ -111,7 +111,7 @@ Get-Help Set-MgUserLicense
 #endregion
 
 
-#region Lesson 2: Manage Exchange Online with PowerShell
+#region Module 2: Manage Exchange Online with PowerShell
 
 #region Connecting to Exchange Online PowerShell
 
@@ -170,7 +170,7 @@ Get-RoleGroup Organization* | Get-RoleGroupMember
 #endregion
 
 
-#region Lesson 3: Manage SharePoint Online with PowerShell
+#region Module 3: Manage SharePoint Online with PowerShell
 
 #region SharePoint Online Management Shell overview
 
@@ -221,7 +221,7 @@ Get-Help Set-SPOTenant
 #endregion
 
 
-#region Lesson 4: Manage Microsoft Teams with PowerShell
+#region Module 4: Manage Microsoft Teams with PowerShell
 
 #region Overview of the Microsoft Teams PowerShell module
 

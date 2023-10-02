@@ -19,7 +19,7 @@
 #endregion
 
 
-#region Lesson 1: Azure PowerShell
+#region Module 1: Azure PowerShell
 
 #region Azure PowerShell overview
 
@@ -88,7 +88,7 @@ Get-Help Connect-MgGraph -ShowWindow
 #endregion
 
 
-#region Lesson 2: Introduce Azure Cloud Shell
+#region Module 2: Introduce Azure Cloud Shell
 
 #region Cloud Shell overview
 
@@ -112,7 +112,7 @@ Get-Help Connect-MgGraph -ShowWindow
 #endregion
 
 
-#region Lesson 3: Manage Azure resources with PowerShell
+#region Module 3: Manage Azure resources with PowerShell
 
 #region Creating Azure VMs with PowerShell
 

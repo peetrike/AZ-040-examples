@@ -17,7 +17,7 @@
 #endregion
 
 
-#region Lesson 1: Introduction to scripting
+#region Module 1: Introduction to scripting
 
 #region Overview of PowerShell scripts
 
@@ -172,7 +172,7 @@ Get-Command -Noun FileCatalog
 #endregion
 
 
-#region Lesson 2: Scripting constructs
+#region Module 2: Scripting constructs
 
 #region Understanding foreach loops
 
@@ -405,7 +405,7 @@ switch -Regex ($ip) {
 #endregion
 
 
-#region Lesson 3: Importing data from files
+#region Module 3: Importing data from files
 
 Get-Help Encoding -Category HelpFile -ShowWindow
 
@@ -523,7 +523,7 @@ $myConfig
 #endregion
 
 
-#region Lesson 4: Accepting user input
+#region Module 4: Accepting user input
 
 #region Identifying values that might change
 
@@ -635,7 +635,7 @@ code -r events04.ps1
 #endregion
 
 
-#region Lesson 5: Troubleshooting and error handling
+#region Module 5: Troubleshooting and error handling
 
 #region Understanding error messages
 
@@ -754,7 +754,7 @@ Get-Help Write-Error -ShowWindow
 #endregion
 
 
-#region Lesson 6: Functions and modules
+#region Module 6: Functions and modules
 
 #region What are functions?
 

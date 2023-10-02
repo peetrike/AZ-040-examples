@@ -17,7 +17,7 @@
 #endregion
 
 
-#region Lesson 1: Use basic PowerShell remoting
+#region Module 1: Use basic PowerShell remoting
 
 #region Remoting overview and architecture
 
@@ -135,7 +135,7 @@ Get-Process | Get-Member
 #endregion
 
 
-#region Lesson 2: Using advanced  PowerShell remoting
+#region Module 2: Using advanced  PowerShell remoting
 
 #region Common remoting options
 
@@ -199,7 +199,7 @@ Invoke-Command -ComputerName Sea-DC1 -ScriptBlock {
 #endregion
 
 
-#region Lesson 3: Using PSSessions
+#region Module 3: Using PSSessions
 
 #region Persistent connections
 

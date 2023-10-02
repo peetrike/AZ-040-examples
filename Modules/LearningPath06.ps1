@@ -17,7 +17,7 @@
 #endregion
 
 
-#region Lesson 1: Using variables
+#region Module 1: Using variables
 
 #region What are variables?
 
@@ -106,7 +106,7 @@ Get-Help enum -Category HelpFile -ShowWindow
 #endregion
 
 
-#region Lesson 2: Manipulating variables
+#region Module 2: Manipulating variables
 
 #region Identifying methods and properties
 
@@ -196,7 +196,7 @@ $täna.Add($aeg)
 #endregion
 
 
-#region Lesson 3: Manipulating arrays and hash tables
+#region Module 3: Manipulating arrays and hash tables
 
 #region What is an array?
 
