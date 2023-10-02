@@ -417,10 +417,10 @@ Get-Help Get-Content -ShowWindow
 Get-Content -Path .\* -Include *.txt, *.log -Exclude käsud*
 
 Get-Help Get-Content -Parameter TotalCount
-Get-Content Module07.ps1 -Head 7
+Get-Content LearningPath07.ps1 -Head 7
 
 Get-Help Get-Content -Parameter Tail
-Get-Content Module07.ps1 -Tail 5
+Get-Content LearningPath07.ps1 -Tail 5
 
 Get-Help Get-Content -Parameter ReadCount
 Get-Help Get-Content -Parameter Raw

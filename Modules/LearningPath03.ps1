@@ -137,7 +137,7 @@ Get-Help Measure-Object -ShowWindow
 
 Get-ChildItem -File | Measure-Object -Property Length -Sum
 
-Get-Content module03.ps1 | Measure-Object -Word -Line
+Get-Content LearningPath03.ps1 | Measure-Object -Word -Line
 
 #endregion
 
