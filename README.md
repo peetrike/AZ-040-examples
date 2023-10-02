@@ -1,3 +1,3 @@
-# AZ-040-examples
+# AZ-040 demo transcripts
 
-Module transcripts for course.
+Demo transcripts for course AZ-040 learning paths.
