@@ -1,9 +1,9 @@
 <#
     .SYNOPSIS
-        Module 06 samples
+        Learning Path 06 samples
     .DESCRIPTION
         This file contains sample commands from course AZ-040 for
-        Module 06 - Working with variables, arrays, and hash tables
+        Learning Path 06 - Working with variables, arrays, and hash tables
     .LINK
         https://learn.microsoft.com/training/paths/use-variables-arrays-hash-tables-windows-powershell/
     .LINK

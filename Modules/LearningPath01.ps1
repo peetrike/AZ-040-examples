@@ -1,9 +1,9 @@
 <#
     .SYNOPSIS
-        Module 01 samples
+        Learning Path 01 samples
     .DESCRIPTION
         This file contains sample commands from course AZ-040 for
-        Module 01 - Getting started with Windows PowerShell
+        Learning Path 01 - Getting started with Windows PowerShell
     .NOTES
         Contact: Meelis Nigols
         e-mail/skype: meelisn@outlook.com

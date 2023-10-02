@@ -1,9 +1,9 @@
 <#
     .SYNOPSIS
-        Module 8 samples
+        Learning Path 8 samples
     .DESCRIPTION
         This file contains sample commands from course AZ-040 for
-        Module 8 - Administering remote computers
+        Learning Path 8 - Administering remote computers
     .LINK
         https://learn.microsoft.com/training/paths/administer-remote-computers-use-windows-powershell/
     .LINK

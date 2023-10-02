@@ -1,9 +1,9 @@
 <#
     .SYNOPSIS
-        Module 02 samples
+        Learning Path 02 samples
     .DESCRIPTION
         This file contains sample commands from course AZ-040 for
-        Module 02 - Cmdlets for administration
+        Learning Path 02 - Cmdlets for administration
     .LINK
         https://learn.microsoft.com/training/paths/maintain-system-administration-tasks-windows-powershell/
     .LINK

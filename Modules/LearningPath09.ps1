@@ -1,9 +1,9 @@
 <#
     .SYNOPSIS
-        Module 9 samples
+        Learning Path 9 samples
     .DESCRIPTION
         This file contains sample commands from course AZ-040 for
-        Module 9 - Managing Azure resources with PowerShell
+        Learning Path 9 - Managing Azure resources with PowerShell
     .LINK
         https://learn.microsoft.com/training/paths/manage-cloud-resources-use-windows-powershell/
     .LINK

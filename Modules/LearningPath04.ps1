@@ -1,9 +1,9 @@
 <#
     .SYNOPSIS
-        Module 04 samples
+        Learning Path 04 samples
     .DESCRIPTION
         This file contains sample commands from course AZ-040 for
-        Module 04 - Using PSProviders and PSDrives
+        Learning Path 04 - Using PSProviders and PSDrives
     .LINK
         https://learn.microsoft.com/training/paths/work-powershell-providers-powershell-drives-windows-powershell/
     .LINK

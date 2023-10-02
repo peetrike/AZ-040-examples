@@ -1,9 +1,9 @@
 <#
     .SYNOPSIS
-        Module 05 samples
+        Learning Path 05 samples
     .DESCRIPTION
         This file contains sample commands from course AZ-040 for
-        Module 05 - Querying management information by using CIM and WMI
+        Learning Path 05 - Querying management information by using CIM and WMI
     .LINK
         https://learn.microsoft.com/training/paths/query-use-common-information-model-windows-management/
     .LINK

@@ -1,9 +1,9 @@
 <#
     .SYNOPSIS
-        Module 12 samples
+        Learning Path 12 samples
     .DESCRIPTION
         This file contains sample commands from course 10961 for
-        Module 12 - Using advanced Windows PowerShell techniques
+        Learning Path 12 - Using advanced Windows PowerShell techniques
     .LINK
         https://github.com/peetrike/10961-examples
     .LINK

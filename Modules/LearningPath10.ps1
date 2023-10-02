@@ -1,9 +1,9 @@
 <#
     .SYNOPSIS
-        Module 10 samples
+        Learning Path 10 samples
     .DESCRIPTION
         This file contains sample commands from course AZ-040 for
-        Module 10 - Managing Microsoft 365 services with PowerShell
+        Learning Path 10 - Managing Microsoft 365 services with PowerShell
     .LINK
         https://learn.microsoft.com/training/paths/manage-microsoft-365-services-use-windows-powershell/
     .LINK

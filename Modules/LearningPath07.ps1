@@ -1,9 +1,9 @@
 <#
     .SYNOPSIS
-        Module 07 samples
+        Learning Path 07 samples
     .DESCRIPTION
         This file contains sample commands from course AZ-040 for
-        Module 07 - PowerShell scripting
+        Learning Path 07 - PowerShell scripting
     .LINK
         https://learn.microsoft.com/training/paths/create-modify-script-use-windows-powershell/
     .LINK
