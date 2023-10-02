@@ -96,5 +96,16 @@ if (-not $Credential) {
 if ($Credential) {
     $Name = '{0}-{1}-{2}' -f $CourseName, $VMCity, $VmName
 
-    New-PSSession -Name $VmName -VMName $Name -Credential $Credential
+    $Session = Get-PSSession -VMName $Name
+    if (-not $Session) {
+        $Session = New-PSSession -Name $VmName -VMName $Name -Credential $Credential
+    }
+    Invoke-Command -Session $Session -ScriptBlock {
+        $Host.UI.RawUI.WindowTitle = 'PowerShell {0} - {1} @ {2}' -f @(
+            $PSVersionTable.PSVersion.Major
+            $env:USERNAME
+            $env:COMPUTERNAME
+        )
+    }
+    $Session
 }
