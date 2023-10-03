@@ -76,6 +76,7 @@ Get-ChildItem (Join-Path $PSHOME Modules)
 
 # https://learn.microsoft.com/powershell/module/microsoft.powershell.core/about/about_special_characters#stop-parsing-token---
 bcdedit.exe --% /enum {current}
+bcdedit.exe /enum "{current}"
 
 #endregion
 
