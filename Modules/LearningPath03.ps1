@@ -110,7 +110,7 @@ Get-Command -Noun *culture
     # Grouping results
 Get-Help Format-Table -Parameter GroupBy
 Get-Service c* | Format-Table -GroupBy Status
-Get-Service c* | Sort-Object Status | Format-Table -GroupBy Status
+Get-Service c* | Sort-Object -Property Status | Format-Table -GroupBy Status
 
 Get-Help Group-Object -ShowWindow
 Get-Service c* | Group-Object Status
@@ -273,7 +273,7 @@ Get-Help Comparison -Category HelpFile -ShowWindow
 'tere' -eq 'Tere'       # by default the text comparison is case-insensitive
 'tere' -ceq 'Tere'
 'tere' -like 't*'       # wildcards/filesystem pattern
-'tere' -match 't.*'     # Regular Expression pattern
+'tere' -match '^t.*'    # Regular Expression pattern
 
 Get-Help Wildcards -ShowWindow
 Get-Help about_regular -ShowWindow
@@ -352,7 +352,8 @@ Get-ChildItem | Where-Object { ($_.Name.Length -ge 9) -and ($_.Length -ge 2KB) }
 
 Get-Service p* | Where-Object { $_.Status -in 'Running', 'StartPending' }
 
-'get-service', 'get-uhhuu', 'get-userprofile' | Where-Object { Get-Command $_ -ErrorAction SilentlyContinue }
+'get-service', 'get-uhhuu', 'get-userprofile' |
+    Where-Object { Get-Command $_ -ErrorAction SilentlyContinue }
 
 #endregion
 
