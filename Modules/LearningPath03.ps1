@@ -374,7 +374,7 @@ Get-CimInstance -ClassName Win32_UserAccount -Filter "LocalAccount=True and SID 
     #Requires -Modules Microsoft.PowerShell.LocalAccounts
 Get-LocalUser | where SID -Like '*-500'
 
-Get-ADUser -Identity adam
+Get-ADUser -Identity Adrian
 
 Get-Help Measure-Command -ShowWindow
 Measure-Command {
@@ -647,7 +647,7 @@ Get-ParameterInfo Set-ADUser -ParameterName Identity
 (Get-Command Set-ADUser).Parameters.Identity.ParameterType.FullName
 Get-Help Set-ADUser -Parameter Identity
 
-Get-ADUser -Filter { Name -like 'Adam*' } | Set-ADUser -City 'Tallinn'
+Get-ADUser -Filter { Name -like 'Adrian*' } | Set-ADUser -City 'Tallinn'
 
 Get-Help Restart-Service -Parameter InputObject
 
