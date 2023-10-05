@@ -479,6 +479,7 @@ dir k* -Directory | % CreateSubdirectory 'muu'
 
 Get-ChildItem | ForEach-Object -Process { $_.Name }
 dir | foreach { $_.Name }
+ls | % { $_.Name }
 
 Get-Service BITS | ForEach-Object { Stop-Service $_ -WhatIf }
 Get-Service BITS | Stop-Service -WhatIf
@@ -487,7 +488,11 @@ Get-ChildItem -File |
     ForEach-Object -Begin { $summa = 0 } -Process { $summa += $_.Length } -End { Write-Output $summa }
 Get-ChildItem -File | Measure-Object -Property Length -Sum
 
-1..10 | ForEach-Object { Get-Random }
+1..10 | ForEach-Object { Get-Random -Maximum 6 }
+1..10 |
+    ForEach-Object {
+        Get-Random -Maximum 6
+    }
 
 #endregion
 
@@ -533,6 +538,8 @@ Get-ChildItem |
 Get-Help Export-Csv -Parameter Encoding
 Get-Help ConvertTo-Csv -Parameter UseCulture
 Get-Help Export-Csv -Parameter Delimiter
+Get-Help Export-Csv -Parameter NoTypeInformation
+Get-Help Export-Csv -Parameter IncludeTypeInformation
 
 #endregion
 
@@ -563,6 +570,8 @@ Get-ChildItem |
     Out-File -FilePath failid.json -Encoding utf8
 
 Get-Help ConvertTo-Json -Parameter Depth
+Get-Culture | ConvertTo-Json -Depth 1
+
 
     # PS Version 2 and .NET 3.5
 Add-Type -AssemblyName System.Web.Extensions
