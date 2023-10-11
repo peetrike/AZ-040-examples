@@ -52,6 +52,7 @@ $MinuOlulineInfo = 34       # Pascal Case
 $minuOlulineInfo = 22       # Camel Case
 $minu_oluline_info = 43     # Snake Case
 
+
 # https://poshcode.gitbook.io/powershell-practice-and-style/style-guide/code-layout-and-formatting#capitalization-conventions
 # https://learn.microsoft.com/dotnet/standard/design-guidelines/capitalization-conventions
 
@@ -116,6 +117,7 @@ $set | Get-Member
 , $set | Get-Member
 Get-Member -InputObject $set
 $set.GetType()
+$set.GetType().FullName
 
 $process = Get-Process -Id $PID
 Start-Process ('https://learn.microsoft.com/dotnet/api/{0}' -f $process.GetType().FullName)
@@ -182,13 +184,13 @@ Invoke-WithCulture -Culture 'ja-jp' -ScriptBlock { Get-Date $date }
 
 # https://learn.microsoft.com/dotnet/api/system.timespan
 Get-Help New-TimeSpan -ShowWindow
-$aeg = New-TimeSpan -Start (Get-Item .\Module06.ps1).LastWriteTime
-$aeg = Get-Item .\Module06.ps1 | New-TimeSpan
+$aeg = New-TimeSpan -Start (Get-Item .\LearningPath06.ps1).LastWriteTime
+$aeg = Get-Item .\LearningPath06.ps1 | New-TimeSpan
 $aeg | Get-Member
 
 $täna - $aeg
-$täna.AddDays(-13)
 $täna.Subtract($aeg)
+$täna.AddDays(-13)
 $täna.Add($aeg)
 
 #endregion
@@ -309,7 +311,7 @@ $computers
 
 $computers = @{}
 Get-ADComputer -Filter * -Properties IPv4Address | ForEach-Object {
-    $computers[$_.Name] = $_.IPv4Address
+    $computers[$_.Name] = $_
 }
 $computers.Add('Server2', '172.16.0.132')
 
