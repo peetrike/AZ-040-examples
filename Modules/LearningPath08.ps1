@@ -121,7 +121,7 @@ Get-Help about_Remote_Output -ShowWindow
 
 # https://learn.microsoft.com/powershell/scripting/learn/remoting/powershell-remoting-faq#is-the-output-of-remote-commands-different-from-local-output-
 
-Invoke-Command -ComputerName Sea-DC1 -ScriptBlock { 1..3 | start notepad.exe }
+Invoke-Command -ComputerName Sea-DC1 -ScriptBlock { 1..3 | foreach { start notepad.exe } }
 Invoke-Command -ComputerName Sea-DC1 -ScriptBlock { Get-Process notepad } | Get-Member
 Invoke-Command -ComputerName Sea-DC1 -ScriptBlock {
     Get-Process notepad | Select-Object -Property ProcessName, Id, Path
@@ -250,7 +250,7 @@ $s = Invoke-Command -ComputerName $DcName -InDisconnectedSession -ScriptBlock {
     'valmis'
 }
 Start-Sleep -Seconds 120
-Receive-PSSession -Session $s
+$data = Receive-PSSession -Session $s
 
 #endregion
 

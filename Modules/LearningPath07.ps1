@@ -190,6 +190,9 @@ $failid = Get-ChildItem -File
 foreach ($file in $failid) {
     $file.Name
 }
+Get-ChildItem -File | ForEach-Object {
+    $_.Name
+}
 
 Get-Help ForEach-Object -ShowWindow
     #Requires -Version 7
@@ -273,7 +276,7 @@ switch -WildCard ($computer) {
 }
 "$computer is a $role in $location"
 
-$numbers = 1..4 | ForEach-Object { Get-Random -Maximum 5 }
+$numbers = 1..4 | ForEach-Object { Get-Random -Maximum 6 }
 switch ($numbers) {
     3 { Write-Host -ForegroundColor Cyan '3 this time' }
     { $_ % 2 } { 'Odd number: {0}' -f $_ }
@@ -300,8 +303,8 @@ for (
 
 for ($i = 1) {
     $i
-    $i++
     Start-Sleep -Seconds 2
+    $i++
 }
 for ($i = 1; ; Start-Sleep -Seconds 2) {
     ($i++)
@@ -460,10 +463,10 @@ Invoke-Item protsessid.xml
 $XmlKasutajad = Get-ADUser -filter { City -like 'Tallinn' } | ConvertTo-Xml
 $XmlKasutajad.OuterXml | Set-Content -Path kasutajad.xml -Encoding utf8
 
-$häälestus = [xml](Get-Content kasutajad.xml)
-$häälestus.GetType() | Get-TypeUrl -Invoke
-$häälestus.Load
-$häälestus.Save
+$kasutajad = [xml](Get-Content kasutajad.xml)
+$kasutajad.GetType() | Get-TypeUrl -Invoke
+$kasutajad.Load
+$kasutajad.Save
 
 #endregion
 
