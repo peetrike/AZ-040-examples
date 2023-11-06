@@ -110,7 +110,7 @@ Get-Command -Noun *culture
     # Grouping results
 Get-Help Format-Table -Parameter GroupBy
 Get-Service c* | Format-Table -GroupBy Status
-Get-Service c* | Sort-Object Status | Format-Table -GroupBy Status
+Get-Service c* | Sort-Object -Property Status | Format-Table -GroupBy Status
 
 Get-Help Group-Object -ShowWindow
 Get-Service c* | Group-Object Status
@@ -273,7 +273,7 @@ Get-Help Comparison -Category HelpFile -ShowWindow
 'tere' -eq 'Tere'       # by default the text comparison is case-insensitive
 'tere' -ceq 'Tere'
 'tere' -like 't*'       # wildcards/filesystem pattern
-'tere' -match 't.*'     # Regular Expression pattern
+'tere' -match '^t.*'     # Regular Expression pattern
 
 Get-Help Wildcards -ShowWindow
 Get-Help about_regular -ShowWindow
@@ -352,7 +352,8 @@ Get-ChildItem | Where-Object { ($_.Name.Length -ge 9) -and ($_.Length -ge 2KB) }
 
 Get-Service p* | Where-Object { $_.Status -in 'Running', 'StartPending' }
 
-'get-service', 'get-uhhuu', 'get-userprofile' | Where-Object { Get-Command $_ -ErrorAction SilentlyContinue }
+'get-service', 'get-uhhuu', 'get-userprofile' |
+    Where-Object { Get-Command $_ -ErrorAction SilentlyContinue }
 
 #endregion
 
@@ -373,7 +374,7 @@ Get-CimInstance -ClassName Win32_UserAccount -Filter "LocalAccount=True and SID 
     #Requires -Modules Microsoft.PowerShell.LocalAccounts
 Get-LocalUser | where SID -Like '*-500'
 
-Get-ADUser -Identity adam
+Get-ADUser -Identity Adrian
 
 Get-Help Measure-Command -ShowWindow
 Measure-Command {
@@ -562,6 +563,7 @@ Get-ChildItem |
     Out-File -FilePath failid.json -Encoding utf8
 
 Get-Help ConvertTo-Json -Parameter Depth
+Get-Culture | ConvertTo-Json -Depth 1
 
     # PS Version 2 and .NET 3.5
 Add-Type -AssemblyName System.Web.Extensions
@@ -646,7 +648,7 @@ Get-ParameterInfo Set-ADUser -ParameterName Identity
 (Get-Command Set-ADUser).Parameters.Identity.ParameterType.FullName
 Get-Help Set-ADUser -Parameter Identity
 
-Get-ADUser -Filter { Name -like 'Adam*' } | Set-ADUser -City 'Tallinn'
+Get-ADUser -Filter { Name -like 'Adrian*' } | Set-ADUser -City 'Tallinn'
 
 Get-Help Restart-Service -Parameter InputObject
 
