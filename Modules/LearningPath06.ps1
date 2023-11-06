@@ -182,13 +182,13 @@ Invoke-WithCulture -Culture 'ja-jp' -ScriptBlock { Get-Date $date }
 
 # https://learn.microsoft.com/dotnet/api/system.timespan
 Get-Help New-TimeSpan -ShowWindow
-$aeg = New-TimeSpan -Start (Get-Item .\Module06.ps1).LastWriteTime
-$aeg = Get-Item .\Module06.ps1 | New-TimeSpan
+$aeg = New-TimeSpan -Start (Get-Item .\LearningPath06.ps1).LastWriteTime
+$aeg = Get-Item .\LearningPath06.ps1 | New-TimeSpan
 $aeg | Get-Member
 
 $täna - $aeg
-$täna.AddDays(-13)
 $täna.Subtract($aeg)
+$täna.AddDays(-13)
 $täna.Add($aeg)
 
 #endregion
