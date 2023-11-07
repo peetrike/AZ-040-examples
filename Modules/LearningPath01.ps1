@@ -76,6 +76,7 @@ Get-ChildItem (Join-Path $PSHOME Modules)
 
 # https://learn.microsoft.com/powershell/module/microsoft.powershell.core/about/about_special_characters#stop-parsing-token---
 bcdedit.exe --% /enum {current}
+bcdedit.exe /enum "{current}"
 
 #endregion
 
@@ -355,7 +356,7 @@ Get-Command -CommandType Alias
 
     # alias can override other commands
 Get-Command ping
-New-Alias -Name ping -Definition Test-Connection
+New-Alias -Name ping -Value Test-Connection
 Set-Alias ping Test-Connection
 Get-Command ping
 ping www.ee
@@ -430,8 +431,9 @@ Get-WinEvent Application -MaxEvents 5
 Get-WinEvent -LogName Application -MaxEvents 5
 
 Get-Help dir
-Get-ChildItem . *.ps1
+dir . *.ps1
 Get-ChildItem -Path . -Filter *.ps1
+Get-ChildItem -Path . -Filter *.ps1 -Recurse
 
 Get-Help Test-Connection -ShowWindow
     # up to PowerShell 5.1
