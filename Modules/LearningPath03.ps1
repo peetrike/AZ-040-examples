@@ -46,7 +46,6 @@ Get-Help Set-PSReadLineOption -Parameter ContinuationPrompt
 #region Pipeline output
 
 Get-Help Objects -Category HelpFile -ShowWindow
-
 Get-ChildItem | Out-GridView
 
 #endregion
@@ -187,7 +186,7 @@ Get-Process p* | Select-Object -Property PSResources
 Get-Process p* |
     Select-Object -Property PSConfiguration
 
-$ComputerName = 'Sea-Cl1'
+$ComputerName = $env:COMPUTERNAME
 Get-ADComputer $ComputerName | Select-Object -Property DnsHostName | Get-Member
 Get-ADComputer $ComputerName | Select-Object -ExpandProperty DnsHostName | Get-Member
 
@@ -242,7 +241,7 @@ Get-FormatData -TypeName *MSFT_Volume
     Select-Object -Last 2 -ExpandProperty DisplayEntry
 (Get-FormatData -TypeName *MSFT_Volume).FormatViewDefinition.Control.Rows.Columns |
     Select-Object -Last 2 -ExpandProperty DisplayEntry |
-    Select-Object -ExpandProperty | Value
+    Select-Object -ExpandProperty Value
 
 
 # https://peterwawa.wordpress.com/2023/03/29/os-inventuur-ad-objektide-baasil/
@@ -387,7 +386,7 @@ Measure-Command {
     Get-ADUser -LDAPFilter '(Name=Adrian*)'
 }
 Measure-Command {
-    Get-ADUser -Filter * | Where-Object Name -like 'Adrian*'
+    Get-ADUser -Filter * -Properties * | Where-Object Name -like 'Adrian*'
 }
 
     # negatiivne näide ka
@@ -441,7 +440,7 @@ Measure-Command {
 
 1..3 | ForEach-Object { Start-Process notepad }
 Get-Process notepad | Stop-Process
-Stop-Process -Name Notepad
+Stop-Process -Name Notepad -Confirm
 
 # https://learn.microsoft.com/powershell/scripting/learn/ps101/04-pipelines#the-pipeline
 (Get-Help Get-Process).returnValues
@@ -465,7 +464,7 @@ Get-ChildItem *.txt | Select-Object -ExpandProperty Name
 (Get-ChildItem *.txt).Name
 
 Get-ChildItem -File | foreach Encrypt -WhatIf
-dir -File | % Decrypt -WhatIf
+dir -File -Attributes Encrypted -Recurse | % Decrypt -WhatIf
 
 #region Preparation
 'katse', 'kutse' | ForEach-Object { New-Item -ItemType Directory -Name $_ -ErrorAction SilentlyContinue }
