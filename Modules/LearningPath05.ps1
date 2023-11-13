@@ -74,6 +74,9 @@ WMIC.exe alias list brief
 WMIC.exe OS /?
 WMIC.exe OS get Version
 
+# https://gist.github.com/mitchelldavis/6868927
+# https://github.com/vinaypamnani/wmie2
+
 #endregion
 
 #endregion
