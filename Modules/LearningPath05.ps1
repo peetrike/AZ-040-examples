@@ -99,6 +99,8 @@ code -r .\Get-CimNamespace.ps1
 
 #region Listing classes
 
+Get-Help Get-CimClass -ShowWindow
+
 Get-WmiObject -Namespace root\cimv2 -List
 Get-CimClass -ClassName Win32_* | Sort-Object CimClassName
 
@@ -187,7 +189,6 @@ Get-NetFirewallRule -Name WINRM-HTTP-In* | Where-Object Profile -like 'Public' |
     #Requires -Version 3
 Get-Help CimSession -Category HelpFile -ShowWindow
 
-Get-Command -Noun CimSession
 Get-Command -ParameterName 'CimSession' | Measure-Object
 Get-Help * -Parameter CimSession | Group-Object ModuleName -NoElement
 
