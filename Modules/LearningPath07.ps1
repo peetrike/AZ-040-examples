@@ -497,6 +497,7 @@ $jsonInfo = Invoke-RestMethod -Uri $url
 $jsonInfo.ip
 $jsonInfo | Select-Object ip, hostname
 
+    # does not work any more
 Invoke-RestMethod -Uri https://devblogs.microsoft.com/powershell/feed | Select-Object -First 3
 
 #endregion
@@ -518,12 +519,11 @@ Get-Help Import-PowerShellDataFile -ShowWindow
 }
 '@ | Set-Content config33.psd1
 
+    #Requires -Version 2
+$myConfig = Get-Content -Path config33.psd1 -Raw | Invoke-Expression
     #Requires -Version 5
 $myConfig = Import-PowerShellDataFile -Path config33.psd1
 $myConfig
-
-    # before PS 5
-$myConfig = Get-Content -Path config33.psd1 -Raw | Invoke-Expression
 
 # https://peterwawa.wordpress.com/2020/07/03/skriptid-ja-haalestus/
 
