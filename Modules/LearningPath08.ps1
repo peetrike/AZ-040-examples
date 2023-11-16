@@ -70,7 +70,7 @@ Get-LocalGroup 'Remote Management Users' | Get-LocalGroupMember
 
 Get-Help Enable-PSRemoting -ShowWindow
     #Requires -RunAsAdministrator
-Enable-PSRemoting
+Enable-PSRemoting -Force
 
 Get-Help Set-WSManQuickConfig
     #Requires -RunAsAdministrator
@@ -160,9 +160,9 @@ Get-Help New-PSSessionOption -ShowWindow
 $ServiceName = 'Bits'
     #Requires -Version 2
 Invoke-Command -ComputerName Sea-DC1 -ScriptBlock {
-    param ($sn)
+    param ($sn, $teine)
     Get-Service $sn
-} -ArgumentList $ServiceName
+} -ArgumentList $ServiceName, 3
 
     #Requires -Version 3
 Invoke-Command -ComputerName Sea-DC1 -ScriptBlock { Get-Service $using:ServiceName }
@@ -250,7 +250,7 @@ $s = Invoke-Command -ComputerName $DcName -InDisconnectedSession -ScriptBlock {
     'valmis'
 }
 Start-Sleep -Seconds 120
-Receive-PSSession -Session $s
+$vastus = Receive-PSSession -Session $s
 
 #endregion
 
