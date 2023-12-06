@@ -104,6 +104,7 @@ Get-ChildItem t* | Sort-Object -Property Name -Culture en-us
 
     # the following discovers sort order for alphabet
 Get-Culture
+Get-Culture -ListAvailable
 Get-UICulture
 Get-Command -Noun *culture
 
