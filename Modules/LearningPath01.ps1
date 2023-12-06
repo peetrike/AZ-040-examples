@@ -355,7 +355,7 @@ Get-Command -CommandType Alias
 
     # alias can override other commands
 Get-Command ping
-New-Alias -Name ping -Definition Test-Connection
+New-Alias -Name ping -Value Test-Connection
 Set-Alias ping Test-Connection
 Get-Command ping
 ping www.ee
