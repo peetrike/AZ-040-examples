@@ -329,9 +329,9 @@ Get-Service bits | Get-Member -Name Status
 
 Get-Service p* | Where-Object -Property Status -EQ -Value 'Stopped'
 Get-Service p* | Where-Object Status -eq 'Stopped'
-Get-Service p* | where Status -like 'Run*'
+Get-Service p* | where Status -like 'R*'
 gsv p* | ? Status -eq 1
-[ServiceProcess.ServiceControllerStatus]1
+[ServiceProcess.ServiceControllerStatus] 1
 [ServiceProcess.ServiceControllerStatus]::Stopped.value__
 
 Get-ChildItem | Where-Object -Property PSIsContainer -EQ $true
@@ -488,7 +488,8 @@ Get-ChildItem -File |
     ForEach-Object -Begin { $summa = 0 } -Process { $summa += $_.Length } -End { Write-Output $summa }
 Get-ChildItem -File | Measure-Object -Property Length -Sum
 
-1..10 | ForEach-Object { Get-Random }
+    # viskame täringuid
+1..10 | ForEach-Object { Get-Random -Minimum 1 -Maximum 7 }
 
 #endregion
 
