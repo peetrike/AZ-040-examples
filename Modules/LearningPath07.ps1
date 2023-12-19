@@ -183,7 +183,7 @@ $numbers = 1..10
 foreach ($i in $numbers) {
     'number on {0}' -f ($i * 2)
 }
-1..10 | ForEach-Object { 'Number on {0}' -f ($_ * 2) }
+$numbers | ForEach-Object { 'Number on {0}' -f ($_ * 2) }
 
 foreach ($file in Get-ChildItem -File) { $file.Name }
 $failid = Get-ChildItem -File
@@ -351,7 +351,7 @@ while ($i--) {
 
 Start-Process notepad
 while (Get-Process notepad -ErrorAction SilentlyContinue) {
-    Write-Verbose -Message 'Notepad works'
+    Write-Verbose -Message 'Notepad works' -Verbose
     Start-Sleep -Seconds 2
 }
 
@@ -375,7 +375,7 @@ $max = 3
 $number = 0
 foreach ($user in $users) {
     $number++
-    "Modify User object $number"
+    "Modify User object $user"
     if ($number -ge $max) {
         'breaking out'
         break
@@ -457,7 +457,7 @@ Get-Process p* | Export-Clixml -Path protsessid.xml
 Import-Clixml -Path protsessid.xml | Get-Member
 Invoke-Item protsessid.xml
 
-$XmlKasutajad = Get-ADUser -filter { City -like 'Tallinn' } | ConvertTo-Xml
+$XmlKasutajad = Get-ADUser -filter { City -like 'London' } | ConvertTo-Xml
 $XmlKasutajad.OuterXml | Set-Content -Path kasutajad.xml -Encoding utf8
 
 $kasutajad = [xml](Get-Content kasutajad.xml)
@@ -479,6 +479,11 @@ Invoke-Item protsessid.json
 Get-Content protsessid.json | ConvertFrom-Json | Select-Object Name, Id, Cpu, Path
     #Requires -Version 3
 (Get-Content protsessid.json | ConvertFrom-Json) | Select-Object Name, Id, Cpu, Path
+$result = Get-Content protsessid.json | ConvertFrom-Json
+$result | Select-Object Name, Id, Cpu, Path
+
+    #Requires -Version 7
+Get-Help ConvertFrom-Json -Parameter NoEnumerate
 
     # communicating with Web apps
 $url = 'http://ipinfo.io/json'
@@ -512,6 +517,8 @@ Get-Help Import-PowerShellDataFile -ShowWindow
 }
 '@ | Set-Content config33.psd1
 
+    #Requires -Version 2
+$myConfig = Get-Content -Path config33.psd1 -Raw | Invoke-Expression
     #Requires -Version 5
 $myConfig = Import-PowerShellDataFile -Path config33.psd1
 $myConfig
