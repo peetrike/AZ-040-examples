@@ -789,13 +789,13 @@ Get-ADUser -Id Tia -Properties MemberOf |
     Get-ADGroup
 
 $Property = 'MemberOf'
-Get-ADUser -Id Tia -Properties $Property |
+Get-ADUser -Id Adrian -Properties $Property |
     Select-Object -ExpandProperty $Property |
     Get-ADGroup
-(Get-ADUser -Id Tia -Properties $Property).$Property |
+(Get-ADUser -Id Adrian -Properties $Property).$Property |
     Get-ADGroup
 
-Get-ADUser -Id Tia | Get-ADPrincipalGroupMembership
+Get-ADUser -Id Adrian | Get-ADPrincipalGroupMembership
 
 #endregion
 
