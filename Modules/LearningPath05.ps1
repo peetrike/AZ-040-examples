@@ -74,6 +74,9 @@ WMIC.exe alias list brief
 WMIC.exe OS /?
 WMIC.exe OS get Version
 
+# https://gist.github.com/mitchelldavis/6868927
+# https://github.com/vinaypamnani/wmie2
+
 #endregion
 
 #endregion
@@ -95,6 +98,8 @@ code -r .\Get-CimNamespace.ps1
 #endregion
 
 #region Listing classes
+
+Get-Help Get-CimClass -ShowWindow
 
 Get-WmiObject -Namespace root\cimv2 -List
 Get-CimClass -ClassName Win32_* | Sort-Object CimClassName
