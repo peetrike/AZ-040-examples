@@ -70,7 +70,7 @@ Get-LocalGroup 'Remote Management Users' | Get-LocalGroupMember
 
 Get-Help Enable-PSRemoting -ShowWindow
     #Requires -RunAsAdministrator
-Enable-PSRemoting
+Enable-PSRemoting -Force
 
 Get-Help Set-WSManQuickConfig
     #Requires -RunAsAdministrator
@@ -246,11 +246,12 @@ Get-PSSession -ComputerName $DcName | Connect-PSSession
 Get-PSSession
 
 $s = Invoke-Command -ComputerName $DcName -InDisconnectedSession -ScriptBlock {
-    start-sleep -Seconds 100
+    Start-Sleep -Seconds 100
     'valmis'
 }
 Start-Sleep -Seconds 120
-Receive-PSSession -Session $s
+$vastus = Receive-PSSession -Session $s
+$vastus
 
 #endregion
 
