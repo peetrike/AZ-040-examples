@@ -242,7 +242,7 @@ Get-FormatData -TypeName *MSFT_Volume
     Select-Object -Last 2 -ExpandProperty DisplayEntry
 (Get-FormatData -TypeName *MSFT_Volume).FormatViewDefinition.Control.Rows.Columns |
     Select-Object -Last 2 -ExpandProperty DisplayEntry |
-    Select-Object -ExpandProperty | Value
+    Select-Object -ExpandProperty Value
 
 
 # https://peterwawa.wordpress.com/2023/03/29/os-inventuur-ad-objektide-baasil/
@@ -441,7 +441,7 @@ Measure-Command {
 
 1..3 | ForEach-Object { Start-Process notepad }
 Get-Process notepad | Stop-Process
-Stop-Process -Name Notepad
+Stop-Process -Name Notepad -Confirm
 
 # https://learn.microsoft.com/powershell/scripting/learn/ps101/04-pipelines#the-pipeline
 (Get-Help Get-Process).returnValues
@@ -465,7 +465,7 @@ Get-ChildItem *.txt | Select-Object -ExpandProperty Name
 (Get-ChildItem *.txt).Name
 
 Get-ChildItem -File | foreach Encrypt -WhatIf
-dir -File | % Decrypt -WhatIf
+dir -File -Attributes Encrypted -Recurse | foreach Decrypt -WhatIf
 
 #region Preparation
 'katse', 'kutse' | ForEach-Object { New-Item -ItemType Directory -Name $_ -ErrorAction SilentlyContinue }
@@ -534,6 +534,11 @@ Get-Help Export-Csv -Parameter Encoding
 Get-Help ConvertTo-Csv -Parameter UseCulture
 Get-Help Export-Csv -Parameter Delimiter
 
+Get-Help Export-Csv -Parameter NoTypeInformation
+Get-Help Export-Csv -Parameter IncludeTypeInformation
+
+Get-ChildItem | Select-Object Name, Length | ConvertTo-Csv -Delimiter "`t"
+
 #endregion
 
 #region Converting output to XML
@@ -546,7 +551,7 @@ Get-Help ConvertTo-Xml -ShowWindow
 
 Get-ChildItem | ConvertTo-Xml
 Get-ChildItem | ConvertTo-Xml -As Stream | Out-File files.xml -Encoding utf8
-Get-ChildItem | Export-Clixml -Path failid.xml
+Get-ChildItem | Export-Clixml -Path failid.xml #-Encoding unicode
 
 #endregion
 
@@ -587,6 +592,8 @@ Get-ChildItem -File |
     Select-Object -First 4 |
     ConvertTo-Html -PreContent 'Here are some files' -Property Name, Length |
     Out-File -FilePath failid.htm -Encoding utf8
+
+Get-Help ConvertTo-Html -Parameter CSSUri
 
 Find-Module PSWriteHTML -Repository PSGallery
 Find-Module -Tag html -Repository PSGallery
@@ -690,7 +697,7 @@ Get-Service p* | Start-Service -WhatIf
 Get-Service bits | Set-Service -StartupType Automatic -WhatIf
 
 Get-Help Start-Service -Parameter Name
-'bits', 'winrm' | Start-Service
+'bits', 'winrm' | Start-Service -WhatIf
 
 Get-Help Get-Service -Online
 
@@ -745,19 +752,21 @@ Get-Command -ParameterName ComputerName | Measure-Object
 New-Object PSObject -Property @{ ComputerName = 'Sea-DC1' } |
     Test-Connection -ComputerName 'Sea-Cl1'
 
-Get-ChildItem | Select-Object -First 1 | Stop-Service
+Get-ChildItem | Select-Object -First 1 | Stop-Service -WhatIf
 Get-Help Stop-Service -Parameter Name
 Get-ChildItem | Get-Member Name
 
 Start-Process notepad
     # Wrong ParameterSet
 Get-Process -Name notepad | Stop-Process -Name notepad
+Get-ParameterInfo Stop-Process
 
 #endregion
 
 #region Using parenthetical commands
     # in PS 7 the -ComputerName parameter was removed from several commands
 'winrm', 'bits' | Get-Service -ComputerName (Get-Content masinad.txt)
+Get-Help Get-Service -Parameter ComputerName
 
 $kasutajad = Get-ADUser -Filter { City -like 'London' }
 Add-ADGroupMember 'London Users' -Members $kasutajad
@@ -782,18 +791,18 @@ Get-Help Select-Object -Parameter ExpandProperty
             Select-Object -ExpandProperty DnsHostName
     )
 
-Get-ADUser -Id Tia -Properties MemberOf |
+Get-ADUser -Id Tina -Properties MemberOf |
     Select-Object -ExpandProperty MemberOf |
     Get-ADGroup
 
 $Property = 'MemberOf'
-Get-ADUser -Id Tia -Properties $Property |
+Get-ADUser -Id Tina -Properties $Property |
     Select-Object -ExpandProperty $Property |
     Get-ADGroup
-(Get-ADUser -Id Tia -Properties $Property).$Property |
+(Get-ADUser -Id Tina -Properties $Property).$Property |
     Get-ADGroup
 
-Get-ADUser -Id Tia | Get-ADPrincipalGroupMembership
+Get-ADUser -Id Tina | Get-ADPrincipalGroupMembership
 
 #endregion
 
