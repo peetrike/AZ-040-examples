@@ -367,6 +367,7 @@ foreach ($u in users) {
 }
 
 # https://peterwawa.wordpress.com/2012/05/10/powershell-ja-ksurea-argumendid/
+# https://get-powershellblog.blogspot.com/2017/07/bye-bye-backtick-natural-line.html#splattingnote
 
 #endregion
 
