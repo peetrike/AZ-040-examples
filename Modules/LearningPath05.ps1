@@ -177,6 +177,11 @@ $Computer = 'SEA-DC1'
 Get-WmiObject -Class Win32_OperatingSystem -ComputerName $Computer
 Get-CimInstance -ClassName Win32_OperatingSystem -ComputerName $Computer
 
+Get-Help Get-WmiObject -Parameter Credential
+
+Get-Service WinRM
+
+# https://learn.microsoft.com/windows/win32/wmisdk/connecting-to-wmi-remotely-starting-with-vista
     #Requires -RunAsAdministrator
 Get-NetFirewallRule -Name wmi*-in-* | Select-Object name, enabled, profile, action
 Get-NetFirewallRule -Name winrm-http* | Select-Object name, enabled, profile, action
