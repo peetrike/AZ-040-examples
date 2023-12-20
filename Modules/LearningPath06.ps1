@@ -66,7 +66,7 @@ Get-Help Assignment -Category HelpFile -ShowWindow
 $kasutaja = Get-ADUser meelis
 
 $uus
-Get-Variable -name MinuMuutuja
+Get-Variable -Name MinuMuutuja
 Get-Item Variable:uus
 Get-Content Variable:\uus
 
@@ -75,6 +75,7 @@ $MinuMuutuja = $null
 Clear-Variable -Name uus
 
 Set-Variable -Name täpi -Value (Get-Content tere.txt)
+$täpi = Get-Content tere.txt
 
 Get-Help numeric -Category HelpFile -ShowWindow
 #endregion
