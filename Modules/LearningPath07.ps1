@@ -26,7 +26,7 @@ Get-Help Scripts -Category HelpFile -ShowWindow
 Get-Date
 whoami.exe
 Get-History -Count 2 |
-    Select-Object -ExpandProperty Commandline |
+    Select-Object -ExpandProperty CommandLine |
     Set-Content -Path käsud.txt -Encoding default
 
     # from PowerShell
@@ -75,11 +75,12 @@ ise käsud.txt
 #region What is the PowerShellGet module?
 
 # https://www.powershellgallery.com/
-# https://learn.microsoft.com/powershell/scripting/gallery/getting-started
+# https://learn.microsoft.com/powershell/gallery/getting-started
 
+#region PowerShellGet
 Get-Module PowerShellGet -ListAvailable
-
 Get-Command -Noun Module, Script
+
 
 if ($PSVersionTable.PSVersion.Major -lt 6) {
     [Net.ServicePointManager]::SecurityProtocol =
@@ -98,6 +99,26 @@ Get-InstalledModule
 
 Get-Command -noun PSRepository
 Get-PSRepository
+#endregion
+
+#region PSResourceGet
+
+# https://devblogs.microsoft.com/powershell/psresourceget-preview-is-now-available/
+Get-Module Microsoft.PowerShell.PSResourceGet -ListAvailable
+Get-Command -Module *PSResourceGet
+
+Find-PSResource -Type Script -Name Send-PasswordNotification -Repository PSGallery
+Find-PSResource -Type Module -Name UserProfile #-Repository PSGallery
+Find-PSResource -CommandName get-user -Repository PSGallery
+Find-PSResource -Tag CrescendoBuilt -Repository PSGallery
+
+Get-PSResource -Scope AllUsers
+Get-PSResource
+Get-Command Get-PSResource
+
+Get-PSResourceRepository
+
+#endregion
 
 #endregion
 
