@@ -330,9 +330,9 @@ Get-Command -Module PowerShellGet
 Get-Help Find-Command
 Get-Help Install-Module
 
-# https://devblogs.microsoft.com/powershell/psresourceget-preview-is-now-available/
 Get-Module PowerShellGet -ListAvailable
 Get-Module *PSResourceGet -ListAvailable
+# https://devblogs.microsoft.com/powershell/psresourceget-preview-is-now-available/
 
 #endregion
 
