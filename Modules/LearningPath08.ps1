@@ -88,7 +88,8 @@ Get-NetFirewallRule -Name WINRM-HTTP-In* | Where-Object Profile -like 'Public' |
 
 Get-Help Enter-PSSession -ShowWindow
 
-Enter-PSSession -ComputerName Sea-DC1
+$Computer = 'Sea-DC1'
+Enter-PSSession -ComputerName $Computer
 exit
 
 Get-Help Enter-PSSession -Parameter Credential
@@ -100,16 +101,14 @@ Get-Help Enter-PSSession -Parameter Credential
 Get-Help Invoke-Command -ShowWindow
 
 # https://github.com/peetrike/Examples/blob/main/src/Functions/Get-CurrentUser.ps1
-Invoke-Command -ComputerName Sea-DC1 -ScriptBlock {
+Invoke-Command -ComputerName $Computer -ScriptBlock {
     [Security.Principal.WindowsIdentity]::GetCurrent()
 }
 Invoke-Command -ComputerName Sea-DC1, Sea-CL1 -ScriptBlock { $env:COMPUTERNAME }
 Invoke-Command -ComputerName (Get-Content servers.txt) -ScriptBlock { $env:COMPUTERNAME }
 
 Get-Help Invoke-Command -Parameter ThrottleLimit
-
 Get-Help Invoke-Command -Parameter Credential
-
 Get-Help Invoke-Command -Parameter ComputerName
 
 #endregion
@@ -121,9 +120,9 @@ Get-Help about_Remote_Output -ShowWindow
 
 # https://learn.microsoft.com/powershell/scripting/learn/remoting/powershell-remoting-faq#is-the-output-of-remote-commands-different-from-local-output-
 
-Invoke-Command -ComputerName Sea-DC1 -ScriptBlock { 1..3 | foreach { start notepad.exe } }
-Invoke-Command -ComputerName Sea-DC1 -ScriptBlock { Get-Process notepad } | Get-Member
-Invoke-Command -ComputerName Sea-DC1 -ScriptBlock {
+Invoke-Command -ComputerName $Computer -ScriptBlock { 1..3 | foreach { start notepad.exe } }
+Invoke-Command -ComputerName $Computer -ScriptBlock { Get-Process notepad } | Get-Member
+Invoke-Command -ComputerName $Computer -ScriptBlock {
     Get-Process notepad | Select-Object -Property ProcessName, Id, Path
 } |
     Get-Member
@@ -139,12 +138,12 @@ Get-Process | Get-Member
 
 #region Common remoting options
 
-Get-Command -ParameterName Credential -Module microsoft.powershell.core
-Get-Command -ParameterName Port -Module microsoft.powershell.core
-Get-Command -ParameterName UseSSL -Module microsoft.powershell.core
-Get-Command -ParameterName ConfigurationName -Module microsoft.powershell.core
+Get-Command -ParameterName Credential -Module Microsoft.PowerShell.Core
+Get-Command -ParameterName Port -Module Microsoft.PowerShell.Core
+Get-Command -ParameterName UseSSL -Module Microsoft.PowerShell.Core
+Get-Command -ParameterName ConfigurationName -Module Microsoft.PowerShell.Core
 
-Get-Command -ParameterName SessionOption -Module microsoft.powershell.core
+Get-Command -ParameterName SessionOption -Module Microsoft.PowerShell.Core
 
 Get-Command -Noun PSSessionConfiguration
 
@@ -159,13 +158,13 @@ Get-Help New-PSSessionOption -ShowWindow
 
 $ServiceName = 'Bits'
     #Requires -Version 2
-Invoke-Command -ComputerName Sea-DC1 -ScriptBlock {
+Invoke-Command -ComputerName $Computer -ScriptBlock {
     param ($sn)
     Get-Service $sn
 } -ArgumentList $ServiceName
 
     #Requires -Version 3
-Invoke-Command -ComputerName Sea-DC1 -ScriptBlock { Get-Service $using:ServiceName }
+Invoke-Command -ComputerName $Computer -ScriptBlock { Get-Service $using:ServiceName }
 
 #endregion
 
@@ -184,7 +183,7 @@ Get-Help Remote_Variables -ShowWindow
 
 $credential = Get-Credential
 
-Invoke-Command -ComputerName Sea-DC1 -ScriptBlock {
+Invoke-Command -ComputerName $Computer -ScriptBlock {
     Invoke-Command -ComputerName Sea-Svr1 -Credential $using:Credential -ScriptBlock {
         'User: {0}, Computer: {1}' -f $env:USERNAME, $env:COMPUTERNAME
     }
@@ -206,7 +205,6 @@ Invoke-Command -ComputerName Sea-DC1 -ScriptBlock {
 Get-Command -Noun PSSession
 Get-Command -ParameterName Session -Module Microsoft.PowerShell.Core
 
-    #Requires -RunAsAdministrator
 Get-ChildItem -Path WSMan:\localhost\Shell
 
 #endregion
@@ -217,13 +215,13 @@ Get-Help New-PSSession -ShowWindow
 
 New-PSSession -ComputerName Sea-Svr1
 
-$dc = New-PSSession -ComputerName Sea-DC1
+$dc = New-PSSession -ComputerName $Computer
 $dc | Get-Member
 
 Get-Help Enter-PSSession -Parameter Session
 $dc | Enter-PSSession
 Enter-PSSession -Session $dc
-Get-PSSession -ComputerName Sea-DC1 | Enter-PSSession
+Get-PSSession -ComputerName $Computer | Enter-PSSession
 
 Get-Help Invoke-Command -Parameter Session
 Invoke-Command -Session $dc -ScriptBlock { whoami.exe }
