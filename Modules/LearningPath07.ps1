@@ -81,7 +81,6 @@ ise käsud.txt
 Get-Module PowerShellGet -ListAvailable
 Get-Command -Noun Module, Script
 
-
 if ($PSVersionTable.PSVersion.Major -lt 6) {
     [Net.ServicePointManager]::SecurityProtocol =
         [Net.ServicePointManager]::SecurityProtocol -bor [Net.SecurityProtocolType]::Tls12
