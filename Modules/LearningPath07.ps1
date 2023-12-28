@@ -104,6 +104,7 @@ Get-PSRepository
 
 #region PSResourceGet
 
+# https://devblogs.microsoft.com/powershell/powershellget-3-0-preview-1/
 # https://devblogs.microsoft.com/powershell/psresourceget-is-generally-available/
 Get-Module Microsoft.PowerShell.PSResourceGet -ListAvailable
 Get-Command -Module *PSResourceGet
