@@ -219,11 +219,14 @@ Get-CimInstance Win32_LogicalDisk | Format-Table -Property DeviceID, VolumeName,
 $SizeGB = @{ Name = 'Size (GB)'; Expression = { '{0:n2}' -f ($_.Size / 1GB) } }
 Get-CimInstance Win32_LogicalDisk | Select-Object -Property DeviceID, $SizeGB | Get-Member
 
+[math]::Round
+# https://learn.microsoft.com/dotnet/api/system.math.round#midpoint-values-and-rounding-conventions
+
 Get-Help Add-Member -ShowWindow
 $MemberProps = @{
     MemberType = 'ScriptProperty'
     Name       = 'Size (GB)'
-    Value      = { [math]::Round( ($this.Size / 1GB), 2) }
+    Value      = { [math]::Round(($this.Size / 1GB), 2) }
 }
 Get-CimInstance Win32_LogicalDisk |
     Add-Member @MemberProps -PassThru |
