@@ -14,7 +14,7 @@
 
         This example creates remote session to client OS VM
     .EXAMPLE
-        .\Connect-VM.ps1 -VmName Cl1 | Enter-PSSession
+        .\Connect-VM.ps1 -VmName Cl1 -Enter
 
         This example creates remote session and connects to it.
     .LINK
@@ -37,6 +37,9 @@ param (
         [Management.Automation.Credential()]
         # Specifies the user account credentials to use when performing this task.
     $Credential,
+        [switch]
+        # Starts an interactive session to VM
+    $Enter,
         [ValidateSet('AZ-040T00', '10961C')]
         [string]
     $CourseName = 'AZ-040T00'
@@ -100,12 +103,16 @@ if ($Credential) {
     if (-not $Session) {
         $Session = New-PSSession -Name $VmName -VMName $Name -Credential $Credential
     }
-    Invoke-Command -Session $Session -ScriptBlock {
-        $Host.UI.RawUI.WindowTitle = 'PowerShell {0} - {1} @ {2}' -f @(
-            $PSVersionTable.PSVersion.Major
-            $env:USERNAME
-            $env:COMPUTERNAME
-        )
+    if ($Enter) {
+        Invoke-Command -Session $Session -ScriptBlock {
+            $Host.UI.RawUI.WindowTitle = 'PowerShell {0} - {1} @ {2}' -f @(
+                $PSVersionTable.PSVersion.Major
+                $env:USERNAME
+                $env:COMPUTERNAME
+            )
+        }
+        Enter-PSSession -Session $Session
+    } else {
+        $Session
     }
-    $Session
 }
