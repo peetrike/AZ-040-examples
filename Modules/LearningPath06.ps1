@@ -377,6 +377,6 @@ foreach ($u in users) {
 
 #region Lab
 
-# https://github.com/MicrosoftLearning/AZ-040T00-Automating-Administration-with-PowerShell/blob/master/Instructions/Labs/LAB_06_Working_with_variables_arrays_and_hash_tables.md
+# https://microsoftlearning.github.io/AZ-040T00-Automating-Administration-with-PowerShell/Instructions/Labs/LAB_06_Working_with_variables_arrays_and_hash_tables.html
 
 #endregion

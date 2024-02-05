@@ -10,6 +10,10 @@
     .LINK
         https://learn.microsoft.com/training/paths/get-started-windows-powershell/
     .LINK
+        https://learn.microsoft.com/training/courses/az-040t00
+    .LINK
+        https://microsoftlearning.github.io/AZ-040T00-Automating-Administration-with-PowerShell/
+    .LINK
         https://github.com/peetrike/AZ-040-examples
     .LINK
         https://diigo.com/profile/peetrike/?query=%23AZ-040+%23M1
@@ -467,6 +471,6 @@ Get-Help Update-Help -Parameter Scope
 #region Lab
 
 # You can do the lab on your own computer
-# https://github.com/MicrosoftLearning/AZ-040T00-Automating-Administration-with-PowerShell/blob/master/Instructions/Labs/LAB_01_Configuring_Windows_PowerShell_finding_and_running_commands.md
+# https://microsoftlearning.github.io/AZ-040T00-Automating-Administration-with-PowerShell/Instructions/Labs/LAB_01_Configuring_Windows_PowerShell_finding_and_running_commands.html
 
 #endregion

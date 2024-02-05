@@ -182,6 +182,6 @@ New-ScheduledTask @TaskCreateProps | Register-ScheduledTask -TaskName 'PowerShel
 
 #region Lab
 
-# https://github.com/MicrosoftLearning/AZ-040T00-Automating-Administration-with-PowerShell/blob/master/Instructions/Labs/LAB_11_Using_background_jobs_and_scheduled_jobs.md
+# https://microsoftlearning.github.io/AZ-040T00-Automating-Administration-with-PowerShell/Instructions/Labs/LAB_11_Using_background_jobs_and_scheduled_jobs.html
 
 #endregion

@@ -256,6 +256,6 @@ Get-Command -Noun TeamChannel*
 
 #region Lab
 
-# https://github.com/MicrosoftLearning/AZ-040T00-Automating-Administration-with-PowerShell/blob/master/Instructions/Labs/LAB_10_Managing_Microsoft_365_services_with_PowerShell.md
+# https://microsoftlearning.github.io/AZ-040T00-Automating-Administration-with-PowerShell/Instructions/Labs/LAB_10_Managing_Microsoft_365_services_with_PowerShell.html
 
 #endregion

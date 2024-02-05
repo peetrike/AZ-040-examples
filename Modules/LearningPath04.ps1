@@ -185,6 +185,6 @@ $env:COMPUTERNAME
 
 #region Lab
 
-# https://github.com/MicrosoftLearning/AZ-040T00-Automating-Administration-with-PowerShell/blob/master/Instructions/Labs/LAB_04_Using_PSProviders_and_PSDrives.md
+# https://microsoftlearning.github.io/AZ-040T00-Automating-Administration-with-PowerShell/Instructions/Labs/LAB_04_Using_PSProviders_and_PSDrives.html
 
 #endregion

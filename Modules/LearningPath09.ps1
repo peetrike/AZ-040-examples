@@ -199,6 +199,6 @@ Get-Help Set-AzContext -ShowWindow
 
 #region Lab
 
-# https://github.com/MicrosoftLearning/AZ-040T00-Automating-Administration-with-PowerShell/blob/master/Instructions/Labs/LAB_09_Azure_resource_management_with_PowerShell.md
+# https://microsoftlearning.github.io/AZ-040T00-Automating-Administration-with-PowerShell/Instructions/Labs/LAB_09_Azure_resource_management_with_PowerShell.html
 
 #endregion

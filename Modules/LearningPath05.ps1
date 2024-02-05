@@ -278,6 +278,6 @@ Get-CimInstance -ClassName Win32_Process -Filter "Name='notepad.exe'" |
 #region Lab
 
 # You can do the lab on local computer
-# https://github.com/MicrosoftLearning/AZ-040T00-Automating-Administration-with-PowerShell/blob/master/Instructions/Labs/LAB_05_Making_changes_by_using_CIM_and_WMI.md
+# https://microsoftlearning.github.io/AZ-040T00-Automating-Administration-with-PowerShell/Instructions/Labs/LAB_05_Making_changes_by_using_CIM_and_WMI.html
 
 #endregion

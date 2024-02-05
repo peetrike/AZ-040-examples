@@ -331,6 +331,6 @@ Get-Command -Module NTFSSecurity -Noun *2
 
 #region Lab
 
-# https://github.com/MicrosoftLearning/AZ-040T00-Automating-Administration-with-PowerShell/blob/master/Instructions/Labs/LAB_02_Administering_local_systems_using_PowerShell.md
+# https://microsoftlearning.github.io/AZ-040T00-Automating-Administration-with-PowerShell/Instructions/Labs/LAB_02_Administering_local_systems_using_PowerShell.html
 
 #endregion

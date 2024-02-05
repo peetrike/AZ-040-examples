@@ -435,7 +435,7 @@ Measure-Command {
 
 #region Lab 3A
 
-# https://github.com/MicrosoftLearning/AZ-040T00-Automating-Administration-with-PowerShell/blob/master/Instructions/Labs/LAB_03A_Working_with_Windows_PowerShell_Pipeline.md
+# https://microsoftlearning.github.io/AZ-040T00-Automating-Administration-with-PowerShell/Instructions/Labs/LAB_03A_Working_with_Windows_PowerShell_Pipeline.html
 
 #endregion
 
@@ -642,7 +642,7 @@ Find-Module PSWriteOffice -Repository PSGallery
 
 #region Lab 3B
 
-# https://github.com/MicrosoftLearning/AZ-040T00-Automating-Administration-with-PowerShell/blob/master/Instructions/Labs/LAB_03B_Working_with_Windows_PowerShell_Pipeline.md
+# https://microsoftlearning.github.io/AZ-040T00-Automating-Administration-with-PowerShell/Instructions/Labs/LAB_03B_Working_with_Windows_PowerShell_Pipeline.html
 
 #endregion
 
