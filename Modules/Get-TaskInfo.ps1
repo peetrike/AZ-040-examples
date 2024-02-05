@@ -9,7 +9,7 @@
     #>
 
     [CmdletBinding()]
-    param(
+    param (
             [ValidateNotNullOrEmpty()]
             [string]
             # Specifies Scheduled Task name search pattern

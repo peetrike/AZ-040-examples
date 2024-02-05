@@ -289,7 +289,6 @@ Get-Help Wildcards -ShowWindow
 Get-Help about_regular -ShowWindow
 
 3 -eq '3'   # right side type is converted to match left side
-
 '13' -gt 3
 13 -gt '3'
 
@@ -306,7 +305,7 @@ Get-Help Type_Operators -ShowWindow
 $a = Get-Date
 $a -is [datetime]
 
-Get-Help about_Booleans -ShowWindow
+Get-Help Booleans -ShowWindow
 'tere' -as [bool]
 (Get-ChildItem) -as [bool]
 1 -as [bool]
@@ -360,6 +359,7 @@ gci | ? { ! $_.PSIsContainer }
 
 Get-ChildItem | Where-Object { ($_.Name.Length -ge 9) -and ($_.Length -ge 2KB) }
 
+    #Requires -Version 3
 Get-Service p* | Where-Object { $_.Status -in 'Running', 'StartPending' }
 
 'get-service', 'get-uhhuu', 'get-userprofile' |
@@ -401,36 +401,38 @@ Measure-Command {
 }
 
     # negatiivne näide ka
-Get-ScheduledTask -TaskName katse
-Get-CimInstance MSFT_ScheduledTask -Namespace 'Root/Microsoft/Windows/TaskScheduler' -Filter 'TaskName="katse"'
+Get-ScheduledTask -TaskName '.NET Framework NGEN v4.0.30319'
+Get-ScheduledTask -TaskName '.NET Framework NGEN v4.0.30319' | Get-Member
+Get-CimInstance MSFT_ScheduledTask -Namespace 'Root/Microsoft/Windows/TaskScheduler' -Filter 'TaskName=".NET Framework NGEN v4.0.30319"'
 
 Measure-Command {
-    Get-CimInstance MSFT_ScheduledTask -Namespace 'Root/Microsoft/Windows/TaskScheduler' -Filter 'TaskName="katse"'
+    Get-CimInstance MSFT_ScheduledTask -Namespace 'Root/Microsoft/Windows/TaskScheduler' -Filter 'TaskName=".NET Framework NGEN v4.0.30319"'
 }
 Measure-Command {
-    Get-ScheduledTask -TaskName katse
+    Get-ScheduledTask -TaskName '.NET Framework NGEN v4.0.30319'
 }
 Measure-Command {
-    Get-ScheduledTask -TaskName katse -TaskPath '\meelis\'
+    Get-ScheduledTask -TaskName '.NET Framework NGEN v4.0.30319' -TaskPath '\Microsoft\Windows\.NET Framework\'
 }
 Measure-Command {
-    Get-ScheduledTask | where TaskName -eq 'katse'
+    Get-ScheduledTask | where TaskName -eq '.NET Framework NGEN v4.0.30319'
 }
 
 # import function
 . .\Get-TaskInfo.ps1
+code -r .\Get-TaskInfo.ps1
 
 Measure-Command {
-    Get-TaskInfo -TaskName meelis\katse
+    Get-TaskInfo -TaskName '\Microsoft\Windows\.NET Framework\.NET Framework NGEN v4.0.30319'
 }
 Measure-Command {
-    Get-TaskInfo -TaskName katse -TaskPath meelis
+    Get-TaskInfo -TaskName '.NET Framework NGEN v4.0.30319' -TaskPath '\Microsoft\Windows\.NET Framework\'
 }
 Measure-Command {
-    Get-TaskInfo -TaskName katse
+    Get-TaskInfo -TaskName '.NET Framework NGEN v4.0.30319'
 }
 Measure-Command {
-    Get-TaskInfo | where Name -eq 'katse'
+    Get-TaskInfo | where Name -eq '.NET Framework NGEN v4.0.30319'
 }
 
 #endregion
