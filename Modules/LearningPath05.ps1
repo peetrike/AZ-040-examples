@@ -22,15 +22,15 @@
 #region Architecture and technologies
 
 # CIM - Common Information Model: http://www.dmtf.org/standards/cim/
-# For Linux: OMI - Open Management Infrastructure: https://collaboration.opengroup.org/omi/
+# For Linux/Unix: OMI - Open Management Infrastructure: https://github.com/Microsoft/omi
 # Windows Remote Management (WinRM), based on Web Services Management (WS-Man)
-#   * https://learn.microsoft.com/windows/win32/winrm
-#   * https://www.dmtf.org/standards/ws-man
+# - https://learn.microsoft.com/windows/win32/winrm
+# - https://www.dmtf.org/standards/ws-man
 
 # WMI - Windows Management Instrumentation, based on WBEM
-#   * https://learn.microsoft.com/windows/win32/wmisdk
+# - https://learn.microsoft.com/windows/win32/wmisdk
 # Web-Based Enterprise Management (WBEM): https://www.dmtf.org/standards/wbem
-# Desktop Management Interface (DMI): https://www.dmtf.org/sites/default/files/standards/documents/DSP0005.pdf
+# Desktop Management Interface (DMI): https://www.dmtf.org/standards/dmi
 
     # PowerShell < 6
 Get-Command -noun Wmi*
@@ -129,12 +129,13 @@ Get-Help Get-WmiObject -ShowWindow
 Get-WmiObject -Class Win32_LogicalDisk
 Get-CimInstance -ClassName Win32_LogicalDisk
 
+    # PowerShell < 6.0
 Get-Help wql -Category HelpFile -ShowWindow
 # https://learn.microsoft.com/powershell/module/microsoft.powershell.core/about/about_wql?view=powershell-5.1
 Get-CimInstance -Query @'
-SELECT DeviceId,Size,FreeSpace
-FROM Win32_LogicalDisk
-WHERE DriveType=3
+    SELECT DeviceId, Size, FreeSpace
+    FROM Win32_LogicalDisk
+    WHERE DriveType=3
 '@
 Get-CimInstance Win32_LogicalDisk -Filter 'DriveType=3' -Property DeviceId, Size, FreeSpace -Verbose
 
@@ -203,7 +204,7 @@ if (-not (Test-Path -Path servers.txt -PathType Leaf)) {
 $Session = New-CimSession -ComputerName (Get-Content servers.txt)
 $kettad = Get-CimInstance -CimSession $Session -ClassName Win32_LogicalDisk
 $malu = Get-CimInstance -CimSession $Session -ClassName Win32_PhysicalMemory
-$Session | Remove-CimSession
+Remove-CimSession -CimSession $Session
 
 #endregion
 
@@ -247,7 +248,8 @@ $Spooler.ChangeStartMode('Manual')
 $Spooler.psbase | Get-Member -MemberType Method
     # the following example gets parameters sorted by name
 $Spooler.GetMethodParameters('Change')
-$Spooler.Change
+    # this one gets parameters in correct order
+$Spooler.Change.OverloadDefinitions
 # https://learn.microsoft.com/windows/win32/cimwin32prov/change-method-in-class-win32-service
 $Spooler.Change(
     $null,      # DisplayName
@@ -259,7 +261,7 @@ $Spooler.Change(
 Get-Service spooler | Select-Object StartType
 
 Get-Help Invoke-WmiMethod -Parameter ArgumentList
-([wmiclass]'Win32_Process').Create
+([wmiclass]'Win32_Process').Create.OverloadDefinitions
 Invoke-WmiMethod -Class Win32_Process -Name Create -ArgumentList 'notepad.exe'
 
 Get-Help Invoke-CimMethod -Parameter Arguments
