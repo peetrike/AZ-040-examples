@@ -221,6 +221,8 @@ Get-PSReadLineKeyHandler -Chord 'Ctrl-c', 'Ctrl-C', 'Ctrl-x', 'Ctrl-v', 'Shift-I
 Get-Command -CommandType Cmdlet -TotalCount 20
 Get-Command | Measure-Object
 
+# https://learn.microsoft.com/powershell/scripting/discover-powershell#powershell-cmdlets
+Get-Help about_Functions_Advanced -ShowWindow
 Get-Verb
 
 Get-Command Get-VM
@@ -261,11 +263,12 @@ Get-Help Tab_Expansion -ShowWindow
 Get-Help PSReadLine -Category HelpFile -ShowWindow
 Get-Command -Module PSReadLine
 
-Get-PSReadLineKeyHandler -Chord 'Tab', 'Shift-Tab', 'Ctrl- '
+Get-PSReadLineKeyHandler -Bound -Unbound | where Group -Like 'Completion'
 # https://learn.microsoft.com/powershell/module/psreadline/about/about_psreadline_functions#completion-functions
 
 # https://learn.microsoft.com/powershell/module/psreadline/about/about_psreadline#predictive-intellisense
-Get-PSReadLineKeyHandler -Chord 'F2'
+Get-PSReadLineKeyHandler -Unbound -Bound | Where-Object Group -Like 'Prediction'
+Get-PSReadLineKeyHandler -Chord 'Ctrl-RightArrow', 'RightArrow'
 Get-PSReadLineOption | Select-Object Prediction*
 
 Get-Module PSReadLine
