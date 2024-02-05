@@ -195,14 +195,10 @@ Get-Process p* | Select-Object -Property PSResources
 Get-Process p* |
     Select-Object -Property PSConfiguration
 
-$ComputerName = 'Sea-Cl1'
-Get-ADComputer $ComputerName | Select-Object -Property DnsHostName | Get-Member
-Get-ADComputer $ComputerName | Select-Object -ExpandProperty DnsHostName | Get-Member
-
-Get-Command powershell |
-    Select-Object -Property Name -ExpandProperty FileVersionInfo
-
 Get-Help Select-Object -Parameter ExcludeProperty
+
+Get-Process p* |
+    Select-Object -Property PSConfiguration -ExcludeProperty FileVersion
 
 #endregion
 
@@ -459,7 +455,7 @@ Stop-Process -Name Notepad -Confirm
 (Get-Help Get-Process).returnValues
 (Get-Help Stop-Process).inputTypes
 
-Get-ChildItem -File | Get-Member -name Encrypt
+Get-ChildItem -File | Get-Member -Name Encrypt
 
 #endregion
 
@@ -491,12 +487,13 @@ dir k* -Directory | % CreateSubdirectory 'muu'
 
 Get-ChildItem | ForEach-Object -Process { $_.Name }
 dir | foreach { $_.Name }
+ls | % { $_.Name }
 
 Get-Service BITS | ForEach-Object { Stop-Service $_ -WhatIf }
 Get-Service BITS | Stop-Service -WhatIf
 
 Get-ChildItem -File |
-    ForEach-Object -Begin { $summa = 0 } -Process { $summa += $_.Length } -End { Write-Output $summa }
+    ForEach-Object -Begin { $summa = 0 } -Process { $summa += $_.Length } -End { $summa }
 Get-ChildItem -File | Measure-Object -Property Length -Sum
 
 1..10 | ForEach-Object { Get-Random -Minimum 1 -Maximum 7 }
@@ -518,13 +515,13 @@ Get-Help Out-File -Parameter NoClobber
 Get-Help Redirect -Category HelpFile -ShowWindow
 
 Get-ChildItem | Out-File -FilePath failid.txt -Encoding utf8
-dir > kaustad.txt       # Out-File
-dir >> kaustad.txt      # Out-File -Append
+dir -Directory > kaustad.txt       # Out-File
+dir -Directory >> kaustad.txt      # Out-File -Append
 
 Get-Help Set-Content -ShowWindow
 Get-Help Add-Content -ShowWindow
 
-Get-Process p* | Select-Object PSResources | Format-Table | Out-File protsessid.txt
+Get-Process p* | Select-Object PSResources | Format-Table | Out-File protsessid.txt -Encoding utf8
 
 #endregion
 
@@ -547,9 +544,10 @@ Get-Help ConvertTo-Csv -Parameter UseCulture
 Get-Help Export-Csv -Parameter Delimiter
 
 Get-Help Export-Csv -Parameter NoTypeInformation
+    #Requires -Version 7
 Get-Help Export-Csv -Parameter IncludeTypeInformation
 
-Get-ChildItem | Select-Object Name, Length | ConvertTo-Csv -Delimiter "`t"
+Get-ChildItem | Select-Object Name, Length | ConvertTo-Csv -Delimiter "`t" -NoTypeInformation
 
 #endregion
 
@@ -563,6 +561,8 @@ Get-Help ConvertTo-Xml -ShowWindow
 
 Get-ChildItem | ConvertTo-Xml
 Get-ChildItem | ConvertTo-Xml -As Stream | Out-File files.xml -Encoding utf8
+$xml = Get-ChildItem | ConvertTo-Xml
+$xml.Save('files2.xml')
 Get-ChildItem | Export-Clixml -Path failid.xml #-Encoding unicode
 
 #endregion
@@ -610,14 +610,13 @@ Get-Help ConvertTo-Html -Parameter CSSUri
 Find-Module PSWriteHTML -Repository PSGallery
 Find-Module -Tag html -Repository PSGallery
 
-# https://github.com/Stephanevg/PSHTML
 # https://ironmansoftware.com/powershell-universal/
 
 #endregion
 
 #region Additional output options
 
-Get-Command -Verb Out
+Get-Command -Verb Out -module Microsoft.PowerShell.*
 
 Get-Help Out-Host -Parameter Paging
 Get-Command more
@@ -635,12 +634,12 @@ Find-Module powershell-yaml -Repository PSGallery
 
 Find-Module ImportExcel -Repository PSGallery
 Find-Module ImportExcel -Repository PSGallery | Select-Object ProjectUri
-
 # https://github.com/dfinke/ImportExcel/tree/master/Examples
 
 Find-Module PSWriteOffice -Repository PSGallery
 
 # https://evotec.xyz/merging-splitting-and-creating-pdf-files-with-powershell/
+Find-Module -Tag pdf -Repository PSGallery
 
 #endregion
 
@@ -750,8 +749,12 @@ Get-ADComputer $env:COMPUTERNAME | Test-Connection -Count 1
 
 Get-ParameterInfo -Name New-ADUser
 
-Get-Help Stop-Process -Parameter *
-Get-Help Stop-Service -Parameter *
+(Get-Help Stop-Process).parameters.parameter |
+    Where-Object pipelineInput -like '*PropertyName*' |
+    Select-Object name, pipelineInput, type
+
+(Get-Command Stop-Service).Parameters.Values |
+    Where-Object { $_.Attributes.ValueFromPipeLineByPropertyName }
 
 Get-Command -ParameterName ComputerName | Measure-Object
 
@@ -797,11 +800,18 @@ Get-ADGroup -Filter { Name -like 'London*' } |
 
 Get-Help Select-Object -Parameter ExpandProperty
 
+$ComputerName = 'Sea-Cl1'
+Get-ADComputer $ComputerName | Select-Object -Property DnsHostName | Get-Member
+Get-ADComputer $ComputerName | Select-Object -ExpandProperty DnsHostName | Get-Member
+
 'winrm', 'bits' |
     Get-Service -ComputerName (
         Get-ADComputer -Filter { Name -like '*srv*' } |
             Select-Object -ExpandProperty DnsHostName
     )
+
+Get-Command powershell |
+    Select-Object -Property Name -ExpandProperty FileVersionInfo
 
 Get-ADUser -Id Tina -Properties MemberOf |
     Select-Object -ExpandProperty MemberOf |
@@ -815,6 +825,8 @@ Get-ADUser -Id Tina -Properties $Property |
     Get-ADGroup
 
 Get-ADUser -Id Tina | Get-ADPrincipalGroupMembership
+
+Get-ADUser -Id Tina -Properties PrimaryGroup
 
 #endregion
 
