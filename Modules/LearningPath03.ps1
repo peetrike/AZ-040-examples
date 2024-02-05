@@ -114,7 +114,7 @@ Get-Culture
     #Requires -Version 7
 Get-Culture -ListAvailable
 Get-UICulture
-Get-Command -Noun *culture
+Get-Command -Noun *Culture
 
     # Grouping results
 Get-Help Format-Table -Parameter GroupBy
@@ -126,7 +126,6 @@ Get-Service c* | Group-Object Status
 Get-Service c* | Group-Object Status -NoElement
 
 # https://peterwawa.wordpress.com/2023/03/29/os-inventuur-ad-objektide-baasil/
-
 $ComputerProps = @{
     Filter     = {
         Enabled -eq $true -and
@@ -253,9 +252,8 @@ Get-FormatData -TypeName *MSFT_Volume
 (Get-FormatData -TypeName *MSFT_Volume).FormatViewDefinition.Control.Rows.Columns |
     Select-Object -Last 2 -ExpandProperty DisplayEntry
 (Get-FormatData -TypeName *MSFT_Volume).FormatViewDefinition.Control.Rows.Columns |
-    Select-Object -Last 2 -ExpandProperty DisplayEntry |
+    Select-Object -Last 1 -ExpandProperty DisplayEntry |
     Select-Object -ExpandProperty Value
-
 
 # https://peterwawa.wordpress.com/2023/03/29/os-inventuur-ad-objektide-baasil/
 $OSVersion = @{
