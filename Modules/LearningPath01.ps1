@@ -46,15 +46,14 @@ Get-Help Parsing -ShowWindow
 
 #region PowerShell versions
 
-# https://learn.microsoft.com/previous-versions/powershell/scripting/overview
-# https://learn.microsoft.com/powershell/scripting/windows-powershell/wmf/overview
-# https://learn.microsoft.com/powershell/scripting/windows-powershell/whats-new/what-s-new-in-windows-powershell-50
-
-Get-Help _PowerShell -Category HelpFile
-
 # https://learn.microsoft.com/powershell/scripting/install/powershell-support-lifecycle#release-history
 
-# https://learn.microsoft.com/powershell/scripting/whats-new/what-s-new-in-powershell-73
+# https://learn.microsoft.com/powershell/scripting/windows-powershell/wmf/overview
+# https://learn.microsoft.com/previous-versions/powershell/scripting/windows-powershell/whats-new/what-s-new-in-windows-powershell-50
+# https://learn.microsoft.com/previous-versions/powershell/scripting/windows-powershell/wmf/whats-new/release-notes
+Get-Help _PowerShell -Category HelpFile
+
+# https://learn.microsoft.com/powershell/scripting/whats-new/what-s-new-in-powershell-74
 
 # https://learn.microsoft.com/powershell/scripting/install/powershell-in-docker
 
@@ -122,11 +121,11 @@ Get-Help Editions -Category HelpFile -ShowWindow
     # PowerShell Core
 $PSVersionTable.OS
 
-# look also https://peterwawa.wordpress.com/2017/09/22/mis-keskkonnas-mu-skript-jookseb/
+# https://peterwawa.wordpress.com/2017/09/22/mis-keskkonnas-mu-skript-jookseb/
 
 # https://learn.microsoft.com/previous-versions/powershell/scripting/overview
 
-# https://learn.microsoft.com/powershell/scripting/windows-powershell/starting-the-windows-powershell-2.0-engine
+# https://learn.microsoft.com/previous-versions/powershell/scripting/windows-powershell/starting-the-windows-powershell-2.0-engine
 Start-Process -FilePath powershell.exe -ArgumentList '-version 2'
 # https://devblogs.microsoft.com/powershell/windows-powershell-2-0-deprecation/
 
@@ -159,6 +158,7 @@ Get-Command -Noun ExecutionPolicy
 $Host.PrivateData
 $Host.UI.RawUI
 Get-PSReadLineOption | Select-Object *color
+# https://learn.microsoft.com/powershell/scripting/learn/shell/using-light-theme
 
     #Requires -Version 7.2
 Get-Help ANSI_Terminals -ShowWindow
@@ -166,7 +166,6 @@ $PSStyle
 
     #Requires -Version 7.3
 $PSStyle.FileInfo
-
 Find-Module terminal-icons -Repository PSGallery
 
     # Windows Terminal
@@ -181,14 +180,18 @@ Find-Module terminal-icons -Repository PSGallery
 # https://www.programmingfonts.org/
 
 # https://learn.microsoft.com/windows/terminal/tips-and-tricks#zoom-with-the-mouse
+# https://learn.microsoft.com/windows/terminal/tutorials/custom-prompt-setup
 
-Get-PSReadLineKeyHandler -Chord 'Ctrl-c', 'Ctrl-C', 'Ctrl-v', 'Shift-Insert', 'Ctrl-x'
+Get-PSReadLineKeyHandler -Chord 'Ctrl-c', 'Ctrl-C', 'Ctrl-x', 'Ctrl-v', 'Shift-Insert'
 
 #endregion
 
 #region Configuring the ISE
 
 # https://learn.microsoft.com/powershell/scripting/windows-powershell/ise/exploring-the-windows-powershell-ise
+
+# ISE has not been changed since PowerShell 3.0
+# https://learn.microsoft.com/previous-versions/powershell/scripting/windows-powershell/whats-new/what-s-new-in-the-powershell-50-ise
 
 #endregion
 
