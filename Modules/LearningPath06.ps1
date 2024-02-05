@@ -160,6 +160,7 @@ $täna
 $täna | Get-Member
 
 $täna.ToString('d. MMMM yyyy')
+$täna.ToString('o')
 $täna.ToString('s')
 $täna.ToString([cultureinfo]'ja-jp')
 
@@ -168,14 +169,27 @@ $täna.ToString([cultureinfo]'ja-jp')
 $date = '04.08.11'
 [datetime] $date
 Get-Date -Date $date
+    # https://github.com/peetrike/PWAddins/blob/master/src/Public/Invoke-WithCulture.ps1
 Invoke-WithCulture -Culture 'en-us' -ScriptBlock { Get-Date $date }
 Invoke-WithCulture -Culture 'ja-jp' -ScriptBlock { Get-Date $date }
-# https://github.com/peetrike/PWAddins/blob/master/src/Public/Invoke-WithCulture.ps1
 
 [datetime]::Parse
 [datetime]::Parse($date, [cultureinfo]'et-ee')
 [datetime]::Parse($date, [cultureinfo]'en-us')
 [datetime]::Parse($date, [cultureinfo]'ja-jp')
+
+    # About Timezone
+[datetime]::Now
+[datetime]::UtcNow
+$täna.Kind
+$täna.ToUniversalTime()
+$täna.ToLocalTime()
+
+$date = [datetime] '2011.08.04'
+$date.Kind
+$date2 = [datetime] '2011.08.04Z'
+$date2.Kind
+$date2
 
 #endregion
 
@@ -218,7 +232,9 @@ $dates = @(
 )
 $dates
 
-@(Get-ADUser -Filter { City -like 'tallinn' })
+@(Get-ADUser -Filter { City -like 'Tallinn' })
+
+[array] $computers = 'Sea-DC1'
 
 #endregion
 
@@ -270,6 +286,8 @@ $computers[-1]
 
 $computers.RemoveAt
 $computers.Remove
+
+$computers.ToArray()
 
 # https://learn.microsoft.com/dotnet/api/system.collections.objectmodel.collection-1
 $computers = [Collections.ObjectModel.Collection[string]] (Get-Content computers.txt)
