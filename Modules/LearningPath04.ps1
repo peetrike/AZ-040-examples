@@ -25,7 +25,7 @@ Get-Help Providers -Category HelpFile -ShowWindow
 
 #endregion
 
-#region Different provider capabilities
+#region Review the built-in providers
 
 Get-Command -Noun PSProvider
 
