@@ -48,6 +48,7 @@ Get-Help Set-PSReadLineOption -Parameter ContinuationPrompt
 Get-Help Objects -Category HelpFile -ShowWindow
 
 Get-ChildItem | Out-GridView
+Get-ChildItem | Select-Object * | Out-GridView
 
 #endregion
 
@@ -64,6 +65,9 @@ Get-ADUser -Identity Administrator
 Get-ADUser -Identity Administrator | Get-Member
 Get-ADUser -Identity Administrator -Properties * | Get-Member
 
+New-ADUser -Name Meelis
+Get-ADUser -Identity Meelis -Properties mail | Get-Member
+
 #endregion
 
 #region Formatting pipeline output
@@ -75,6 +79,9 @@ Get-Help Format.ps1xml -ShowWindow
 # https://peterwawa.wordpress.com/2021/06/10/objektide-kuvamisest/
 Get-FormatData -TypeName System.Diagnostics.Process* |
     Select-Object -ExpandProperty FormatViewDefinition
+
+    # PowerShell < 6.0
+code -r $PSHOME\DotNetTypes.format.ps1xml
 
 Get-Process p* | Format-Table -View StartTime
 
