@@ -319,8 +319,10 @@ Get-InstalledModule
 
 #region Finding cmdlets
 
-Get-Command -Module VpnClient
+Get-Help Get-Command
+
 Get-Command -Module VpnClient | Measure-Object
+Get-Command -Module VpnClient
 Get-Command -Noun VpnConnection
 Get-VpnConnection
 
@@ -342,7 +344,7 @@ Get-Help Install-Module
 
 Get-Module PowerShellGet -ListAvailable
 Get-Module *PSResourceGet -ListAvailable
-# https://devblogs.microsoft.com/powershell/psresourceget-preview-is-now-available/
+# https://devblogs.microsoft.com/powershell/psresourceget-is-generally-available/
 
 #endregion
 
@@ -351,7 +353,8 @@ Get-Module *PSResourceGet -ListAvailable
 Get-Help Aliases -Category HelpFile
 
 dir
-ls
+echo tere
+ps p*
 
 Get-Command -Noun Alias
 Get-Help Get-Alias -ShowWindow
