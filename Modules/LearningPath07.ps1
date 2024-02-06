@@ -33,7 +33,7 @@ Get-History -Count 2 |
 Invoke-Expression (gc .\käsud.txt -Raw)
 Get-Content .\käsud.txt | Invoke-Expression
 Invoke-Item .\käsud.txt
-pwsh -c (gc .\käsud.txt -Raw)
+pwsh -c (Get-Content .\käsud.txt -Raw)
 
     # from other shells
 pwsh.exe -NoLogo -NoProfile < käsud.txt
@@ -65,8 +65,6 @@ ise käsud.txt
 # https://plugins.jetbrains.com/plugin/10249
 
 # https://notepad-plus-plus.org/
-
-# https://github.com/janikvonrotz/awesome-powershell#editors-and-ides
 
 # https://github.com/search?q=language:PowerShell
 
