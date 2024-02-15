@@ -667,6 +667,9 @@ Get-ParameterInfo Set-ADUser -ParameterName Identity
 Get-Help Set-ADUser -Parameter Identity
 
 Get-ADUser -Filter { Name -like 'Adrian*' } | Set-ADUser -City 'Tallinn'
+    # this does about same
+$kasutaja = Get-ADUser -Filter { Name -like 'Adrian*' }
+Set-ADUser -Identity $kasutaja -City 'Tallinn'
 
 Get-Help Restart-Service -Parameter InputObject
 
