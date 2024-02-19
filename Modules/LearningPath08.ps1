@@ -24,7 +24,7 @@
 Get-Help about_Remote -ShowWindow
 Get-Help about_Remote_Requirements -ShowWindow
 
-# https://learn.microsoft.com/powershell/scripting/learn/remoting/SSH-Remoting-in-PowerShell-Core
+# https://learn.microsoft.com/powershell/scripting/learn/remoting/SSH-Remoting-in-PowerShell
 
 #endregion
 
