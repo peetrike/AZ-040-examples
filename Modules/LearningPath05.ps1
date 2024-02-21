@@ -118,6 +118,8 @@ Get-MSIProductInfo
 
     # Microsoft Store apps
 Get-CimClass -ClassName Win32_InstalledStoreProgram
+Get-AppxPackage
+Get-AppxProvisionedPackage
 
 #endregion
 
@@ -164,6 +166,7 @@ if ($command = Get-Command Get-CimInstance -ErrorAction SilentlyContinue) {
 
     # alternative
 [wmi] 'Win32_LogicalDisk.DeviceID="C:"'
+([wmisearcher] 'SELECT * FROM Win32_OperatingSystem').Get()
 
 #endregion
 
