@@ -21,7 +21,7 @@
 
 #region What are variables?
 
-Get-Help variables -Category HelpFile
+Get-Help about_variables -Category HelpFile -ShowWindow
 # https://learn.microsoft.com/powershell/scripting/lang-spec/chapter-05
 
 Get-Help variable_ -Category HelpFile -ShowWindow
@@ -234,6 +234,7 @@ $dates
 
 @(Get-ADUser -Filter { City -like 'Tallinn' })
 
+$computers = @()
 [array] $computers = 'Sea-DC1'
 
 #endregion

@@ -27,7 +27,7 @@ Get-Date
 whoami.exe
 Get-History -Count 2 |
     Select-Object -ExpandProperty CommandLine |
-    Set-Content -Path käsud.txt -Encoding default
+    Set-Content -Path käsud.txt -Encoding utf8
 
     # from PowerShell
 Invoke-Expression (gc .\käsud.txt -Raw)
@@ -354,7 +354,7 @@ do {
 } until ($answer -eq 'stop')
 
 Remove-Variable -Name i
-while (++$i -le 10) {
+while (++$i -lt 10) {
     'number on {0}' -f $i
 }
 $i
