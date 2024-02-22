@@ -94,6 +94,12 @@ exit
 
 Get-Help Enter-PSSession -Parameter Credential
 
+# to change window title:
+$host.ui.RawUI.WindowTitle = 'PS {0} - {1} @ {2}' -f
+    $PSVersionTable.PSVersion.Major,
+    $env:USERNAME,
+    $env:COMPUTERNAME
+
 #endregion
 
 #region Using remoting: one-to-many
