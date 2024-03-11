@@ -74,6 +74,8 @@ New-SmbMapping -LocalPath 's:' -RemotePath '\\lon-dc1\netlogon' -Persistent $fal
 Get-Help New-SmbMapping -Parameter UserName
 Get-Help New-SmbMapping -Parameter Password
 
+# https://peterwawa.wordpress.com/2010/04/28/powershell-ja-admin-oigused/
+
 #endregion
 
 #region Working with the file system
