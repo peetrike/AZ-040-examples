@@ -230,14 +230,15 @@ Get-Command Get-EXOMailbox
 Get-Command Get-ADUser
 Get-Command -Verb Get -Noun *User
 
-    #Requires -Modules PowerShellGet
-Find-Command Get-User -Repository PSGallery
+    #Requires -Modules Microsoft.PowerShell.PSResourceGet
+Find-PSResource -Command Get-User -Repository PSGallery
 
     # when cmdlet names in different modules are same, you can use fully qualified cmdlet name
-Find-Command -Name Get-Credential
+Find-PSResource -CommandName Get-Credential -Repository PSGallery
     #Requires -Modules BetterCredentials
-Get-Command Get-Credential -All
+Get-Command BetterCredentials\Get-Credential
 Get-Command Microsoft.PowerShell.Security\Get-Credential
+Get-Command Get-Credential -All
 
 #endregion
 
@@ -272,7 +273,7 @@ Get-PSReadLineKeyHandler -Chord 'Ctrl-RightArrow', 'RightArrow'
 Get-PSReadLineOption | Select-Object Prediction*
 
 Get-Module PSReadLine
-Find-Module PSReadLine
+Find-PSResource PSReadLine -Repository PSGallery
 
 #endregion
 
@@ -311,9 +312,9 @@ Import-Module ActiveDirectory
 Get-ADUser
 
     # where to find modules
-    #Requires -Modules PowerShellGet
-Find-Module -Name UserProfile -Repository PSGallery
-Get-InstalledModule
+    #Requires -Modules Microsoft.PowerShell.PSResourceGet
+Find-PSResource -Name UserProfile -Repository PSGallery
+Get-PSResource -Scope AllUsers
 
 #endregion
 
@@ -338,9 +339,9 @@ Get-Command | Group-Object -Property CommandType
 
 # https://learn.microsoft.com/powershell/scripting/gallery/overview
 # https://learn.microsoft.com/powershell/module/powershellget/
-Get-Command -Module PowerShellGet
-Get-Help Find-Command
-Get-Help Install-Module
+Get-Command -Module Microsoft.PowerShell.PSResourceGet
+Get-Help Find-PSResource -Parameter CommandName
+Get-Help Install-PSResource
 
 Get-Module PowerShellGet -ListAvailable
 Get-Module *PSResourceGet -ListAvailable
