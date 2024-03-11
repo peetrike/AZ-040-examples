@@ -93,7 +93,7 @@ Get-ADUser Adam | Get-ADPrincipalGroupMembership | Select-Object Name
 
 Get-ADUser Adam |
     Get-ADPrincipalGroupMembership |
-    Where-Object Name -like 'Managers' |
+    Where-Object Name -Like 'Managers' |
     Get-ADGroup -Properties description
 
 #endregion
@@ -191,7 +191,7 @@ Get-NetFirewallRule -Name WINRM-HTTP-In-TCP*
 Get-NetFirewallRule -Group '@FirewallAPI.dll,-30267'
 
 Get-NetFirewallPortFilter -Protocol tcp |
-    Where-Object LocalPort -eq 3389 |
+    Where-Object LocalPort -EQ 3389 |
     Get-NetFirewallRule
 
 $AddressFilter = Get-NetFirewallRule -Name WINRM-HTTP-In-TCP | Get-NetFirewallAddressFilter
@@ -199,7 +199,7 @@ $AddressFilter
 $AddressFilter.RemoteAddress
 
 $AddressFilter |
-    Set-NetFirewallAddressFilter -RemoteAddress @($AddressFilter.RemoteAddress) + '172.20.160./24'
+    Set-NetFirewallAddressFilter -RemoteAddress @($AddressFilter.RemoteAddress) + '172.20.160.0/24'
 
 Get-Command -Module NetConnection
 
@@ -236,6 +236,8 @@ Get-GPO -All |
 
 Get-Help Invoke-GPUpdate
 
+Get-Help Get-ADDefaultDomainPasswordPolicy
+
 #endregion
 
 #region Server Manager cmdlets
@@ -248,7 +250,7 @@ Install-WindowsFeature -Name Telnet-Client -ComputerName myserver
 
     #Requires -RunAsAdministrator
 Get-WindowsOptionalFeature -Online -FeatureName SMB1Protocol*
-Get-WindowsCapability -Online -Name *ssh*
+Get-WindowsCapability -Online -Name OpenSSH*
 
 Get-Command -Module Dism
 
@@ -307,7 +309,7 @@ Get-Module Microsoft.PowerShell.* -ListAvailable
 
 Get-Command -Noun Acl
 
-Find-Module NTFSSecurity -Repository PSGallery
+Find-PSResource -Name NTFSSecurity -Repository PSGallery
 Get-Command -Module NTFSSecurity
 
 New-Item -Name katse -ItemType Directory
