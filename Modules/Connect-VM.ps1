@@ -100,6 +100,16 @@ if ($Credential) {
     $Name = '{0}-{1}-{2}' -f $CourseName, $VMCity, $VmName
 
     $Session = Get-PSSession -VMName $Name
+    switch ($Session.State) {
+        'Broken' {
+            Remove-PSSession -Session $Session
+            $Session = $null
+        }
+        'Disconnected' {
+            $Session = Connect-PSSession -Session $Session
+        }
+    }
+
     if (-not $Session) {
         $Session = New-PSSession -Name $VmName -VMName $Name -Credential $Credential
     }
