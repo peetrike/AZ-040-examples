@@ -610,8 +610,8 @@ Get-ChildItem -File |
 
 Get-Help ConvertTo-Html -Parameter CSSUri
 
-Find-Module PSWriteHTML -Repository PSGallery
-Find-Module -Tag html -Repository PSGallery
+Find-PSResource PSWriteHTML -Repository PSGallery
+Find-PSResource -Tag html -Repository PSGallery
 
 # https://ironmansoftware.com/powershell-universal/
 
@@ -633,16 +633,16 @@ Get-ChildItem | Select-Object * | Out-GridView
 
 #region Extra: More export options
 
-Find-Module powershell-yaml -Repository PSGallery
+Find-PSResource powershell-yaml -Repository PSGallery
 
-Find-Module ImportExcel -Repository PSGallery
-Find-Module ImportExcel -Repository PSGallery | Select-Object ProjectUri
+Find-PSResource ImportExcel -Repository PSGallery
+Find-PSResource ImportExcel -Repository PSGallery | Select-Object ProjectUri
 # https://github.com/dfinke/ImportExcel/tree/master/Examples
 
-Find-Module PSWriteOffice -Repository PSGallery
+Find-PSResource PSWriteOffice -Repository PSGallery
 
 # https://evotec.xyz/merging-splitting-and-creating-pdf-files-with-powershell/
-Find-Module -Tag pdf -Repository PSGallery
+Find-PSResource -Tag pdf -Repository PSGallery
 
 #endregion
 
@@ -716,7 +716,7 @@ Get-Help Start-Service -Parameter Name
 Get-Help Get-Service -Online
 
     # Exporting to CSV retains object type
-Get-Service p* | Export-Csv -Path Services.csv
+Get-Service p* | Export-Csv -Path Services.csv -Encoding utf8
     #Requires -Version 7
 Get-Service p* | Export-Csv -Path Services.csv -IncludeTypeInformation
 Import-Csv Services.csv | Get-Member
@@ -782,6 +782,7 @@ Get-ParameterInfo Stop-Process
 #endregion
 
 #region Using parenthetical commands
+
     # in PS 7 the -ComputerName parameter was removed from several commands
 'winrm', 'bits' | Get-Service -ComputerName (Get-Content masinad.txt)
 Get-Help Get-Service -Parameter ComputerName
@@ -816,20 +817,21 @@ Get-ADComputer $ComputerName | Select-Object -ExpandProperty DnsHostName | Get-M
 Get-Command powershell |
     Select-Object -Property Name -ExpandProperty FileVersionInfo
 
-Get-ADUser -Id Tina -Properties MemberOf |
+$User = 'Tina'
+Get-ADUser -Id $User -Properties MemberOf |
     Select-Object -ExpandProperty MemberOf |
     Get-ADGroup
 
 $Property = 'MemberOf'
-Get-ADUser -Id Tina -Properties $Property |
+Get-ADUser -Id $User -Properties $Property |
     Select-Object -ExpandProperty $Property |
     Get-ADGroup
-(Get-ADUser -Id Tina -Properties $Property).$Property |
+(Get-ADUser -Id $User -Properties $Property).$Property |
     Get-ADGroup
 
-Get-ADUser -Id Tina | Get-ADPrincipalGroupMembership
+Get-ADUser -Id $User | Get-ADPrincipalGroupMembership
 
-Get-ADUser -Id Tina -Properties PrimaryGroup
+Get-ADUser -Id $User -Properties PrimaryGroup
 
 #endregion
 
