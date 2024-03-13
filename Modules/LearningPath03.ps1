@@ -94,12 +94,14 @@ Get-Process p* | Format-Table -View StartTime
 
 #region Sorting objects by a property
 
+
 Get-Help Sort-Object -ShowWindow
 
 Get-ChildItem
 
 Get-ChildItem | Sort-Object -Property LastWriteTime -Descending
 
+# https://learn.microsoft.com/powershell/module/microsoft.powershell.core/about/about_psitem
 Get-ChildItem |
     Sort-Object -Property @{ Expression = { $_.LastWriteTime - $_.CreationTime }; Descending = $false } |
     Format-Table Name, CreationTime, LastWriteTime
