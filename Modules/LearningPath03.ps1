@@ -448,7 +448,7 @@ Measure-Command {
 #region Purpose of enumeration
 
 1..3 | ForEach-Object { Start-Process notepad }
-Get-Process notepad | Stop-Process
+Get-Process notepad | Stop-Process -WhatIf
 Stop-Process -Name Notepad -Confirm
 
 # https://learn.microsoft.com/powershell/scripting/learn/ps101/04-pipelines#the-pipeline
