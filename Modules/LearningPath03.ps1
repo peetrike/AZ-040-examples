@@ -515,6 +515,7 @@ Get-Command -ParameterName Encoding
 Get-Help Out-File -ShowWindow
 Get-Help Out-File -Parameter NoClobber
 Get-Help Redirect -Category HelpFile -ShowWindow
+# https://learn.microsoft.com/powershell/module/microsoft.powershell.core/about/about_ansi_terminals#redirecting-output-in-host-mode
 
 Get-ChildItem | Out-File -FilePath failid.txt -Encoding utf8
 dir -Directory > kaustad.txt       # Out-File
