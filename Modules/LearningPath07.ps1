@@ -51,22 +51,8 @@ code -r käsud.txt
 Get-Command ise
 ise käsud.txt
 
-# https://www.sapien.com/software/powershell_studio
-# https://ironmansoftware.com/powershell-pro-tools/#psscriptpad
-# https://visualstudio.microsoft.com/vs/community/
-
-# https://www.powershellgallery.com/packages/psedit
-
-# https://poshgui.com/
-# https://docs.github.com/en/codespaces
-
-# https://github.com/neoclide/coc.nvim
-# https://emacs-lsp.github.io/lsp-mode/
-# https://plugins.jetbrains.com/plugin/10249
-
-# https://notepad-plus-plus.org/
-
 # https://github.com/search?q=language:PowerShell
+# https://powershellgallery.com
 
 #endregion
 
@@ -590,8 +576,8 @@ code -r -g Connect-VM.ps1:61
     #Requires -Version 3
 Get-Credential -Message 'Please enter secret' -UserName 'not used'
 
-$host.ui.PromptForCredential
-$Credential = $host.ui.PromptForCredential(
+$Host.UI.PromptForCredential
+$Credential = $Host.UI.PromptForCredential(
     'Need credentials',
     'Please enter your user name and password.',
     'user',
@@ -601,10 +587,10 @@ $Credential = $host.ui.PromptForCredential(
 # https://learn.microsoft.com/powershell/module/microsoft.powershell.security/get-credential?view=powershell-5.1#example-4
 Get-ItemProperty 'HKLM:\SOFTWARE\Microsoft\PowerShell\1\ShellIds' -Name ConsolePrompting
 
-Find-Module BetterCredentials -Repository PSGallery
+Find-PSResource BetterCredentials -Repository PSGallery
 
-Find-Module Microsoft.PowerShell.SecretManagement -Repository PSGallery
-Find-Module -Tag SecretManagement -Repository PSGallery
+Find-PSResource Microsoft.PowerShell.SecretManagement -Repository PSGallery
+Find-PSResource -Tag SecretManagement -Repository PSGallery
 
 # https://peterwawa.wordpress.com/2010/04/28/powershell-ja-admin-oigused/
 # https://learn.microsoft.com/powershell/scripting/learn/deep-dives/add-credentials-to-powershell-functions
@@ -628,10 +614,10 @@ Get-ADUser -Filter { City -like 'Tallinn' } |
 
 # https://github.com/peetrike/Examples/blob/master/src/Gui/Test-GuiElements.ps1#L35-L55
 # https://github.com/peetrike/Examples/blob/master/src/Gui/ToastNotification.ps1
-Find-Module burnttoast -Repository PSGallery
+Find-PSResource burnttoast -Repository PSGallery
 
     #Requires -Version 6
-Find-Module Microsoft.PowerShell.ConsoleGuiTools -Repository PSGallery
+Find-PSResource Microsoft.PowerShell.ConsoleGuiTools -Repository PSGallery
 
 # https://gui-cs.github.io/Terminal.Gui
 
@@ -643,7 +629,6 @@ Get-Help about_Parameters -ShowWindow
 # https://learn.microsoft.com/powershell/scripting/lang-spec/chapter-08#8109-param-block
 # https://learn.microsoft.com/powershell/scripting/lang-spec/chapter-08#8103-argument-processing
 
-get-help
 code -r events03.ps1
 
 .\events03.ps1
@@ -658,6 +643,8 @@ code -r events04.ps1
 (Get-Command .\events04.ps1).Parameters.ComputerName
 .\events04.ps1 -cn $env:COMPUTERNAME
 
+Get-Help advanced_parameters -ShowWindow
+
 #endregion
 
 #endregion
@@ -667,16 +654,17 @@ code -r events04.ps1
 
 #region Understanding error messages
 
-get-help Automatic_Variables -ShowWindow
+Get-Help Automatic_Variables -ShowWindow
+# https://learn.microsoft.com/powershell/module/microsoft.powershell.core/about/about_automatic_variables#error
 $Error
 
 $Error.Count
 $Error.Clear()
-dir loll
+Get-ChildItem loll
 $Error
-dir pull -ErrorVariable viga
+Get-ChildItem pull -ErrorVariable viga
 $Error[0]
-$viga | format-list * -Force
+$viga | Format-List * -Force
     #Requires -Version 7
 Get-Error
 
@@ -729,10 +717,10 @@ code -r events05.ps1
 
 code -r .\write-log.ps1
 
-get-help .\write-log.ps1
+Get-Help .\write-log.ps1
 .\write-log.ps1 -Level Warning -Message 'Midagi on viltu'
 
-Find-Module -Command Write-PSFMessage -Repository PSGallery
+Find-PSResource -Command Write-PSFMessage -Repository PSGallery
 Write-PSFMessage -Message 'Teade logisse'
 Get-PSFMessage
 
@@ -798,8 +786,8 @@ Get-Help about_Functions -ShowWindow
 
 function get-hello { 'Hello' }
 get-hello
-get-command get-hello
-get-item function:\get-hello | Remove-Item
+Get-Command get-hello
+Get-Item function:\get-hello | Remove-Item
 
 code -r events06.ps1
 
