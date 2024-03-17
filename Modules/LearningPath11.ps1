@@ -5,7 +5,7 @@
         This file contains sample commands from course AZ-040 for
         Learning Path 11 - Using background jobs and scheduled jobs
     .LINK
-        https://learn.microsoft.com/training/paths/work-powershell-providers-powershell-drives-windows-powershell/
+        https://learn.microsoft.com/training/paths/create-manage-background-jobs-scheduled-windows-powershell
     .LINK
         https://github.com/peetrike/AZ-040-examples
     .LINK
@@ -80,8 +80,8 @@ Get-Job -Name ajutine
 
 #endregion
 
-Find-Module *threadjob -Repository PSGallery
-Find-Module PoshRSJob -Repository PSGallery
+Find-PSResource *threadjob -Repository PSGallery
+Find-PSResource PoshRSJob -Repository PSGallery
 
 #endregion
 
