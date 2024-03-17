@@ -23,13 +23,14 @@
 
 # https://learn.microsoft.com/powershell/azure/active-directory/overview
 # https://learn.microsoft.com/powershell/microsoftgraph/overview
-# https://learn.microsoft.com/training/modules/introduction-to-microsoft-graph-powershell/
+
 
 #endregion
 
 #region Connecting to the Microsoft 365 tenant with PowerShell
 
 # https://learn.microsoft.com/graph/migrate-azure-ad-graph-overview
+# https://learn.microsoft.com/powershell/microsoftgraph/migration-steps
 # https://graphpowershell.merill.net/
 
 Find-Module AzureAD -Repository PSGallery
@@ -44,6 +45,7 @@ Get-Help Connect-MgGraph
 #region Managing users in Microsoft 365 with PowerShell
 
 # https://learn.microsoft.com/powershell/module/microsoft.graph.users/
+Find-PSResource Microsoft.Graph.Users -Repository PSGallery
 
 Get-Command -Noun MgUser
 Get-Help Get-MgUser -Online
@@ -58,40 +60,63 @@ Get-Help New-MgUser
 Get-Help Update-MgUser
 # https://learn.microsoft.com/graph/api/user-update?tabs=powershell
 
-Find-Module Microsoft.Graph.Users.Actions -Repository PSGallery
+Find-PSResource -CommandName Update-MgUserPassword -Repository PSGallery
+Find-PSResource Microsoft.Graph.Users.Actions -Repository PSGallery
 # https://learn.microsoft.com/graph/api/user-changepassword?tabs=powershell
-# https://learn.microsoft.com/powershell/module/microsoft.graph.users.actions/update-mguserpassword
+Get-Help Update-MgUserPassword
 
 #endregion
 
 #region Managing groups in Microsoft 365 with PowerShell
 
-Get-Command -noun MgGroup, MgGroupMember
+Get-Command -Noun MgGroup, MgGroupMember, MgGroupOwner
 Get-Help Get-MgGroup
-# https://learn.microsoft.com/powershell/module/microsoft.graph.groups/get-mggroup
 # https://learn.microsoft.com/graph/api/group-list?tabs=powershell
 
 Get-Help Get-MgGroupMember
-# https://learn.microsoft.com/powershell/module/microsoft.graph.groups/get-mggroupmember
 # https://learn.microsoft.com/graph/api/group-list-members?tabs=powershell
+
+Get-Help Get-MgGroupOwner
+# https://learn.microsoft.com/graph/api/group-list-owners?tabs=powershell
+
+Find-PSResource ExchangeOnlineManagement -Repository PSGallery
+
+Connect-ExchangeOnline
+Get-Command -Noun UnifiedGroup*
+Get-Help Get-UnifiedGroup
+# https://learn.microsoft.com/powershell/module/exchange/get-unifiedgroup
 
 #endregion
 
 #region Managing roles in Microsoft 365 with PowerShell
 
 # https://learn.microsoft.com/graph/tutorial-assign-azureadroles?tabs=powershell
-Find-Module Microsoft.Graph.DeviceManagement.Enrolment
+# https://learn.microsoft.com/powershell/module/microsoft.graph.identity.governance
+Find-PSResource Microsoft.Graph.Identity.Governance -Repository PSGallery
+
+# https://learn.microsoft.com/graph/api/resources/rolemanagement
 
 Get-Help Get-MgRoleManagementDirectoryRoleDefinition
+# https://learn.microsoft.com/powershell/module/microsoft.graph.identity.governance/get-mgrolemanagementdirectoryroledefinition
 # https://learn.microsoft.com/graph/api/rbacapplication-list-roledefinitions?tabs=powershell
 
 Get-Help Get-MgRoleManagementDirectoryRoleAssignment
-# https://learn.microsoft.com/powershell/module/microsoft.graph.devicemanagement.enrolment/get-mgrolemanagementdirectoryroleassignment
+# https://learn.microsoft.com/powershell/module/microsoft.graph.identity.governance/get-mgrolemanagementdirectoryroleassignment
 # https://learn.microsoft.com/graph/api/rbacapplication-list-roleassignments?tabs=powershell
 
 Get-Help New-MgRoleManagementDirectoryRoleAssignment
-# https://learn.microsoft.com/powershell/module/microsoft.graph.devicemanagement.enrolment/new-mgrolemanagementdirectoryroleassignment
+# https://learn.microsoft.com/powershell/module/microsoft.graph.identity.governance/new-mgrolemanagementdirectoryroleassignment
 # https://learn.microsoft.com/graph/api/rbacapplication-post-roleassignments?tabs=powershell
+
+# https://learn.microsoft.com/graph/api/resources/privilegedidentitymanagementv3-overview
+
+Get-Help New-MgRoleManagementDirectoryRoleEligibilityScheduleRequest
+# https://learn.microsoft.com/powershell/module/microsoft.graph.identity.governance/new-mgrolemanagementdirectoryroleeligibilityschedulerequest
+# https://learn.microsoft.com/graph/api/rbacapplication-post-roleeligibilityschedulerequests?tabs=powershell
+
+Get-Help New-MgRoleManagementDirectoryRoleAssignmentScheduleRequest
+# https://learn.microsoft.com/powershell/module/microsoft.graph.identity.governance/new-mgrolemanagementdirectoryroleassignmentschedulerequest
+# https://learn.microsoft.com/graph/api/rbacapplication-post-roleassignmentschedulerequests?tabs=powershell
 
 #endregion
 
@@ -99,12 +124,17 @@ Get-Help New-MgRoleManagementDirectoryRoleAssignment
 
 Get-Command -Noun MgUserLicenseDetail
 
+Get-MgUser -UserId $userId -Property AssignedLicenses
 Get-MgUserLicenseDetail -UserId $userId
 # https://learn.microsoft.com/graph/api/user-list-licensedetails?tabs=powershell
 
 Get-Help Set-MgUserLicense
 # https://learn.microsoft.com/powershell/module/microsoft.graph.users.actions/set-mguserlicense
 # https://learn.microsoft.com/graph/api/user-assignlicense?tabs=powershell
+
+# https://learn.microsoft.com/entra/identity/users/licensing-powershell-graph-examples
+Get-MgGroup -Property AssignedLicenses
+Get-Help Set-MgGroupLicense
 
 #endregion
 
@@ -165,6 +195,8 @@ Get-RoleGroup | Select-Object Name
 
 Get-RoleGroup Organization* | Get-RoleGroupMember
 
+# https://learn.microsoft.com/exchange/permissions-exo/permissions-exo
+
 #endregion
 
 #endregion
@@ -174,7 +206,7 @@ Get-RoleGroup Organization* | Get-RoleGroupMember
 
 #region SharePoint Online Management Shell overview
 
-Find-Module Microsoft.Online.SharePoint.PowerShell -Repository PSGallery
+Find-PSResource Microsoft.Online.SharePoint.PowerShell -Repository PSGallery
 
 # https://learn.microsoft.com/powershell/sharepoint/sharepoint-online/introduction-sharepoint-online-management-shell
 
@@ -183,8 +215,11 @@ Get-Help Connect-SPOService
 # https://learn.microsoft.com/powershell/module/sharepoint-online/connect-sposervice
 
 # https://learn.microsoft.com/powershell/sharepoint/sharepoint-pnp/sharepoint-pnp-cmdlets
+# https://pnp.github.io/powershell/index.html
 
-Find-Module PnP.PowerShell -Repository PSGallery
+Find-PSResource PnP.PowerShell -Repository PSGallery
+    #Requires -Version 7.2
+Get-Command -Noun PnPOnline
 
 #endregion
 
@@ -231,7 +266,7 @@ Get-Help Set-SPOTenant
 
 #region Installing the Microsoft Teams PowerShell module
 
-Find-Module MicrosoftTeams -Repository PSGallery
+Find-PSResource MicrosoftTeams -Repository PSGallery
 
 # https://learn.microsoft.com/powershell/module/teams/connect-microsoftteams
 Get-Help Connect-MicrosoftTeams
