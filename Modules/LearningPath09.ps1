@@ -32,8 +32,8 @@
 # https://learn.microsoft.com/powershell/azure/new-azureps-module-az
 # https://learn.microsoft.com/powershell/azure/release-notes-azureps
 
-Find-Module az -Repository PSGallery
-Find-Module az -Repository PSGallery -IncludeDependencies | Measure-Object
+Find-PSResource az -Repository PSGallery
+Find-PSResource az -Repository PSGallery -IncludeDependencies | Measure-Object
 
 # https://learn.microsoft.com/powershell/azure/migrate-from-azurerm-to-az
 
@@ -44,8 +44,10 @@ Find-Module az -Repository PSGallery -IncludeDependencies | Measure-Object
 
 # https://learn.microsoft.com/powershell/azure/install-az-ps
 
-Find-Command Connect-AzAccount -Repository PSGallery
-Find-Module Az.Accounts -Repository PSGallery
+Find-PSResource -Command Connect-AzAccount -Repository PSGallery
+Find-PSResource Az.Accounts -Repository PSGallery
+
+docker.exe search azuresdk/azure-powershell
 
 # https://learn.microsoft.com/powershell/azure/authenticate-azureps
 Get-Help Connect-AzAccount -ShowWindow
@@ -56,6 +58,8 @@ Get-Help Connect-AzAccount -ShowWindow
 
 #region Migrate Azure PowerShell from AzureRM to Az
 
+Find-PSResource Az.Tools.Migration -Repository PSGallery
+
 # https://learn.microsoft.com/powershell/azure/quickstart-migrate-azurerm-to-az-automatically
 
 # https://marketplace.visualstudio.com/items?itemName=azps-tools.azps-tools
@@ -64,19 +68,19 @@ Get-Help Connect-AzAccount -ShowWindow
 
 #region What are the Azure Active Directory management modules for PowerShell?
 
-Find-Module Az.Resources -Repository PSGallery
-# https://learn.microsoft.com/et-ee/powershell/module/az.resources#active-directory
+Find-PSResource Az.Resources -Repository PSGallery
+# https://learn.microsoft.com/powershell/module/az.resources#active-directory
 
 # https://learn.microsoft.com/powershell/module/MSOnline
-Find-Module MSOnline -Repository PSGallery
+Find-PSResource MSOnline -Repository PSGallery
 
 # https://learn.microsoft.com/powershell/module/azuread
-Find-Module AzureAD -Repository PSGallery
-Find-Module AzureADPreview -Repository PSGallery
+Find-PSResource AzureAD -Repository PSGallery
+Find-PSResource AzureADPreview -Repository PSGallery
 
 # https://learn.microsoft.com/powershell/microsoftgraph/overview
-Find-Module Microsoft.Graph -Repository PSGallery
-Find-Module Microsoft.Graph -Repository PSGallery -IncludeDependencies
+Find-PSResource Microsoft.Graph -Repository PSGallery
+Find-PSResource Microsoft.Graph -Repository PSGallery -IncludeDependencies | Measure-Object
 
 # https://learn.microsoft.com/powershell/microsoftgraph/migration-steps
 
@@ -98,6 +102,8 @@ Get-Help Connect-MgGraph -ShowWindow
 
 # https://marketplace.visualstudio.com/items?itemName=ms-vscode.azure-account
 
+# https://learn.microsoft.com/azure/cloud-shell/pricing
+
 #endregion
 
 #region Features and tools for Azure Cloud Shell
@@ -118,11 +124,11 @@ Get-Help Connect-MgGraph -ShowWindow
 
 # https://learn.microsoft.com/azure/virtual-machines/windows/quick-create-powershell
 
-Find-Module Az.Resources -Repository PSGallery
+Find-PSResource Az.Resources -Repository PSGallery
 Get-Command -Noun AzResourceGroup
 Get-Help New-AzResourceGroup -ShowWindow
 
-Find-Module Az.Compute -Repository PSGallery
+Find-PSResource Az.Compute -Repository PSGallery
 Get-Command -Noun AzVM, AzVMConfig
 Get-Help New-AzVM -ShowWindow
 
@@ -135,7 +141,10 @@ Get-Help Set-AzVMSourceImage
 Get-Command -Noun AzVMOSDisk
 Get-Help Set-AzVMOSDisk
 
-Find-Module Az.Network -Repository PSGallery
+Get-Command Invoke-AzVMRunCommand
+Get-Help Invoke-AzVMRunCommand
+
+Find-PSResource Az.Network -Repository PSGallery
 Get-Command -Noun AzPublicIpAddress
 Get-Help Get-AzPublicIpAddress
 
@@ -164,7 +173,7 @@ Get-Help Add-AzVMDataDisk
 
 # https://learn.microsoft.com/powershell/module/az.storage
 
-Find-Module Az.Storage -Repository PSGallery
+Find-PSResource Az.Storage -Repository PSGallery
 
 # https://learn.microsoft.com/azure/storage/common/storage-account-create?tabs=azure-powershell
 Get-Command -Noun AzStorageAccount
