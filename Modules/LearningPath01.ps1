@@ -144,6 +144,8 @@ Get-Help pwsh -ShowWindow
 Start-Process -Verb RunAs -FilePath powershell.exe
 Start-Process -Verb RunAs -FilePath pwsh
 
+# https://peterwawa.wordpress.com/2010/04/28/powershell-ja-admin-oigused/
+
 Get-Command runas.exe
 runas.exe -?
 
@@ -166,7 +168,7 @@ $PSStyle
 
     #Requires -Version 7.3
 $PSStyle.FileInfo
-Find-Module terminal-icons -Repository PSGallery
+Find-PSResource terminal-icons -Repository PSGallery
 
     # Windows Terminal
 # https://learn.microsoft.com/windows/terminal/
@@ -315,6 +317,7 @@ Get-ADUser
     #Requires -Modules Microsoft.PowerShell.PSResourceGet
 Find-PSResource -Name UserProfile -Repository PSGallery
 Get-PSResource -Scope AllUsers
+Install-PSResource -Name UserProfile -Repository PSGallery -WhatIf
 
 #endregion
 
@@ -324,6 +327,7 @@ Get-Help Get-Command
 
 Get-Command -Module VpnClient | Measure-Object
 Get-Command -Module VpnClient
+Get-Command -Module VpnClient -Verb Get
 Get-Command -Noun VpnConnection
 Get-VpnConnection
 
