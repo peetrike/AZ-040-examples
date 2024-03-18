@@ -39,11 +39,11 @@ $profile.AllUsersAllHosts
 
 #region Profile script security concerns
 
-# https://docs.microsoft.com/powershell/module/microsoft.powershell.core/about/about_profiles#profiles-and-execution-policy
+# https://learn.microsoft.com/powershell/module/microsoft.powershell.core/about/about_profiles#profiles-and-execution-policy
 
 Get-Help about_Execution_Policies -ShowWindow
 
-# https://docs.microsoft.com/powershell/scripting/learn/remoting/powershell-remoting-faq#where-are-my-profiles-
+# https://learn.microsoft.com/powershell/scripting/learn/remoting/powershell-remoting-faq#where-are-my-profiles-
 
 #endregion
 
