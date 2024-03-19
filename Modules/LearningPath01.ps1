@@ -37,6 +37,7 @@
 #region PowerShell Introduction
 
 # https://learn.microsoft.com/powershell/scripting/overview
+# https://learn.microsoft.com/powershell/scripting/discover-powershell#what-can-powershell-be-used-for
 
 Get-Help Parsing -ShowWindow
 
