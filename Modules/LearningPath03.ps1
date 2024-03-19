@@ -94,7 +94,6 @@ Get-Process p* | Format-Table -View StartTime
 
 #region Sorting objects by a property
 
-
 Get-Help Sort-Object -ShowWindow
 
 Get-ChildItem
@@ -154,6 +153,7 @@ Get-Content LearningPath03.ps1 | Measure-Object -Word -Line
 #region Selecting a subset of objects
 
 Get-Help Select-Object -ShowWindow
+Get-Alias -Definition Select-Object
 
 Get-ChildItem | Sort-Object -Property Length | Select-Object -Last 1
 Get-ChildItem | Sort-Object -Property Length | Select-Object -First 2
@@ -212,7 +212,10 @@ Get-Help Hash_Tables -ShowWindow
 
 Get-CimInstance Win32_LogicalDisk
 
-$SizeGB = @{ Name = 'Size (GB)'; Expression = { $_.Size / 1GB } }
+$SizeGB = @{
+    Name       = 'Size (GB)'
+    Expression = { $_.Size / 1GB }
+}
 Get-CimInstance Win32_LogicalDisk | Select-Object -Property DeviceID, $SizeGB
 
 # https://learn.microsoft.com/dotnet/standard/base-types/standard-numeric-format-strings#standard-format-specifiers
@@ -353,12 +356,14 @@ Get-ChildItem | Where-Object -Not PSIsContainer
 
 Get-ChildItem | Where-Object -FilterScript { -not $PSItem.PSIsContainer }
 Get-ChildItem | where { -not $_.PSIsContainer }
-gci | ? { ! $_.PSIsContainer }
+ls | ? { ! $_.PSIsContainer }
 
 Get-ChildItem | Where-Object { ($_.Name.Length -ge 9) -and ($_.Length -ge 2KB) }
 
     #Requires -Version 3
 Get-Service p* | Where-Object { $_.Status -in 'Running', 'StartPending' }
+    #Requires -Version 2
+Get-Service p* | Where-Object { 'Running', 'StartPending' -contains $_.Status }
 
 'get-service', 'get-uhhuu', 'get-userprofile' |
     Where-Object { Get-Command $_ -ErrorAction SilentlyContinue }
@@ -474,7 +479,7 @@ Get-ChildItem *.txt | Select-Object -ExpandProperty Name
     #Requires -Version 3
 (Get-ChildItem *.txt).Name
 
-Get-ChildItem -File | foreach Encrypt -WhatIf
+Get-ChildItem -File -filter *.txt | foreach Encrypt -WhatIf
 dir -File -Attributes Encrypted -Recurse | foreach Decrypt -WhatIf
 
 #region Preparation
