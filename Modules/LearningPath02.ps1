@@ -90,14 +90,16 @@ New-ADGroup -Name 'IT' -GroupScope Global
 Get-ADUser -Filter { Department -like 'IT' } |
     Add-ADPrincipalGroupMembership -MemberOf 'IT'
 
-Get-ADGroup IT | Add-ADGroupMember -Members 'Mati'
+$kasutajad = Get-ADUser -Filter { Department -like 'IT' }
+Get-ADGroup IT | Add-ADGroupMember -Members $kasutajad
 
-Get-ADUser Adam | Get-ADPrincipalGroupMembership | Select-Object Name
+Get-ADUser Adrian | Get-ADPrincipalGroupMembership | Select-Object Name
 
-Get-ADUser Adam |
+Get-ADUser Henry |
     Get-ADPrincipalGroupMembership |
     Where-Object Name -Like 'Managers' |
-    Get-ADGroup -Properties description
+    Get-ADGroup -Properties Description |
+    Select-Object Name, Description
 
 #endregion
 
@@ -112,6 +114,8 @@ Search-ADAccount -AccountInactive -TimeSpan 90.00:00:00 -ComputersOnly
 
     # not part of ActiveDirectory module
 Get-Command Rename-Computer
+Get-Help Rename-Computer -Parameter *Credential
+Get-Help Rename-Computer -Parameter ComputerName
     # not available in PowerShell 7
 Get-Command Test-ComputerSecureChannel
 Get-Command Reset-ComputerMachinePassword
@@ -176,6 +180,11 @@ Get-Help Resolve-DnsName -ShowWindow
 Resolve-DnsName -Name www.ee
 Resolve-DnsName -Name ttu.ee -Type mx
 
+Resolve-DnsName õhtuleht.ee
+(Get-Dns õhtuleht.ee).Answer
+Get-Command Get-Dns
+Find-PSResource -Name Indented.Net.Dns -Repository PSGallery
+
 Get-DnsClientCache
 Clear-DnsClientCache
 
@@ -190,8 +199,10 @@ Get-DnsClientGlobalSetting
 #region Managing Windows Firewall
 Get-Command -Module NetSecurity
 
+    #Requires -RunAsAdministrator
 Get-NetFirewallRule -Name WINRM-HTTP-In-TCP*
 Get-NetFirewallRule -Group '@FirewallAPI.dll,-30267'
+Get-NetFirewallRule -DisplayGroup 'Windows Remote Management'
 
 Get-NetFirewallPortFilter -Protocol tcp |
     Where-Object LocalPort -EQ 3389 |
@@ -279,7 +290,7 @@ Get-Module *Administration -ListAvailable
 Get-Command -Module WebAdministration
 Get-Command -Module IISAdministration
 
-Find-Module -Name IISAdministration
+Find-PSResource -Name IISAdministration -Repository PSGallery
 
 #endregion
 
