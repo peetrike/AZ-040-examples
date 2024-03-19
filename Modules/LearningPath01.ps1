@@ -55,6 +55,7 @@ Get-Help _PowerShell -Category HelpFile
 
 # https://learn.microsoft.com/powershell/scripting/whats-new/what-s-new-in-powershell-74
 
+# https://learn.microsoft.com/powershell/scripting/install/installing-powershell
 # https://learn.microsoft.com/powershell/scripting/install/powershell-in-docker
 
 # https://learn.microsoft.com/powershell/scripting/install/powershell-support-lifecycle
