@@ -21,9 +21,10 @@ throw "You're not supposed to run the entire script"
 #region Module 1: Active Directory administration cmdlets
 
     #Requires -RunAsAdministrator
-Get-WindowsCapability -Online -Name Rsat.ActiveDirectory*
+Get-WindowsCapability -Online -Name Rsat.ActiveDirectory* |
+    Add-WindowsCapability -Online -Source c:\path -LimitAccess
     # on Windows Server
-Get-WindowsFeature -Name RSAT-AD-PowerShell
+Get-WindowsFeature -Name RSAT-AD-PowerShell | Install-WindowsFeature
 Get-Command -Module ActiveDirectory | Measure-Object
 
 #region User management cmdlets
@@ -40,6 +41,8 @@ Get-ADUser -Filter { Department -like 'IT' }
 Search-ADAccount -UsersOnly -PasswordExpired
 $DaysAgo = New-TimeSpan -Days 90
 Search-ADAccount -UsersOnly -AccountExpiring -TimeSpan $DaysAgo
+
+# https://github.com/peetrike/scripts/blob/master/Send-PasswordNotification/Send-PasswordNotification.ps1#L153
 
 Get-Help Search-ADAccount -ShowWindow
 
