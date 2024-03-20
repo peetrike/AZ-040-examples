@@ -20,8 +20,9 @@
 #region What is a profile script?
 
 Get-Help about_Profiles -ShowWindow
+# https://learn.microsoft.com/powershell/scripting/learn/shell/creating-profiles
 
-    # this doesn't load profile scirpts
+    # this doesn't load profile scripts
 powershell.exe -noprofile
 pwsh -NoProfile
 
@@ -29,11 +30,11 @@ pwsh -NoProfile
 
 #region Profile script locations
 
-$profile
+$PROFILE
 
-$profile | Get-Member -MemberType NoteProperty
-$profile.CurrentUserCurrentHost
-$profile.AllUsersAllHosts
+$PROFILE | Get-Member -MemberType NoteProperty
+$PROFILE.CurrentUserCurrentHost
+$PROFILE.AllUsersAllHosts
 
 #endregion
 
