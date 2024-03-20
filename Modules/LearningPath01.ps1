@@ -265,13 +265,15 @@ Get-Help Get-Command -Parameter Verb
 
 Get-Help Tab_Expansion -ShowWindow
 
+# https://learn.microsoft.com/powershell/scripting/learn/shell/tab-completion
+
 Get-Help PSReadLine -Category HelpFile -ShowWindow
 Get-Command -Module PSReadLine
 
 Get-PSReadLineKeyHandler -Bound -Unbound | where Group -Like 'Completion'
 # https://learn.microsoft.com/powershell/module/psreadline/about/about_psreadline_functions#completion-functions
 
-# https://learn.microsoft.com/powershell/module/psreadline/about/about_psreadline#predictive-intellisense
+# https://learn.microsoft.com/powershell/scripting/learn/shell/using-predictors
 Get-PSReadLineKeyHandler -Unbound -Bound | Where-Object Group -Like 'Prediction'
 Get-PSReadLineKeyHandler -Chord 'Ctrl-RightArrow', 'RightArrow'
 Get-PSReadLineOption | Select-Object Prediction*
@@ -358,6 +360,7 @@ Get-Module *PSResourceGet -ListAvailable
 #region What are aliases?
 
 Get-Help Aliases -Category HelpFile
+# https://learn.microsoft.com/powershell/scripting/learn/shell/using-aliases
 
 dir
 echo tere
@@ -426,6 +429,8 @@ Get-Help process
 Get-Help *process*
 
 # https://github.com/peetrike/Examples/blob/main/CommandLine/README.md#command-line-samples
+
+# https://learn.microsoft.com/powershell/scripting/learn/shell/dynamic-help
 
 #endregion
 
