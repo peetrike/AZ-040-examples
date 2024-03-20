@@ -94,7 +94,7 @@ Get-ChildItem Temp:/
 
 Get-ChildItem | Where-Object { $_.PSIsContainer }
     #Requires -Version 3.0
-Get-ChildItem -Directory
+Get-ChildItem -Directory -Recurse
 Get-ChildItem -File
 
 New-Item -ItemType Directory -Name uus
@@ -132,6 +132,8 @@ Set-Location -Path $regPath
 Get-ChildItem
 
 Get-ItemProperty -Path WSMan
+$PropertyName = 'UpdatedConfig'
+(Get-ItemProperty -Path wsman -Name $PropertyName).$PropertyName
     #Requires -Version 5
 Get-ItemPropertyValue -Path WSMan -Name StackVersion
 
