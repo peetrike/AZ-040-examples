@@ -514,6 +514,8 @@ Get-ChildItem -File | Measure-Object -Property Length -Sum
 
 Get-Help Encoding -Category HelpFile -ShowWindow
 Get-Command -ParameterName Encoding
+Get-Help default_value -ShowWindow
+$PSDefaultParameterValues['*:Encoding'] = 'utf8'
 
 #region Writing output to a file
 
@@ -523,7 +525,7 @@ Get-Help Redirect -Category HelpFile -ShowWindow
 # https://learn.microsoft.com/powershell/module/microsoft.powershell.core/about/about_ansi_terminals#redirecting-output-in-host-mode
 
 Get-ChildItem | Out-File -FilePath failid.txt -Encoding utf8
-dir -Directory > kaustad.txt       # Out-File
+dir t* > failid.txt                # Out-File
 dir -Directory >> kaustad.txt      # Out-File -Append
 
 Get-Help Set-Content -ShowWindow
@@ -766,6 +768,8 @@ Get-ParameterInfo -Name New-ADUser
 
 Get-Command -ParameterName ComputerName | Measure-Object
 
+# https://peterwawa.wordpress.com/2013/04/09/kasutajakontode-loomine-domeenis/
+
 #endregion
 
 #region Using manual parameters to override the pipeline
@@ -815,7 +819,7 @@ Get-ADComputer $ComputerName | Select-Object -ExpandProperty DnsHostName | Get-M
 
 'winrm', 'bits' |
     Get-Service -ComputerName (
-        Get-ADComputer -Filter { Name -like '*srv*' } |
+        Get-ADComputer -Filter { Name -like '*svr*' } |
             Select-Object -ExpandProperty DnsHostName
     )
 
