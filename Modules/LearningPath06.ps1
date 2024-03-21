@@ -350,9 +350,9 @@ $computers.ContainsKey('Sea-svr1')
 
     # create HashTable to find user accounts fast:
 $users = @{}
-foreach ($u in Get-ADUser -Filter *) {
+foreach ($u in Get-ADUser -Filter * -Properties *) {
     $name = $u.SamAccountName
-    $users.$name = $u
+    $users[$name] = $u
     #$users.Add($name, $u)
 }
 $users.administrator
