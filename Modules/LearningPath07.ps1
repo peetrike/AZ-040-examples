@@ -1,4 +1,4 @@
-<#
+﻿<#
     .SYNOPSIS
         Learning Path 07 samples
     .DESCRIPTION
@@ -24,7 +24,7 @@
 Get-Help Scripts -Category HelpFile -ShowWindow
 
 Get-Date
-whoami.exe
+whoami
 Get-History -Count 2 |
     Select-Object -ExpandProperty CommandLine |
     Set-Content -Path käsud.txt -Encoding utf8
@@ -120,7 +120,7 @@ powershell.exe -File käsud.txt
     # but this works
 Copy-Item -Path käsud.txt -Destination käsud.ps1
 powershell.exe -NoProfile -NonInteractive -File käsud.ps1
-pwsh -nop -f käsud.ps1
+pwsh -nop -noni -f käsud.ps1
 
 powershell.exe -NoProfile -Command .\käsud.ps1
 .\käsud.ps1
