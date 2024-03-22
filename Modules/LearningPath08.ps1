@@ -118,6 +118,13 @@ Invoke-Command -ComputerName (Get-Content servers.txt) -ScriptBlock { $env:COMPU
 Get-Help Invoke-Command -Parameter ThrottleLimit
 Get-Help Invoke-Command -Parameter Credential
 Get-Help Invoke-Command -Parameter ComputerName
+Get-Help Invoke-Command -Parameter FilePath
+
+    #Requires -Modules Microsoft.PowerShell.SecretManagement
+$cred = Get-Secret remote
+Invoke-Command -ComputerName (Get-Content servers.txt) -Credential $cred -FilePath .\script.ps1
+    # for SSH connections (windows/linux/macOS)
+Invoke-Command -HostName (Get-Content servers.txt) -FilePath .\script.ps1
 
 #endregion
 
@@ -142,7 +149,7 @@ Get-Process | Get-Member
 #endregion
 
 
-#region Module 2: Using advanced  PowerShell remoting
+#region Module 2: Using advanced PowerShell remoting
 
 #region Common remoting options
 
