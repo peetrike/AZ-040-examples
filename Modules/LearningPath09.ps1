@@ -154,6 +154,9 @@ Get-Help Get-AzPublicIpAddress
 
 #region Managing Azure VMs with PowerShell
 
+Find-PSResource  -CommandName Get-AzVMSize -Repository PSGallery
+Find-PSResource az.Compute -Repository PSGallery
+
 Get-Command -Noun AzVMSize
 Get-Help Get-AzVMSize -ShowWindow
 

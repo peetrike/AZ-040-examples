@@ -42,6 +42,8 @@ Get-Help Connect-MgGraph
 
 #endregion
 
+# https://learn.microsoft.com/graph/filter-query-parameter?&tabs=powershell
+
 #region Managing users in Microsoft 365 with PowerShell
 
 # https://learn.microsoft.com/powershell/module/microsoft.graph.users/
