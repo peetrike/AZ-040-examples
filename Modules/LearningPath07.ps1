@@ -210,9 +210,13 @@ Get-Help about_If -ShowWindow
 # https://learn.microsoft.com/powershell/scripting/lang-spec/chapter-08#83-the-if-statement
 
 $a = 0
-if ($a -gt 1) { 'a is greater' }
-elseif ($null -eq $b) { 'b is not set' }
-else { 'something else' }
+if ($a -gt 1) {
+    'a is greater'
+} elseif ($null -eq $b) {
+    'b is not set'
+} else {
+    'something else'
+}
 
 if (Get-ChildItem -File) { 'there are some files' } else { New-Item uus.txt }
 
@@ -224,7 +228,7 @@ Test-Path HKLM:\SOFTWARE\
 
     #Requires -Version 7
 $service = Get-Service BITS
-$service.Status -eq 'Running' ? (Stop-Service $service) : (Start-Service $service)
+$service.Status -eq 'Running' ? (Stop-Service $service -WhatIf) : (Start-Service $service -WhatIf)
 
 #endregion
 
@@ -250,9 +254,9 @@ switch -Wildcard ($choice) {
 
 $ip = Get-NetIPAddress -InterfaceAlias wi-fi -AddressFamily IPv4
 switch -WildCard ($ip.IPAddress) {
-    '10.*' { 'This computer is on the internal network' }
-    '10.1.*' { 'This computer is in London' }
-    '10.2.*' { 'This computer is in Vancouver' }
+    '172.16.*' { 'This computer is on the internal network' }
+    '172.16.10.*' { 'This computer is in Seattle' }
+    '172.16.20.*' { 'This computer is in Vancouver' }
     default { Write-Warning -Message 'This computer is not on the internal network' }
 }
 
@@ -310,15 +314,12 @@ for ($i = 1) {
     Start-Sleep -Seconds 2
     $i++
 }
-for ($i = 1; ; Start-Sleep -Seconds 2) {
-    ($i++)
-}
+for ($i = 1; ; Start-Sleep -Seconds 2) { ($i++) }
 Remove-Variable -Name i
 for () {
     (++$i)
     Start-Sleep -Seconds 2
 }
-
 
 #endregion
 
