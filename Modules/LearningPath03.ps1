@@ -562,6 +562,11 @@ Get-Command -Noun *xml -Module Microsoft.PowerShell.Utility
 Get-Help Export-Clixml -ShowWindow
 Get-Help ConvertTo-Xml -ShowWindow
 
+    # PowerShell 7.5
+Get-Command -Verb Convert* -Noun CliXml
+
+Get-ChildItem | Export-Clixml -Path failid.xml
+
 Get-ChildItem | ConvertTo-Xml
 Get-ChildItem | ConvertTo-Xml -As Stream | Out-File files.xml -Encoding utf8
 $xml = Get-ChildItem | ConvertTo-Xml
