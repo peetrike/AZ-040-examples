@@ -1,4 +1,4 @@
-<#
+﻿<#
     .SYNOPSIS
         Learning Path 05 samples
     .DESCRIPTION
