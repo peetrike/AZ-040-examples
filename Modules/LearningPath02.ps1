@@ -227,6 +227,7 @@ Get-NetUDPEndpoint -LocalPort 3389
 Get-WindowsCapability -Online -Name Rsat.GroupPolicy.*
 Get-WindowsFeature -Name GPMC
 Get-WindowsOptionalFeature -Online -FeatureName *group*
+
 Get-Command -Module GroupPolicy
 
 Get-Help Get-GPO
