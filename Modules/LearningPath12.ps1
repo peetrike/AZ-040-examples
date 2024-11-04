@@ -1,4 +1,4 @@
-<#
+﻿<#
     .SYNOPSIS
         Learning Path 12 samples
     .DESCRIPTION
@@ -21,7 +21,7 @@
 
 Get-Help about_Profiles -ShowWindow
 
-    # this doesn't load profile scirpts
+    # this doesn't load profile scripts
 powershell.exe -noprofile
 pwsh -NoProfile
 
@@ -212,34 +212,6 @@ Get-Help Start-Transcript -ShowWindow
 Get-Help about_History -ShowWindow
 Get-Command -Noun History
 
-#endregion
-
-#region Extra: Logging from scripts
-
-Get-Command -noun WinEvent
-# https://peterwawa.wordpress.com/2015/02/26/powershell-ja-sndmuste-logid/
-
-Find-Module -Command Write-Log -Repository PSGallery
-Find-Module PSFramework -Repository PSGallery
-
-# https://psframework.org/documentation/documents/psframework/logging.html
-Get-Help Write-PSFMessage -ShowWindow
-
-#region Preparation
-$paramSetPSFLoggingProvider = @{
-    Name         = 'logfile'
-    InstanceName = 'Course 10961'
-    FilePath     = Join-Path $pwd 'PsfMessage.log'
-    Enabled      = $true
-}
-Set-PSFLoggingProvider @paramSetPSFLoggingProvider
-#endregion
-
-Write-PSFMessage 'Teade logisse'
-Write-PSFMessage 'Teade ekraanile' -Level Host
-Get-PSFMessage
-
-code -r Write-Log.ps1
 #endregion
 
 #endregion
