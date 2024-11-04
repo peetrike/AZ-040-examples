@@ -264,7 +264,7 @@ Get-Help Tab_Expansion -ShowWindow
 Get-Help PSReadLine -Category HelpFile -ShowWindow
 Get-Command -Module PSReadLine
 
-Get-PSReadLineKeyHandler -Bound -Unbound | where Group -Like 'Completion'
+Get-PSReadLineKeyHandler -Bound -Unbound | Where-Object Group -Like 'Completion'
 # https://learn.microsoft.com/powershell/module/psreadline/about/about_psreadline_functions#completion-functions
 
 # https://learn.microsoft.com/powershell/module/psreadline/about/about_psreadline#predictive-intellisense
