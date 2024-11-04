@@ -514,6 +514,7 @@ Get-Command -ParameterName Encoding
 
 Get-Help Out-File -ShowWindow
 Get-Help Out-File -Parameter NoClobber
+Get-Help Out-File -Parameter Width
 Get-Help Redirect -Category HelpFile -ShowWindow
 # https://learn.microsoft.com/powershell/module/microsoft.powershell.core/about/about_ansi_terminals#redirecting-output-in-host-mode
 
@@ -521,6 +522,7 @@ Get-ChildItem | Out-File -FilePath failid.txt -Encoding utf8
 dir -Directory > kaustad.txt       # Out-File
 dir -Directory >> kaustad.txt      # Out-File -Append
 
+Get-Command -Noun Content
 Get-Help Set-Content -ShowWindow
 Get-Help Add-Content -ShowWindow
 
@@ -532,6 +534,7 @@ Get-Process p* | Select-Object PSResources | Format-Table | Out-File protsessid.
 
 # https://en.wikipedia.org/wiki/Delimiter-separated_values
 
+Get-Command -Noun csv
 Get-Help ConvertTo-Csv -ShowWindow
 Get-Help Export-Csv -ShowWindow
 
@@ -580,6 +583,8 @@ Get-ChildItem | Export-Clixml -Path failid.xml #-Encoding unicode
 # https://www.json.org/
 
     #Requires -Version 3
+
+Get-Command -Noun json -Module Microsoft.PowerShell.Utility
 Get-Help ConvertTo-Json -ShowWindow
 Get-ChildItem | Select-Object Name, Length, LastWriteTime | ConvertTo-Json
 Get-ChildItem |
@@ -624,7 +629,7 @@ Find-PSResource -Tag html -Repository PSGallery
 
 #region Additional output options
 
-Get-Command -Verb Out -module Microsoft.PowerShell.*
+Get-Command -Verb Out -Module Microsoft.PowerShell.*
 
 Get-Help Out-Host -Parameter Paging
 Get-Command more
