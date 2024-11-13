@@ -71,13 +71,6 @@ Find-PSResource Az.Tools.Migration -Repository PSGallery
 Find-PSResource Az.Resources -Repository PSGallery
 # https://learn.microsoft.com/powershell/module/az.resources#active-directory
 
-# https://learn.microsoft.com/powershell/module/MSOnline
-Find-PSResource MSOnline -Repository PSGallery
-
-# https://learn.microsoft.com/powershell/module/azuread
-Find-PSResource AzureAD -Repository PSGallery
-Find-PSResource AzureADPreview -Repository PSGallery
-
 # https://learn.microsoft.com/powershell/microsoftgraph/overview
 Find-PSResource Microsoft.Graph -Repository PSGallery
 Find-PSResource Microsoft.Graph -Repository PSGallery -IncludeDependencies | Measure-Object
