@@ -22,18 +22,18 @@
 Get-Help about_Profiles -ShowWindow
 
     # this doesn't load profile scripts
-powershell.exe -noprofile
+powershell.exe -NoProfile
 pwsh -NoProfile
 
 #endregion
 
 #region Profile script locations
 
-$profile
+$PROFILE
 
-$profile | Get-Member -MemberType NoteProperty
-$profile.CurrentUserCurrentHost
-$profile.AllUsersAllHosts
+$PROFILE | Get-Member -MemberType NoteProperty
+$PROFILE.CurrentUserCurrentHost
+$PROFILE.AllUsersAllHosts
 
 #endregion
 
@@ -82,27 +82,6 @@ $Cred2 = Get-Credential -UserName 'domain\test2' -Message 'Enter Credential for 
 Set-Secret -Name Temporary -Secret $Cred2
 $secretInfo = Get-SecretInfo -Name Temporary
 Remove-Secret -Name Temporary -Vault $secretInfo.VaultName
-#endregion
-
-#region Array operators
-
-# https://docs.microsoft.com/powershell/module/microsoft.powershell.core/about/about_comparison_operators#containment-operators
-
-1 -in 1, 2, 3, 4
-1 -in 2, 3, 4, 5
-
-1, 2, 3, 4 -contains 1
-2, 3, 4, 5 -contains 1
-
-Get-Process notepad | Stop-Process
-Start-Process notepad
-$p = Get-Process notepad
-    # this doesn't work
-$p -in (Get-Process notepad)
-(Get-Process) -contains $p
-    # this works
-$p.Id -in (Get-Process notepad).Id
-$p.Id -in (Get-Process notepad | Select-Object -ExpandProperty Id)
 
 #endregion
 
@@ -170,27 +149,6 @@ Get-Help about_Parsing -ShowWindow
 # https://docs.microsoft.com/powershell/module/microsoft.powershell.core/about/about_special_characters#stop-parsing-token---
 
 bcdedit.exe --% -default {current}
-
-#endregion
-
-#region Working with NTFS permissions
-
-Get-Command -Noun Acl
-$acl = get-acl -Path module12.ps1
-$acl
-$acl.Access
-
-Get-Help Set-Acl -ShowWindow
-
-Find-Module NTFSSecurity -Repository PSGallery
-
-Get-NTFSAccess -Path module12.ps1
-Get-NTFSAudit -Path module12.ps1
-
-Get-Help Add-NTFSAccess -ShowWindow
-Get-Help Set-NTFSOwner -ShowWindow
-Get-Help Set-NTFSInheritance -ShowWindow
-Get-Help Remove-NTFSAccess -ShowWindow
 
 #endregion
 
