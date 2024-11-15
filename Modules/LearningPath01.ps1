@@ -36,6 +36,7 @@
 
 #region PowerShell Introduction
 
+# https://microsoft.com/powershell
 # https://learn.microsoft.com/powershell/scripting/overview
 
 Get-Help Parsing -ShowWindow
@@ -46,6 +47,7 @@ Get-Help Parsing -ShowWindow
 
 #region PowerShell versions
 
+# https://learn.microsoft.com/powershell/scripting/what-is-windows-powershell
 # https://learn.microsoft.com/powershell/scripting/install/powershell-support-lifecycle#release-history
 
 # https://learn.microsoft.com/powershell/scripting/windows-powershell/wmf/overview
@@ -126,14 +128,13 @@ $PSVersionTable.OS
 # https://learn.microsoft.com/previous-versions/powershell/scripting/overview
 
 # https://learn.microsoft.com/previous-versions/powershell/scripting/windows-powershell/starting-the-windows-powershell-2.0-engine
-Start-Process -FilePath powershell.exe -ArgumentList '-version 2'
+Start-Process -FilePath powershell.exe -ArgumentList '-Version 2'
 # https://devblogs.microsoft.com/powershell/windows-powershell-2-0-deprecation/
 
 #endregion
 
 #region Considerations when using PowerShell
 
-# https://learn.microsoft.com/powershell/scripting/windows-powershell/starting-windows-powershell
 # https://learn.microsoft.com/powershell/scripting/learn/ps101/01-getting-started
 
     # PowerShell < 6
@@ -141,8 +142,9 @@ Get-Help PowerShell_exe -ShowWindow
     #Requires -Version 6
 Get-Help pwsh -ShowWindow
 
+Get-Help Start-Process -Parameter Verb
 Start-Process -Verb RunAs -FilePath powershell.exe
-Start-Process -Verb RunAs -FilePath pwsh
+Start-Process -Verb RunAs -FilePath pwsh.exe
 
 Get-Command runas.exe
 runas.exe -?
@@ -164,6 +166,9 @@ Get-PSReadLineOption | Select-Object *color
 Get-Help ANSI_Terminals -ShowWindow
 $PSStyle
 
+    #Requires -Version 5
+Find-Module PSStyle -Repository PSGallery
+
     #Requires -Version 7.3
 $PSStyle.FileInfo
 Find-Module terminal-icons -Repository PSGallery
@@ -182,6 +187,7 @@ Find-Module terminal-icons -Repository PSGallery
 # https://learn.microsoft.com/windows/terminal/tips-and-tricks#zoom-with-the-mouse
 # https://learn.microsoft.com/windows/terminal/tutorials/custom-prompt-setup
 
+    #Requires -Modules PSReadLine
 Get-PSReadLineKeyHandler -Chord 'Ctrl-c', 'Ctrl-C', 'Ctrl-x', 'Ctrl-v', 'Shift-Insert'
 
 #endregion
@@ -246,9 +252,9 @@ Get-Command Get-Credential -All
 
 Get-Help about_Parameters -ShowWindow
 
-Get-Command Get-Command | Get-Member
-(Get-Command Get-Command).Parameters
-Get-Help Get-Command -Parameter * | Select-Object Name, Required, Type
+Get-Command Start-Process | Get-Member
+(Get-Command Start-Process).Parameters
+Get-Help Start-Process -Parameter * | Select-Object Name, Required, Type
 
 Get-Help Get-Process -ShowWindow
 Get-Help Get-Process -Parameter *
@@ -345,7 +351,6 @@ Get-Help Install-PSResource
 
 Get-Module PowerShellGet -ListAvailable
 Get-Module *PSResourceGet -ListAvailable
-# https://devblogs.microsoft.com/powershell/psresourceget-is-generally-available/
 
 #endregion
 
