@@ -154,7 +154,6 @@ Connect-ExchangeOnline
 
 # https://learn.microsoft.com/powershell/exchange/connect-to-exchange-online-powershell
 # https://learn.microsoft.com/powershell/exchange/app-only-auth-powershell-v2
-# https://learn.microsoft.com/powershell/exchange/basic-auth-connect-to-exo-powershell
 
 Get-Help Get-ConnectionInformation
 Get-ConnectionInformation
