@@ -66,6 +66,8 @@ Get-Help _PowerShell -Category HelpFile
 
 #region Extra: PowerShell vs. operating system
 
+# https://support.microsoft.com/windows/fdb690cf-876c-d866-2124-21b6fb29a45f
+
 # https://learn.microsoft.com/powershell/windows/get-started
 Get-Command Resolve-DnsName
 Get-Command Get-ScheduledTask
@@ -130,6 +132,7 @@ $PSVersionTable.OS
 # https://learn.microsoft.com/previous-versions/powershell/scripting/windows-powershell/starting-the-windows-powershell-2.0-engine
 Start-Process -FilePath powershell.exe -ArgumentList '-Version 2'
 # https://devblogs.microsoft.com/powershell/windows-powershell-2-0-deprecation/
+# https://devblogs.microsoft.com/powershell/replacing-cmd-exe/
 
 #endregion
 
