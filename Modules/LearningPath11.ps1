@@ -126,7 +126,7 @@ Get-Help Register-ScheduledTask -ShowWindow
 #region What are scheduled jobs?
 
 Get-Help about_Scheduled_Jobs -ShowWindow
-# https://learn.microsoft.com/powershell/module/psscheduledjob/about/about_scheduled_jobs?view=powershell-5.1
+# https://learn.microsoft.com/powershell/module/psscheduledjob/about/about_scheduled_jobs
 
 # https://learn.microsoft.com/previous-versions/powershell/module/psscheduledjob/?view=powershell-3.0
 
