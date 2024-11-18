@@ -150,6 +150,8 @@ Get-Help Start-Process -Parameter Verb
 Start-Process -Verb RunAs -FilePath powershell.exe
 Start-Process -Verb RunAs -FilePath pwsh.exe
 
+# https://github.com/peetrike/PWAddins/blob/master/src/Public/start-asadmin.ps1
+
     # run as different user
 Get-Help Start-Process -Parameter Credential
 Start-Process -Credential mina -FilePath pwsh.exe -ArgumentList '-NoExit -c whoami'
