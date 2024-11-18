@@ -145,13 +145,19 @@ Get-Help PowerShell_exe -ShowWindow
     #Requires -Version 6
 Get-Help pwsh -ShowWindow
 
+    # RunAs Admin
 Get-Help Start-Process -Parameter Verb
 Start-Process -Verb RunAs -FilePath powershell.exe
 Start-Process -Verb RunAs -FilePath pwsh.exe
 
+    # run as different user
+Get-Help Start-Process -Parameter Credential
+Start-Process -Credential mina -FilePath pwsh.exe -ArgumentList '-NoExit -c whoami'
+
 Get-Command runas.exe
 runas.exe -?
 
+    # Execution Policy
 Get-Help Execution_Policies -ShowWindow
 Get-Command -Noun ExecutionPolicy
 
@@ -264,6 +270,8 @@ Get-Help Get-Process -Parameter *
 Get-Help Get-Process -Parameter Id
 Get-Help Get-Command -Parameter Verb
 
+(get-help Get-Process).parameters.parameter | where Name -like IncludeUserName
+
 #endregion
 
 #region Tab completion
@@ -324,6 +332,11 @@ Get-ADUser
     #Requires -Modules Microsoft.PowerShell.PSResourceGet
 Find-PSResource -Name UserProfile -Repository PSGallery
 Get-PSResource -Scope AllUsers
+
+Find-PSResource -Name UserProfile -Repository PSGallery |
+    Install-PSResource -Scope CurrentUser -force
+
+# https://powershellgallery.com
 
 #endregion
 
@@ -448,11 +461,11 @@ Get-Command Get-Command | Get-Syntax
 
 Get-Help Get-WinEvent
 Get-WinEvent Application -MaxEvents 5
-Get-WinEvent -LogName Application -MaxEvents 5
+Get-WinEvent -MaxEvents 5 -LogName Application
 
 Get-Help dir
 dir . *.ps1
-Get-ChildItem -Path . -Filter *.ps1 -Recurse
+Get-ChildItem -Path . -Filter *.ps1 #-Recurse
 
 Get-Help Test-Connection -ShowWindow
     # up to PowerShell 5.1
