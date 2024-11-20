@@ -399,6 +399,9 @@ Measure-Command {
 Measure-Command {
     Get-ADUser -Filter * | Where-Object Name -like 'Adrian*'
 }
+Measure-Command {
+    Get-ADUser -Filter * -Properties * | Where-Object Name -like 'Adrian*'
+}
 
     # negatiivne näide ka
 Get-ScheduledTask -TaskName '.NET Framework NGEN v4.0.30319'
@@ -483,7 +486,7 @@ dir -File -Attributes Encrypted -Recurse | foreach Decrypt -WhatIf
 'katse', 'kutse' | ForEach-Object { New-Item -ItemType Directory -Name $_ -ErrorAction SilentlyContinue }
 #endregion
 Get-ChildItem k?tse -Directory | ForEach-Object CreateSubdirectory -ArgumentList 'muu'
-dir k* -Directory | % CreateSubdirectory 'muu'
+ls k* -Directory | % CreateSubdirectory 'muu'
 
 #endregion
 
@@ -682,6 +685,7 @@ Get-ParameterInfo Set-ADUser -ParameterName Identity
 Get-Help Set-ADUser -Parameter Identity
 
 Get-ADUser -Filter { Name -like 'Adrian*' } | Set-ADUser -City 'Tallinn'
+Get-ADUser -Filter { Name -like 'Adrian*' } | ForEach-Object { Set-ADUser -Identity $_ -City 'Tallinn' }
 
 Get-Help Restart-Service -Parameter InputObject
 
@@ -749,7 +753,9 @@ Get-ParameterInfo Test-Connection | Where-Object Pipeline -like '*ByPropertyName
 Get-ADComputer $env:COMPUTERNAME |
     Select-Object -Property @{ n = 'ComputerName'; e = { $_.DnsHostName } } |
     Test-Connection -Count 1
+        # these lines do the same thing
 Get-ADComputer $env:COMPUTERNAME | Test-Connection -ComputerName { $_.DnsHostName } -Count 1
+Get-ADComputer $env:COMPUTERNAME | ForEach-Object { Test-Connection -ComputerName $_.name -Count 1 }
 
     #Requires -Version 3
 Get-ADComputer $env:COMPUTERNAME |
@@ -788,7 +794,8 @@ Get-ChildItem | Get-Member Name
 
 Start-Process notepad
     # Wrong ParameterSet
-Get-Process -Name notepad | Stop-Process -Name notepad
+Get-Process -Name notepad | Stop-Process #-Name notepad
+Stop-Process -Name notepad -WhatIf
 Get-ParameterInfo Stop-Process
 
 #endregion
@@ -796,7 +803,9 @@ Get-ParameterInfo Stop-Process
 #region Using parenthetical commands
 
     # in PS 7 the -ComputerName parameter was removed from several commands
+'winrm', 'bits' | Get-Service -ComputerName Sea-DC1, Sea-Cl1
 'winrm', 'bits' | Get-Service -ComputerName (Get-Content masinad.txt)
+
 Get-Help Get-Service -Parameter ComputerName
 
 $kasutajad = Get-ADUser -Filter { City -like 'London' }
@@ -822,7 +831,7 @@ Get-ADComputer $ComputerName | Select-Object -ExpandProperty DnsHostName | Get-M
 
 'winrm', 'bits' |
     Get-Service -ComputerName (
-        Get-ADComputer -Filter { Name -like '*srv*' } |
+        Get-ADComputer -Filter { Name -like '*svr*' } |
             Select-Object -ExpandProperty DnsHostName
     )
 
