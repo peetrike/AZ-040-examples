@@ -45,8 +45,11 @@ Get-Help Search-ADAccount -ShowWindow
 
     # https://peterwawa.wordpress.com/2014/01/11/kontode-muutmine-domeenis/
 $longAgo = (Get-Date) - $DaysAgo
-Get-ADUser -Filter { LogonCount -ge 1 -and LastLogonDate -le $longAgo } |
+Get-ADUser -Filter { LogonCount -ge 1 -and LastLogonDate -le $longAgo -and } |
     Move-ADObject -TargetPath 'ou=lost souls'
+
+Get-Help Get-ADUser -Parameter SearchBase
+Get-Help Get-ADUser -Parameter SearchScope
 
 $new = Get-ADUser 'Mihkel Metsik'
 Get-ADUser -Filter { Department -like 'IT' } |
@@ -95,6 +98,10 @@ Get-ADUser Adam |
     Get-ADPrincipalGroupMembership |
     Where-Object Name -Like 'Managers' |
     Get-ADGroup -Properties description
+
+get-aduser alex |
+    Get-ADPrincipalGroupMembership |
+    where DistinguishedName -notlike '*CN=Users,DC=Contoso,DC=com'
 
 #endregion
 
@@ -301,6 +308,8 @@ Get-Command Get-HotFix
 Get-Command -Noun *Culture
 
 Get-Command -Module Microsoft.PowerShell.Diagnostics
+
+# https://peterwawa.wordpress.com/2015/02/26/powershell-ja-sndmuste-logid/
 
 Get-Module Microsoft.PowerShell.* -ListAvailable
 

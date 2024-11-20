@@ -220,7 +220,7 @@ $SizeGB.Format = 'N2'
 Get-CimInstance Win32_LogicalDisk | Format-Table -Property DeviceID, VolumeName, $SizeGB
 
 # https://learn.microsoft.com/powershell/module/microsoft.powershell.core/about/about_operators#format-operator--f
-$SizeGB = @{ Name = 'Size (GB)'; Expression = { '{0:n2}' -f ($_.Size / 1GB) } }
+$SizeGB = @{ n = 'Size (GB)'; e = { '{0:n2}' -f ($_.Size / 1GB) } }
 Get-CimInstance Win32_LogicalDisk | Select-Object -Property DeviceID, $SizeGB | Get-Member
 
 [Math]::Round
@@ -353,12 +353,14 @@ Get-ChildItem | Where-Object -Not PSIsContainer
 
 Get-ChildItem | Where-Object -FilterScript { -not $PSItem.PSIsContainer }
 Get-ChildItem | where { -not $_.PSIsContainer }
-gci | ? { ! $_.PSIsContainer }
+gci | ? { ! $_.PSIsContainer}
+ls|?{!$_.PSIsContainer}
 
 Get-ChildItem | Where-Object { ($_.Name.Length -ge 9) -and ($_.Length -ge 2KB) }
 
     #Requires -Version 3
 Get-Service p* | Where-Object { $_.Status -in 'Running', 'StartPending' }
+Get-Service p* | Where-Object { 'Running', 'StartPending' -contains $_.Status }
 
 'get-service', 'get-uhhuu', 'get-userprofile' |
     Where-Object { Get-Command $_ -ErrorAction SilentlyContinue }
