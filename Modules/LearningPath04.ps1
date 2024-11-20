@@ -74,6 +74,8 @@ New-SmbMapping -LocalPath 's:' -RemotePath '\\lon-dc1\netlogon' -Persistent $fal
 Get-Help New-SmbMapping -Parameter UserName
 Get-Help New-SmbMapping -Parameter Password
 
+# https://github.com/peetrike/Examples/blob/main/src/Functions/Get-UnsecureString.ps1
+
 # https://peterwawa.wordpress.com/2010/04/28/powershell-ja-admin-oigused/
 
 #endregion
@@ -146,6 +148,7 @@ Get-ChildItem -Path Cert:\CurrentUser\My\ -CodeSigningCert
 
 Get-Command Test-Certificate
 Get-Command -Module pki
+Find-PSResource -Name pspki
 
 Set-Location Cert:\LocalMachine\My
     #Requires -Version 3.0
