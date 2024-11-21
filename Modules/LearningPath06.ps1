@@ -42,7 +42,8 @@ $VAR
 
 $täpi = 'tere'
 ${My⏱} = 3
-
+${var}
+"minu muutuja väärtus ${var}midagi"
 ${minu oluline info} = 3
 ${minu oluline info}
 $minu oluline info
@@ -63,7 +64,7 @@ New-Variable -Name MinuMuutuja -Value 333
 Set-Variable -Name uus -Value 'tere'
 
 Get-Help Assignment -Category HelpFile -ShowWindow
-$kasutaja = Get-ADUser meelis
+$kasutaja = Get-ADUser Adrian
 
 $uus
 Get-Variable -Name MinuMuutuja
@@ -249,6 +250,8 @@ $arvutid[-1]
 $arvutid | Select-Object -Last 1
 
 $arvutid.Add('Sea-DC1')
+    # these 2 lines do the same
+$arvutid = $arvutid + 'Sea-DC2'
 $arvutid += 'Sea-DC2'
 $arvutid.Count
 $arvutid | Select-Object -First 2 -Skip 2
@@ -358,6 +361,21 @@ foreach ($u in Get-ADUser -Filter *) {
 $users.administrator
 $users.Marko
 $users.Tomas
+
+    # array style access
+Measure-Command {
+    $users.Keys |
+        Where-Object { $_ - { $_ -like 'Tina' } |
+        ForEach-Object { $users.$_ }
+}
+    # hashtable access
+Measure-Command {
+    $users['Tina']
+}
+    # ask always from database
+Measure-Command {
+    Get-ADUser -Identity Tina
+}
 
 #endregion
 
