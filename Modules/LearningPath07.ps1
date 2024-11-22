@@ -37,7 +37,7 @@ pwsh -c (Get-Content .\käsud.txt -Raw)
 
     # from other shells
 pwsh.exe -NoLogo -NoProfile < käsud.txt
-type .\käsud.txt | powershell.exe -Command -
+type .\käsud.txt | powershell.exe -NoProfile -Command -
 
 #endregion
 
@@ -71,7 +71,7 @@ if ($PSVersionTable.PSVersion.Major -lt 6) {
         [Net.ServicePointManager]::SecurityProtocol -bor [Net.SecurityProtocolType]::Tls12
 }
 
-# https://github.com/peetrike/scripts/blob/master/src/ComputerManagement/UserProfile/Install-UserProfile.ps1
+# https://github.com/peetrike/scripts/blob/master/src/ComputerManagement/PowerShell/Update-PowerShellGet.ps1
 
 Find-Script Send-PasswordNotification -Repository PSGallery
 Find-Module UserProfile -Repository PSGallery | Update-Module
@@ -225,6 +225,7 @@ Test-Path HKLM:\SOFTWARE\
     #Requires -Version 7
 $service = Get-Service BITS
 $service.Status -eq 'Running' ? (Stop-Service $service) : (Start-Service $service)
+if ($service.Status -eq 'Running') { Stop-Service $service } else { Start-Service $service }
 
 #endregion
 
@@ -270,7 +271,7 @@ $role = 'unknown role'
 $location = 'unknown location'
 switch -WildCard ($computer) {
     '*-CL*' { $role = 'client' }
-    '*-SRV*' { $role = 'server' }
+    '*-SVR*' { $role = 'server' }
     '*-DC*' { $role = 'domain controller' }
     { $_ -like 'L*' } {
         $location = 'London'
@@ -452,6 +453,8 @@ Get-ADUser -Filter * -ResultSetSize 10 -Properties mail |
     Export-Csv -Path kasutajad.csv -Encoding utf8 -UseCulture -NoTypeInformation
 Invoke-Item kasutajad.csv
 Import-Csv kasutajad.csv -UseCulture
+
+Get-Help Import-Csv -Parameter Header
 
 #endregion
 
@@ -682,7 +685,7 @@ Get-Help Preference -Category HelpFile -ShowWindow
 Get-Help redirect -ShowWindow
 Get-Help Write-Host -ShowWindow
 
-write-error 'suur viga'
+Write-Error 'suur viga'
 $Error[0]
 write-error 'suur viga' 2>> vealogi.txt
 write-error 'suur viga' -ErrorVariable +viga
