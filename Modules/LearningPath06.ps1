@@ -365,7 +365,7 @@ $users.Tomas
     # array style access
 Measure-Command {
     $users.Keys |
-        Where-Object { $_ - { $_ -like 'Tina' } |
+        Where-Object { $_ -like 'Tina' } |
         ForEach-Object { $users.$_ }
 }
     # hashtable access
