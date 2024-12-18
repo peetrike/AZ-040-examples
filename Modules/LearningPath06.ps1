@@ -333,6 +333,13 @@ Get-ADComputer -Filter * -Properties IPv4Address | ForEach-Object {
 }
 $computers.Add('Server2', '172.16.0.132')
 
+# https://github.com/PoshCode/PowerShellPracticeAndStyle/issues/60
+$Sensitive = New-Object -TypeName hashtable
+$Sensitive.Password = 'secret'
+$Sensitive.password
+$Sensitive.Password
+
+
 $computers['Sea-Cl1']
 $computers.'Sea-DC1'
 $computers.Server2
