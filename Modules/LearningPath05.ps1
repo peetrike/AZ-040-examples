@@ -143,8 +143,8 @@ Get-CimInstance Win32_LogicalDisk -Filter 'DriveType=3' -Property DeviceId, Size
 
 Get-CimInstance -ClassName Win32_Service -Filter 'Name="bits"'
 Get-Service BITS
-Get-CimInstance -ClassName Win32_Process -Filter "ProcessID=$pid"
-Get-Process -Id $pid
+Get-CimInstance -ClassName Win32_Process -Filter "ProcessID=$PID"
+Get-Process -Id $PID
 
 Get-CimInstance Win32_ComputerSystem
 Get-CimInstance Win32_OperatingSystem
