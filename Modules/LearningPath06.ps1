@@ -63,7 +63,7 @@ New-Variable -Name MinuMuutuja -Value 333
 Set-Variable -Name uus -Value 'tere'
 
 Get-Help Assignment -Category HelpFile -ShowWindow
-$kasutaja = Get-ADUser meelis
+$kasutaja = Get-ADUser Adrian
 
 $uus
 Get-Variable -Name MinuMuutuja
@@ -365,6 +365,21 @@ foreach ($u in Get-ADUser -Filter *) {
 $users.administrator
 $users.Marko
 $users.Tomas
+
+    # array style access
+Measure-Command {
+    $users.Keys |
+        Where-Object { $_ -like 'Tina' } |
+        ForEach-Object { $users.$_ }
+}
+    # hashtable access
+Measure-Command {
+    $users['Tina']
+}
+    # ask always from database
+Measure-Command {
+    Get-ADUser -Identity Tina
+}
 
 #endregion
 
