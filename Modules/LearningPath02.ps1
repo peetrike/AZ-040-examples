@@ -3,7 +3,7 @@
         Learning Path 02 samples
     .DESCRIPTION
         This file contains sample commands from course AZ-040 for
-        Learning Path 02 - Cmdlets for administration
+        Learning Path 02 - Maintain system administration tasks in PowerShell
     .LINK
         https://learn.microsoft.com/training/paths/maintain-system-administration-tasks-windows-powershell/
     .LINK
@@ -47,6 +47,9 @@ Get-Help Search-ADAccount -ShowWindow
 $longAgo = (Get-Date) - $DaysAgo
 Get-ADUser -Filter { LogonCount -ge 1 -and LastLogonDate -le $longAgo } |
     Move-ADObject -TargetPath 'ou=lost souls'
+
+Get-Help Get-ADUser -Parameter SearchBase
+Get-Help Get-ADUser -Parameter SearchScope
 
 $new = Get-ADUser 'Mihkel Metsik'
 Get-ADUser -Filter { Department -like 'IT' } |
@@ -301,6 +304,8 @@ Get-Command Get-HotFix
 Get-Command -Noun *Culture
 
 Get-Command -Module Microsoft.PowerShell.Diagnostics
+
+# https://peterwawa.wordpress.com/2015/02/26/powershell-ja-sndmuste-logid/
 
 Get-Module Microsoft.PowerShell.* -ListAvailable
 
