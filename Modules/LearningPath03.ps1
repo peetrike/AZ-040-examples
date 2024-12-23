@@ -397,6 +397,9 @@ Measure-Command {
 Measure-Command {
     Get-ADUser -Filter * | Where-Object Name -like 'Adrian*'
 }
+Measure-Command {
+    Get-ADUser -Filter * -Properties * | Where-Object Name -like 'Adrian*'
+}
 
     # negatiivne näide ka
 Get-ScheduledTask -TaskName '.NET Framework NGEN v4.0.30319'
@@ -820,7 +823,7 @@ Get-ADComputer $ComputerName | Select-Object -ExpandProperty DnsHostName | Get-M
 
 'winrm', 'bits' |
     Get-Service -ComputerName (
-        Get-ADComputer -Filter { Name -like '*srv*' } |
+        Get-ADComputer -Filter { Name -like '*svr*' } |
             Select-Object -ExpandProperty DnsHostName
     )
 
