@@ -128,21 +128,20 @@ Get-Help about_Remote_Output -ShowWindow
 
 # https://learn.microsoft.com/powershell/scripting/learn/remoting/powershell-remoting-faq#is-the-output-of-remote-commands-different-from-local-output-
 
-Invoke-Command -ComputerName $Computer -ScriptBlock { 1..3 | foreach { start notepad.exe } }
-Invoke-Command -ComputerName $Computer -ScriptBlock { Get-Process notepad } | Get-Member
+Invoke-Command -ComputerName $Computer -ScriptBlock { Get-ChildItem c:\ } | Get-Member
 Invoke-Command -ComputerName $Computer -ScriptBlock {
-    Get-Process notepad | Select-Object -Property ProcessName, Id, Path
+    Get-ChildItem c:\ | Select-Object -Property Name, Length
 } |
     Get-Member
 
-Get-Process | Get-Member
+Get-ChildItem c:\ | Get-Member
 
 #endregion
 
 #endregion
 
 
-#region Module 2: Using advanced  PowerShell remoting
+#region Module 2: Using advanced PowerShell remoting
 
 #region Common remoting options
 
