@@ -138,7 +138,7 @@ Get-Command -Module PSScheduledJob
 
 #region Job options
 
-Get-ScheduledTask -TaskPath /Meelis/ | Select-Object -ExpandProperty Settings
+Get-ScheduledTask -TaskPath \Meelis\ | Select-Object -ExpandProperty Settings
 
 Get-Help New-ScheduledTaskSettingsSet -ShowWindow
 
