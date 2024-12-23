@@ -145,9 +145,16 @@ Get-Help PowerShell_exe -ShowWindow
     #Requires -Version 6
 Get-Help pwsh -ShowWindow
 
+    # Runas Admin
 Get-Help Start-Process -Parameter Verb
 Start-Process -Verb RunAs -FilePath powershell.exe
 Start-Process -Verb RunAs -FilePath pwsh.exe
+
+# https://github.com/peetrike/PWAddins/blob/master/src/Public/start-asadmin.ps1
+
+    # run as different user
+Get-Help Start-Process -Parameter Credential
+Start-Process -FilePath powershell.exe -Credential (Get-Credential)
 
 Get-Command runas.exe
 runas.exe -?
@@ -264,6 +271,8 @@ Get-Help Get-Process -Parameter *
 Get-Help Get-Process -Parameter Id
 Get-Help Get-Command -Parameter Verb
 
+(Get-Help Get-Process).parameters.parameter | Where-Object Name -like IncludeUserName
+
 #endregion
 
 #region Tab completion
@@ -324,6 +333,8 @@ Get-ADUser
     #Requires -Modules Microsoft.PowerShell.PSResourceGet
 Find-PSResource -Name UserProfile -Repository PSGallery
 Get-PSResource -Scope AllUsers
+
+# https://powershellgallery.com
 
 #endregion
 
@@ -448,7 +459,7 @@ Get-Command Get-Command | Get-Syntax
 
 Get-Help Get-WinEvent
 Get-WinEvent Application -MaxEvents 5
-Get-WinEvent -LogName Application -MaxEvents 5
+Get-WinEvent -MaxEvents 5 -LogName Application
 
 Get-Help dir
 dir . *.ps1
