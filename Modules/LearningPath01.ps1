@@ -48,14 +48,13 @@ Get-Help Parsing -ShowWindow
 #region PowerShell versions
 
 # https://learn.microsoft.com/powershell/scripting/what-is-windows-powershell
-# https://learn.microsoft.com/powershell/scripting/install/powershell-support-lifecycle#release-history
 
 # https://learn.microsoft.com/powershell/scripting/windows-powershell/wmf/overview
 # https://learn.microsoft.com/previous-versions/powershell/scripting/windows-powershell/whats-new/what-s-new-in-windows-powershell-50
 # https://learn.microsoft.com/previous-versions/powershell/scripting/windows-powershell/wmf/whats-new/release-notes
 Get-Help _PowerShell -Category HelpFile
 
-# https://learn.microsoft.com/powershell/scripting/whats-new/what-s-new-in-powershell-74
+# https://learn.microsoft.com/powershell/scripting/whats-new/what-s-new-in-powershell-75
 
 # https://learn.microsoft.com/powershell/scripting/install/powershell-in-docker
 
@@ -136,7 +135,7 @@ Start-Process -FilePath powershell.exe -ArgumentList '-Version 2'
 
 #endregion
 
-#region Considerations when using PowerShell
+#region Identify factors to install and use PowerShell
 
 # https://learn.microsoft.com/powershell/scripting/learn/ps101/01-getting-started
 
@@ -195,6 +194,7 @@ Find-Module terminal-icons -Repository PSGallery
 # https://www.programmingfonts.org/
 
 # https://learn.microsoft.com/windows/terminal/tips-and-tricks#zoom-with-the-mouse
+# https://learn.microsoft.com/windows/terminal/customize-settings/interaction#automatically-copy-selection-to-clipboard
 # https://learn.microsoft.com/windows/terminal/tutorials/custom-prompt-setup
 
     #Requires -Modules PSReadLine
