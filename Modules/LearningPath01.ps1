@@ -303,6 +303,8 @@ Get-Help about_quoting -ShowWindow
 Get-Help quoting
 Get-Help beep
 
+# https://learn.microsoft.com/powershell/module/microsoft.powershell.core/about/about
+
 #endregion
 
 #endregion
@@ -349,7 +351,7 @@ Get-VpnConnection
 
 Get-Command -Noun Service
 Get-Service BITS
-Stop-Service BITS
+Stop-Service BITS -WhatIf
 
 Get-Command -Noun *user -Verb Get
 
