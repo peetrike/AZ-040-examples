@@ -18,7 +18,7 @@
 
 #region Module 1: Understanding the pipeline
 
-#region What is the pipeline?
+#region Review PowerShell pipeline?
 
 Get-Help Pipelines -Category HelpFile -ShowWindow
 
@@ -52,7 +52,7 @@ Get-ChildItem | Select-Object * | Out-GridView
 
 #endregion
 
-#region Discovering object members
+#region Discover object members in PowerShell
 
 Get-Help Get-Member -ShowWindow
 
@@ -70,7 +70,7 @@ Get-ADUser -Identity Meelis -Properties mail | Get-Member
 
 #endregion
 
-#region Formatting pipeline output
+#region Control the formatting of pipeline output
 
 Get-Command -Verb Format -Module Microsoft.PowerShell.Utility
 
@@ -92,7 +92,7 @@ Get-Process p* | Format-Table -View StartTime
 
 #region Module 2: Selecting, sorting, and measuring objects
 
-#region Sorting objects by a property
+#region Sort and group objects by property in the pipeline
 
 
 Get-Help Sort-Object -ShowWindow
@@ -141,7 +141,7 @@ Get-ADComputer @ComputerProps |
 
 #endregion
 
-#region Measuring objects
+#region Measure objects in the pipeline
 
 Get-Help Measure-Object -ShowWindow
 
@@ -151,7 +151,7 @@ Get-Content LearningPath03.ps1 | Measure-Object -Word -Line
 
 #endregion
 
-#region Selecting a subset of objects
+#region Select a set of objects in the pipeline
 
 Get-Help Select-Object -ShowWindow
 
@@ -186,7 +186,7 @@ net.exe localgroup administrators | Select-Object -Skip 6 | Select-Object -SkipL
 
 #endregion
 
-#region Selecting properties of objects
+#region Select object properties in the pipeline
 
 Get-ChildItem | Select-Object -Property Name, LastWriteTime | Get-Member
 
@@ -204,7 +204,7 @@ Get-Process p* |
 
 #endregion
 
-#region Creating calculated properties
+#region Create and format calculated properties in the pipeline
 
 Get-Help Calculated_Properties -ShowWindow
 Get-Help Hash_Tables -ShowWindow
@@ -274,7 +274,7 @@ Get-ADComputer @ComputerProps |
 
 #region Module 3: Filtering objects out of the pipeline
 
-#region Comparison operators
+#region Learn about comparison operators in PowerShell
 
 Get-Help Comparison -Category HelpFile -ShowWindow
 
@@ -319,7 +319,7 @@ Test-Path -Path $Folder -PathType Container
 
 #endregion
 
-#region Basic filtering syntax
+#region Review basic filtering syntax in the pipeline
 
 Get-Help Simplified_Syntax -ShowWindow
 
@@ -349,7 +349,7 @@ Get-ChildItem | Where-Object -Not PSIsContainer
 
 #endregion
 
-#region Advanced filtering syntax
+#region Review advanced filtering syntax in the pipeline
 
 Get-ChildItem | Where-Object -FilterScript { -not $PSItem.PSIsContainer }
 Get-ChildItem | where { -not $_.PSIsContainer }
@@ -365,7 +365,7 @@ Get-Service p* | Where-Object { $_.Status -in 'Running', 'StartPending' }
 
 #endregion
 
-#region Optimizing filtering performance
+#region Optimize the filter performance in the pipeline
 
 # https://learn.microsoft.com/powershell/scripting/learn/ps101/04-pipelines#filtering-left
 
@@ -450,7 +450,7 @@ Measure-Command {
 
 #region Module 4: Enumerating objects in the pipeline
 
-#region Purpose of enumeration
+#region Learn about enumerations in the pipeline
 
 1..3 | ForEach-Object { Start-Process notepad }
 Get-Process notepad | Stop-Process -WhatIf
@@ -464,7 +464,7 @@ Get-ChildItem -File | Get-Member -Name Encrypt
 
 #endregion
 
-#region Basic enumeration syntax
+#region Review basic syntax to enumerate objects in the pipeline
 
 Get-Help Simplified_Syntax -ShowWindow
 
@@ -508,12 +508,12 @@ Get-ChildItem -File | Measure-Object -Property Length -Sum
 #endregion
 
 
-#region Module 5: Sending pipeline data as output
+#region Module 5: Send and pass data as output from the pipeline
 
 Get-Help Encoding -Category HelpFile -ShowWindow
 Get-Command -ParameterName Encoding
 
-#region Writing output to a file
+#region Write pipeline data to a file
 
 Get-Help Out-File -ShowWindow
 Get-Help Out-File -Parameter NoClobber
@@ -533,7 +533,7 @@ Get-Process p* | Select-Object PSResources | Format-Table | Out-File protsessid.
 
 #endregion
 
-#region Converting output to CSV
+#region Convert output to CSV
 
 # https://en.wikipedia.org/wiki/Delimiter-separated_values
 
@@ -560,7 +560,7 @@ Get-ChildItem | Select-Object Name, Length | ConvertTo-Csv -Delimiter "`t" -NoTy
 
 #endregion
 
-#region Converting output to XML
+#region Convert output to XML
 
 # http://www.w3.org/TR/xml/
 
@@ -581,7 +581,7 @@ Get-ChildItem | Export-Clixml -Path failid.xml #-Encoding unicode
 
 #endregion
 
-#region Converting output to JSON
+#region Convert output to JSON
 
 # https://www.json.org/
 
@@ -611,7 +611,7 @@ $Serializer.GetType() | Get-TypeUrl -Invoke
 
 #endregion
 
-#region Converting output to HTML
+#region Convert output to HTML
 
 # https://html.spec.whatwg.org/
 
@@ -690,7 +690,7 @@ Get-Service B* | Restart-Service -WhatIf
 
 #endregion
 
-#region Identifying ByValue parameters
+#region Identify ByValue parameters
 
 (Get-Help Get-ADUser).returnValues.returnValue.type.name
 (Get-Help Set-ADUser).parameters.parameter |
@@ -714,7 +714,7 @@ Get-Help * -Parameter InputObject | Measure-Object
 
 #endregion
 
-#region Passing data by using ByValue
+#region Pass data by using ByValue
 
     # you can do this
 $Services = Get-Service p*
@@ -737,7 +737,7 @@ Import-Csv Services.csv | Start-Service -WhatIf
 
 #endregion
 
-#region Passing pipeline data ByPropertyName
+#region Pass data by using ByPropertyName
 
     # this doesn't work
 Get-ADComputer $env:COMPUTERNAME | Test-Connection -Count 1
@@ -761,7 +761,7 @@ Get-ADComputer $env:COMPUTERNAME | Test-Connection -Count 1
 
 #endregion
 
-#region Identifying ByPropertyName parameters
+#region Identify ByPropertyName parameters
 
 Get-ParameterInfo -Name New-ADUser
 
@@ -776,7 +776,7 @@ Get-Command -ParameterName ComputerName | Measure-Object
 
 #endregion
 
-#region Using manual parameters to override the pipeline
+#region Use manual parameters to override the pipeline
 
     # this doesn't work
 'bits', 'winrm' | Start-Service -Name b* -WhatIf
@@ -794,7 +794,7 @@ Get-ParameterInfo Stop-Process
 
 #endregion
 
-#region Using parenthetical commands
+#region Use parenthetical commands
 
     # in PS 7 the -ComputerName parameter was removed from several commands
 'winrm', 'bits' | Get-Service -ComputerName (Get-Content masinad.txt)
@@ -813,7 +813,7 @@ Get-ADGroup -Filter { Name -like 'London*' } |
 
 #endregion
 
-#region Expanding property values
+#region Expand property values
 
 Get-Help Select-Object -Parameter ExpandProperty
 
