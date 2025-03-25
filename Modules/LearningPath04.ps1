@@ -105,7 +105,7 @@ Get-ChildItem -Path . -Filter uus
 New-Item -ItemType File -Name minufail.txt -Path .\uus
 
     #Requires -Version 5.0
-New-Item -Name kaust -ItemType Junction -Target uus
+New-Item -Name kaust -ItemType Junction -Target (get-item uus).FullName
 
 Set-Location kaust
 New-Item -ItemType HardLink -Name teinefail.txt -Value ..\uus\minufail.txt
