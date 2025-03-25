@@ -94,7 +94,6 @@ Get-Process p* | Format-Table -View StartTime
 
 #region Sort and group objects by property in the pipeline
 
-
 Get-Help Sort-Object -ShowWindow
 
 Get-ChildItem
@@ -214,6 +213,9 @@ Get-CimInstance Win32_LogicalDisk
 
 $SizeGB = @{ Name = 'Size (GB)'; Expression = { $_.Size / 1GB } }
 Get-CimInstance Win32_LogicalDisk | Select-Object -Property DeviceID, $SizeGB
+
+$SizeGB = @{ Name = 'Size (GB)'; Expression = { [math]::Round(( $_.Size / 1GB, 2) } }
+Get-CimInstance Win32_LogicalDisk | Select-Object -Property DeviceID, $SizeGB, Size
 
 # https://learn.microsoft.com/dotnet/standard/base-types/standard-numeric-format-strings#standard-format-specifiers
 $SizeGB.Format = 'N2'
@@ -383,6 +385,7 @@ Get-CimInstance -ClassName Win32_UserAccount -Filter "LocalAccount=True and SID 
 Get-LocalUser | where SID -Like '*-500'
 
 Get-ADUser -Identity Adrian
+Get-ADUser $env:USERNAME
 
 Get-Help Measure-Command -ShowWindow
 Measure-Command {
@@ -774,6 +777,9 @@ Get-ParameterInfo -Name New-ADUser
 
 Get-Command -ParameterName ComputerName | Measure-Object
 
+# https://peterwawa.wordpress.com/2013/04/09/kasutajakontode-loomine-domeenis/
+
+
 #endregion
 
 #region Use manual parameters to override the pipeline
@@ -826,6 +832,8 @@ Get-ADComputer $ComputerName | Select-Object -ExpandProperty DnsHostName | Get-M
         Get-ADComputer -Filter { Name -like '*svr*' } |
             Select-Object -ExpandProperty DnsHostName
     )
+
+'winrm', 'bits' | Get-Service -ComputerName ( Get-ADComputer -Filter { Name -like '*svr*' } | Select-Object -ExpandProperty DnsHostName)
 
 Get-Command powershell |
     Select-Object -Property Name -ExpandProperty FileVersionInfo
