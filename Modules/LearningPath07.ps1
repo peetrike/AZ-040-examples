@@ -210,8 +210,9 @@ Get-Help about_If -ShowWindow
 # https://learn.microsoft.com/powershell/scripting/lang-spec/chapter-08#83-the-if-statement
 
 $a = 0
-if ($a -gt 1) { 'a is greater' }
-elseif ($null -eq $b) { 'b is not set' }
+if ($a -gt 1) {
+    'a is greater'
+} elseif ($null -eq $b) { 'b is not set' }
 else { 'something else' }
 
 if (Get-ChildItem -File) { 'there are some files' } else { New-Item uus.txt }
@@ -280,7 +281,7 @@ switch -WildCard ($computer) {
 }
 "$computer is a $role in $location"
 
-$numbers = 1..4 | ForEach-Object { Get-Random -Maximum 6 }
+$numbers = 1..4 | ForEach-Object { Get-Random -Maximum 7 }
 switch ($numbers) {
     3 { Write-Host -ForegroundColor Cyan '3 this time' }
     { $_ % 2 } { 'Odd number: {0}' -f $_ }
@@ -318,7 +319,6 @@ for () {
     (++$i)
     Start-Sleep -Seconds 2
 }
-
 
 #endregion
 
