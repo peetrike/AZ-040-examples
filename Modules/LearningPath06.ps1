@@ -398,7 +398,7 @@ $users = import-csv kasutajad.csv
 foreach ($u in users) {
     $CreateProperties = @{
         GivenName      = $u.Eesnimi
-        #SurName        = $u.perenimi
+        SurName        = $u.perenimi
         Name           = $u.Eesnimi, $u.Perenimi -join ' '
         SamAccountName = $u.Eesnimi.SubString(0, 4) + $u.Perenimi.SubString(0, 2)
     }
