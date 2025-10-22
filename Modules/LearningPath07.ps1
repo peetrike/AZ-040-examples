@@ -122,6 +122,10 @@ Copy-Item -Path käsud.txt -Destination käsud.ps1
 powershell.exe -NoProfile -NonInteractive -File käsud.ps1
 pwsh -nop -f käsud.ps1
 
+    # on Linux
+pwsh -nop -f ./käsud.txt
+# https://learn.microsoft.com/powershell/scripting/whats-new/unix-support#ps1-file-extensions
+
 powershell.exe -NoProfile -Command .\käsud.ps1
 .\käsud.ps1
 .\käsud
@@ -146,6 +150,8 @@ pwsh.exe -NoProfile -ExecutionPolicy AllSigned -c Get-ExecutionPolicy -List
 Set-ExecutionPolicy RemoteSigned -Scope Process                 #DevSkim: ignore DS113853
 
 Get-Help Unblock-File -ShowWindow
+
+# https://learn.microsoft.com/powershell/scripting/whats-new/unix-support#execution-policy
 
 #endregion
 
