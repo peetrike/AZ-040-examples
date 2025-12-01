@@ -86,6 +86,7 @@ bcdedit.exe --% /enum {current}
 # https://github.com/peetrike/PWAddins/blob/master/src/Public/Test-IsAdmin.ps1
 Test-IsAdmin
 Get-NetFirewallRule -Name WINRM-HTTP-In-TCP
+Get-WindowsCapability -Online
 
 #endregion
 
