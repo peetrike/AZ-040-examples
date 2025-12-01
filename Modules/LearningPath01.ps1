@@ -83,6 +83,10 @@ Get-ChildItem (Join-Path $PSHOME Modules)
 # https://learn.microsoft.com/powershell/module/microsoft.powershell.core/about/about_special_characters#stop-parsing-token---
 bcdedit.exe --% /enum {current}
 
+# https://github.com/peetrike/PWAddins/blob/master/src/Public/Test-IsAdmin.ps1
+Test-IsAdmin
+Get-NetFirewallRule -Name WINRM-HTTP-In-TCP
+
 #endregion
 
 #region PowerShell applications
