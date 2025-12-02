@@ -67,6 +67,8 @@ $userParams.SamAccountName = $userParams.GivenName.Substring(0, 4) +
     $userParams.SurName.Substring(0, 2)
 New-ADUser @userParams
 
+# https://github.com/peetrike/scripts/tree/main/src/ActiveDirectory
+
 New-Object -TypeName PSObject -Property $userParams |
     Export-Csv -UseCulture -Encoding utf8 -Path $PWD\users.csv
 
