@@ -269,8 +269,8 @@ Get-Help about_Parameters -ShowWindow
 
 Get-Command Start-Process | Get-Member
 (Get-Command Start-Process).Parameters
-Get-Help Start-Process -Parameter * | Select-Object Name, Required, Type
-
+Get-Help Start-Process -Parameter * |
+    Select-Object Name, Required, @{ n='Type'; e={ $_.GetType().Name } }
 Get-Help Get-Process -ShowWindow
 Get-Help Get-Process -Parameter *
 Get-Help Get-Process -Parameter Id
@@ -337,6 +337,9 @@ Import-Module ActiveDirectory
 Get-ADUser
 
     # where to find modules
+Find-Module -Name Microsoft.PowerShell.PSResourceGet -Repository PSGallery
+Install-Module -Name Microsoft.PowerShell.PSResourceGet -Repository PSGallery
+
     #Requires -Modules Microsoft.PowerShell.PSResourceGet
 Find-PSResource -Name UserProfile -Repository PSGallery
 Get-PSResource -Scope AllUsers
