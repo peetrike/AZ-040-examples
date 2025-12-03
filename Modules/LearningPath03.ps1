@@ -212,7 +212,7 @@ Get-Help Hash_Tables -ShowWindow
 
 Get-CimInstance Win32_LogicalDisk
 
-$SizeGB = @{ Name = 'Size (GB)'; Expression = { $_.Size / 1GB } }
+$SizeGB = @{ Name = 'SizeGB'; Expression = { $_.Size / 1GB } }
 Get-CimInstance Win32_LogicalDisk | Select-Object -Property DeviceID, $SizeGB
 
 # https://learn.microsoft.com/dotnet/standard/base-types/standard-numeric-format-strings#standard-format-specifiers
@@ -386,19 +386,19 @@ Get-ADUser -Identity Adrian
 
 Get-Help Measure-Command -ShowWindow
 Measure-Command {
-    Get-ADUser -Identity Adrian
+    Get-ADUser -Identity Adam
 }
 Measure-Command {
-    Get-ADUser -Filter { Name -like 'Adrian*' }
+    Get-ADUser -Filter { Name -like 'Adam*' }
 }
 Measure-Command {
-    Get-ADUser -LDAPFilter '(Name=Adrian*)'
+    Get-ADUser -LDAPFilter '(Name=Adam*)'
 }
 Measure-Command {
-    Get-ADUser -Filter * | Where-Object Name -like 'Adrian*'
+    Get-ADUser -Filter * | Where-Object Name -like 'Adam*'
 }
 Measure-Command {
-    Get-ADUser -Filter * -Properties * | Where-Object Name -like 'Adrian*'
+    Get-ADUser -Filter * -Properties * | Where-Object Name -like 'Adam*'
 }
 
     # negatiivne näide ka
@@ -652,7 +652,7 @@ Find-PSResource ImportExcel -Repository PSGallery
 Find-PSResource ImportExcel -Repository PSGallery | Select-Object ProjectUri
 # https://github.com/dfinke/ImportExcel/tree/master/Examples
 
-Find-PSResource PSWriteOffice -Repository PSGallery
+Find-PSResource PSWritePdf -Repository PSGallery
 
 # https://evotec.xyz/merging-splitting-and-creating-pdf-files-with-powershell/
 Find-PSResource -Tag pdf -Repository PSGallery
