@@ -267,7 +267,7 @@ Get-Help Import-PSSession -Parameter Module
 
 Get-Module ActiveDirectory -ListAvailable
 $dc = New-PSSession -ComputerName $DcName
-Import-Module -PSSession $dc -Name ActiveDirectory -Prefix 'dc' -Function Get-ADUser
+Import-Module -PSSession $dc -Name ActiveDirectory -Prefix 'dc' -Function Get-ADUser, Set-ADUser
     # or
 Import-PSSession -Session $dc -Module ActiveDirectory -Prefix 'dc' -CommandName Get-ADUser
 
