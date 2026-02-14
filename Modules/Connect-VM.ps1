@@ -40,21 +40,13 @@ param (
         [switch]
         # Starts an interactive session to VM
     $Enter,
-        [ValidateSet('AZ-040T00', '10961C')]
+        [ValidateSet('AZ-040', '10961C')]
         [string]
-    $CourseName = 'AZ-040T00'
+    $CourseName = 'AZ-040'
 )
 
-switch ($CourseName) {
-    'AZ-040T00' {
-        $CourseDomain = 'Contoso'
-        $VMCity = 'SEA'
-    }
-    default {
-        $CourseDomain = 'Adatum'
-        $VMCity = 'LON'
-    }
-}
+$CourseDomain = 'Adatum'
+$VMCity = 'LON'
 
 if (-not $Credential) {
     $CredentialProps = @{}
