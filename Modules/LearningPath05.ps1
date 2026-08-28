@@ -67,6 +67,7 @@ Get-CimInstance -Namespace root\Microsoft\Windows -ClassName __Namespace
 Get-Command wbemtest, wmic
 wbemtest.exe
 
+# https://support.microsoft.com/servicing/os/windows/docs/2025/09/windows-management-instrumentation-command-line-wmic-removal-from-windows
 WMIC.exe /?
 WMIC.exe alias /?
 WMIC.exe alias list brief
