@@ -40,6 +40,7 @@ Get-ChildItem |
     #Requires -Modules PSReadLine
 Get-PSReadLineOption | Select-Object *Prompt* | Format-List
 Get-Help Set-PSReadLineOption -Parameter ContinuationPrompt
+# https://learn.microsoft.com/powershell/module/PSReadline/Set-PSReadlineOption#-continuationprompt
 
 #endregion
 
@@ -93,7 +94,6 @@ Get-Process p* | Format-Table -View StartTime
 #region Module 2: Selecting, sorting, and measuring objects
 
 #region Sort and group objects by property in the pipeline
-
 
 Get-Help Sort-Object -ShowWindow
 
@@ -168,7 +168,7 @@ net.exe localgroup administrators | Select-Object -Skip 6 | Select-Object -SkipL
     #region Preparation
         New-ADGroup Katse1 -GroupScope Global
         New-ADGroup Katse2 -GroupScope Global
-        Get-ADUser Adrian | Add-ADPrincipalGroupMembership -MemberOf katse1, katse2
+        Get-ADUser Adam | Add-ADPrincipalGroupMembership -MemberOf katse1, katse2
     #endregion
     Get-ADGroup -Filter { Name -like 'katse*' } | Get-ADGroupMember | Select-Object -Unique
 
@@ -382,23 +382,23 @@ Get-CimInstance -ClassName Win32_UserAccount -Filter "LocalAccount=True and SID 
     #Requires -Modules Microsoft.PowerShell.LocalAccounts
 Get-LocalUser | where SID -Like '*-500'
 
-Get-ADUser -Identity Adrian
+Get-ADUser -Identity Adam
 
 Get-Help Measure-Command -ShowWindow
 Measure-Command {
-    Get-ADUser -Identity Adrian
+    Get-ADUser -Identity Adam
 }
 Measure-Command {
-    Get-ADUser -Filter { Name -like 'Adrian*' }
+    Get-ADUser -Filter { Name -like 'Adam*' }
 }
 Measure-Command {
-    Get-ADUser -LDAPFilter '(Name=Adrian*)'
+    Get-ADUser -LDAPFilter '(Name=Adam*)'
 }
 Measure-Command {
-    Get-ADUser -Filter * | Where-Object Name -like 'Adrian*'
+    Get-ADUser -Filter * | Where-Object Name -like 'Adam*'
 }
 Measure-Command {
-    Get-ADUser -Filter * -Properties * | Where-Object Name -like 'Adrian*'
+    Get-ADUser -Filter * -Properties * | Where-Object Name -like 'Adam*'
 }
 
     # negatiivne näide ka
@@ -642,6 +642,10 @@ Get-Help Out-String -ShowWindow
 Get-Help Out-GridView -ShowWindow
 Get-ChildItem | Select-Object * | Out-GridView
 
+    #Requires -Version 7
+    #Requires -Modules PSTui
+Get-Command Out-ConsoleGridView
+
 #endregion
 
 #region Extra: More export options
@@ -682,7 +686,7 @@ Get-ParameterInfo Set-ADUser -ParameterName Identity
 (Get-Command Set-ADUser).Parameters.Identity.ParameterType.FullName
 Get-Help Set-ADUser -Parameter Identity
 
-Get-ADUser -Filter { Name -like 'Adrian*' } | Set-ADUser -City 'Tallinn'
+Get-ADUser -Filter { Name -like 'Adam*' } | Set-ADUser -City 'Tallinn'
 
 Get-Help Restart-Service -Parameter InputObject
 
@@ -693,9 +697,9 @@ Get-Service B* | Restart-Service -WhatIf
 #region Identify ByValue parameters
 
 (Get-Help Get-ADUser).returnValues.returnValue.type.name
-(Get-Help Set-ADUser).parameters.parameter |
-    Where-Object pipelineInput -like 'true*' |
-    Select-Object name, pipelineInput, type
+(Get-Command Set-ADUser).Parameters.Values |
+    Where-Object { $_.Attributes.ValueFromPipeline } |
+    Select-Object Name, ParameterType
 Get-Help Set-ADUser -Parameter Identity
 
 $type = (Get-Command Get-Service).OutputType.Type
@@ -765,10 +769,7 @@ Get-ADComputer $env:COMPUTERNAME | Test-Connection -Count 1
 
 Get-ParameterInfo -Name New-ADUser
 
-(Get-Help Stop-Process).parameters.parameter |
-    Where-Object pipelineInput -like '*PropertyName*' |
-    Select-Object name, pipelineInput, type
-
+Get-ParameterInfo Stop-Service | Where-Object Pipeline -match 'Name'
 (Get-Command Stop-Service).Parameters.Values |
     Where-Object { $_.Attributes.ValueFromPipeLineByPropertyName }
 
@@ -780,8 +781,8 @@ Get-Command -ParameterName ComputerName | Measure-Object
 
     # this doesn't work
 'bits', 'winrm' | Start-Service -Name b* -WhatIf
-New-Object PSObject -Property @{ ComputerName = 'Sea-DC1' } |
-    Test-Connection -ComputerName 'Sea-Cl1'
+New-Object PSObject -Property @{ ComputerName = 'Lon-DC1' } |
+    Test-Connection -ComputerName 'Lon-Cl1'
 
 Get-ChildItem | Select-Object -First 1 | Stop-Service -WhatIf
 Get-Help Stop-Service -Parameter Name
@@ -817,7 +818,7 @@ Get-ADGroup -Filter { Name -like 'London*' } |
 
 Get-Help Select-Object -Parameter ExpandProperty
 
-$ComputerName = 'Sea-Cl1'
+$ComputerName = 'Lon-Cl1'
 Get-ADComputer $ComputerName | Select-Object -Property DnsHostName | Get-Member
 Get-ADComputer $ComputerName | Select-Object -ExpandProperty DnsHostName | Get-Member
 
@@ -830,7 +831,7 @@ Get-ADComputer $ComputerName | Select-Object -ExpandProperty DnsHostName | Get-M
 Get-Command powershell |
     Select-Object -Property Name -ExpandProperty FileVersionInfo
 
-$User = 'Tina'
+$User = 'Terry'
 Get-ADUser -Id $User -Properties MemberOf |
     Select-Object -ExpandProperty MemberOf |
     Get-ADGroup
