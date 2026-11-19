@@ -104,8 +104,7 @@ Get-ADUser Adam |
 #region Computer object management cmdlets
 Get-Command -Noun ADComputer
 
-#$longAgo = (Get-Date).AddDays(-90)
-Get-ADComputer -Filter (PasswordLastSet -lt $longAgo) | Disable-ADAccount
+Get-ADComputer -Filter (PasswordLastSet -lt $DaysAgo) | Disable-ADAccount
 
 Search-ADAccount -AccountInactive -TimeSpan $DaysAgo -ComputersOnly
 Search-ADAccount -AccountInactive -TimeSpan 90.00:00:00 -ComputersOnly
@@ -173,7 +172,7 @@ Get-NetRoute -AddressFamily IPv4 -DestinationPrefix '0.0.0.0/0'
 Get-Command -Module DnsClient
 
 Get-Help Resolve-DnsName -ShowWindow
-Resolve-DnsName -Name www.ee
+Resolve-DnsName -Name ee.ee
 Resolve-DnsName -Name ttu.ee -Type mx
 
 Get-DnsClientCache
@@ -193,6 +192,7 @@ Get-Command -Module NetSecurity
 Get-NetFirewallRule -Name WINRM-HTTP-In-TCP*
 Get-NetFirewallRule -Group '@FirewallAPI.dll,-30267'
 
+    #Requires -RunAsAdministrator
 Get-NetFirewallPortFilter -Protocol tcp |
     Where-Object LocalPort -EQ 3389 |
     Get-NetFirewallRule
@@ -211,8 +211,8 @@ Get-NetConnectionProfile
 #endregion
 
 #region extra networking commands
-Test-Connection -ComputerName www.ee -Count 1
-Test-NetConnection -ComputerName www.ee -CommonTCPPort HTTP
+Test-Connection -ComputerName ee.ee -Count 1
+Test-NetConnection -ComputerName ee.ee -CommonTCPPort HTTP
 
 Get-NetTCPConnection -State Listen
 Get-NetUDPEndpoint -LocalPort 3389
@@ -289,7 +289,7 @@ Find-Module -Name IISAdministration
 
 #region Module 4: Windows PowerShell in Windows 10
 
-#region Managing Windows 10 using PowerShell
+#region Managing Windows 11 using PowerShell
 
 Get-Command -Module Microsoft.PowerShell.Management
 
@@ -316,6 +316,7 @@ Get-Module Microsoft.PowerShell.* -ListAvailable
 Get-Command -Noun Acl
 
 Find-PSResource -Name NTFSSecurity -Repository PSGallery
+Find-PSResource -Name WindowsAccessControl -Repository PSGallery
 Get-Command -Module NTFSSecurity
 
 New-Item -Name katse -ItemType Directory
@@ -323,11 +324,12 @@ Get-Acl -Path .\katse
 (Get-Acl -Path .\katse).Access
 
 Get-NTFSAccess -Path .\katse
+Get-NTFSAccessRule -Path .\katse
 
-Get-Command -Noun NTFSAccess
-Get-Command -Noun NTFSAudit
-Get-Command -Noun NTFSOwner
-Get-Command -Noun NTFSInheritance
+Get-Command -Noun NTFSAccessRule
+Get-Command -Noun NTFSAuditRule
+Get-Command -Noun NTFSItemOwner
+Get-Command -Noun NTFSItemInheritance
 
     # Long Path support
 Get-Command -Module NTFSSecurity -Noun *2
