@@ -54,12 +54,12 @@ Get-Help Parsing -ShowWindow
 # https://learn.microsoft.com/previous-versions/powershell/scripting/windows-powershell/wmf/whats-new/release-notes
 Get-Help _PowerShell -Category HelpFile
 
-# https://learn.microsoft.com/powershell/scripting/whats-new/what-s-new-in-powershell-75
+# https://support.microsoft.com/servicing/os/windows/docs/2026/11/kb5137172-windows-powershell-5-1-deprecation
+# https://learn.microsoft.com/powershell/scripting/whats-new/what-s-new-in-powershell-77
 
 # https://learn.microsoft.com/powershell/scripting/install/powershell-in-docker
 
 # https://learn.microsoft.com/powershell/scripting/install/powershell-support-lifecycle
-# https://learn.microsoft.com/powershell/module/microsoft.powershell.core/about/about_update_notifications
 
 #endregion
 
@@ -207,7 +207,7 @@ Get-PSReadLineKeyHandler -Chord 'Ctrl-c', 'Ctrl-C', 'Ctrl-x', 'Ctrl-v', 'Shift-I
 # https://learn.microsoft.com/powershell/scripting/windows-powershell/ise/exploring-the-windows-powershell-ise
 
 # ISE has not been changed since PowerShell 3.0
-# https://learn.microsoft.com/previous-versions/powershell/scripting/windows-powershell/whats-new/what-s-new-in-the-powershell-50-ise
+# https://learn.microsoft.com/powershell/scripting/windows-powershell/ise/introducing-the-windows-powershell-ise
 
 #endregion
 
@@ -264,14 +264,15 @@ Get-Help about_Parameters -ShowWindow
 
 Get-Command Start-Process | Get-Member
 (Get-Command Start-Process).Parameters
-Get-Help Start-Process -Parameter * | Select-Object Name, Required, Type
+(Get-Command Start-Process).Parameters.Values | Select-Object Name, ParameterType
+Get-Help Start-Process -Parameter * | Select-Object Name, Required
 
 Get-Help Get-Process -ShowWindow
 Get-Help Get-Process -Parameter *
 Get-Help Get-Process -Parameter Id
 Get-Help Get-Command -Parameter Verb
 
-(Get-Help Get-Process).parameters.parameter | Where-Object Name -like IncludeUserName
+(Get-Help Get-Process).parameters.parameter | Where-Object Name -like Include*
 
 #endregion
 
@@ -392,7 +393,7 @@ Get-Command ping
 New-Alias -Name ping -Value Test-Connection
 Set-Alias ping Test-Connection
 Get-Command ping
-ping www.ee
+ping ee.ee
     # PowerShell < 6.0 does not have Remove-Alias cmdlet
     # https://github.com/peetrike/PWAddins/blob/master/src/Public/remove-alias.ps1
 Remove-Item -Path alias:\ping
