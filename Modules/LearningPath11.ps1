@@ -37,7 +37,7 @@ Get-Help Start-Job -ShowWindow
 Start-Job -ScriptBlock { Get-CimInstance Win32_Processor }
 
 Get-Command -ParameterName AsJob
-Invoke-Command -ComputerName sea-dc1 -ScriptBlock { Get-CimInstance Win32_Processor } -AsJob
+Invoke-Command -ComputerName lon-dc1 -ScriptBlock { Get-CimInstance Win32_Processor } -AsJob
 Get-Volume -AsJob
 Get-WmiObject Win32_Processor -AsJob
 
@@ -138,7 +138,7 @@ Get-Command -Module PSScheduledJob
 
 #region Job options
 
-Get-ScheduledTask -TaskPath \Meelis\ | Select-Object -ExpandProperty Settings
+Get-ScheduledTask -TaskPath \Meelis\ -TaskName katse | Select-Object -ExpandProperty Settings
 
 Get-Help New-ScheduledTaskSettingsSet -ShowWindow
 
@@ -153,6 +153,30 @@ Get-Help New-ScheduledTaskTrigger -ShowWindow
 $trigger = New-ScheduledTaskTrigger -Once -At (Get-Date).AddMinutes(10)
 $trigger = New-ScheduledTaskTrigger -Weekly -DaysOfWeek Monday, Thursday -At '15:00'
 
+# for monthly schedule
+schtasks.exe -create -?
+schtasks.exe -change -?
+
+schtasks.exe -Create -SC MONTHLY -MO first -D SUN -TN gametime -TR c:\windows\system32\freecell
+
+# to enable repetition on recurring task
+$Trigger = New-ScheduledTaskTrigger -Daily -At '00:07'
+if ($Trigger.psobject.Properties['Repetition']) {
+    $tempTriggerSplat = @{
+        Once               = $true
+        RepetitionInterval = (New-TimeSpan -Minutes 13)
+        RepetitionDuration = (New-TimeSpan -Days 1)
+        At                 = '01:00'
+    }
+    $tempTrigger = New-ScheduledTaskTrigger @tempTriggerSplat
+    $Trigger.Repetition = $tempTrigger.Repetition
+}
+    # or
+$Task = Get-ScheduledTask -TaskName $TaskName -TaskPath $TaskPath
+$Task.Triggers.Repetition.Duration = 'P1D'
+$Task.Triggers.Repetition.Interval = 'PT13M'
+$null = Set-ScheduledTask -InputObject $Task
+
 #endregion
 
 #region Creating a scheduled task
@@ -160,8 +184,8 @@ $trigger = New-ScheduledTaskTrigger -Weekly -DaysOfWeek Monday, Thursday -At '15
 Get-Help Register-ScheduledTask -ShowWindow
 # https://learn.microsoft.com/powershell/module/scheduledtasks/register-scheduledtask
 
-$Action = New-ScheduledTaskAction -Execute 'PowerShell.exe' -Argument '-Noninteractive -command c:\myscript.ps1'
-Register-ScheduledTask -TaskName 'SoftwareScan' -Action $Action # -Trigger $trigger
+$Action = New-ScheduledTaskAction -Execute 'PowerShell.exe' -Argument '-nop -noni -c c:\myscript.ps1'
+Register-ScheduledTask -TaskName 'SoftwareScan' -Action $Action -Description 'good task' # -Trigger $trigger
 
 $User = 'Contoso\Administrator'
 $TaskCreateProps = @{
