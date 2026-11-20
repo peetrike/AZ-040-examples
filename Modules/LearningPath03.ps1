@@ -505,6 +505,25 @@ Get-ChildItem -File | Measure-Object -Property Length -Sum
 
 #endregion
 
+#region Enumerate objects in parallel
+
+    #Requires -Version 7
+Get-Help ForEach-Object -Parameter Parallel
+
+(Get-Help ForEach-Object).examples.example[10]
+
+1..5 | ForEach-Object -Parallel { "Processing $_" }
+
+$message = 'Processing {0}'
+1..10 | ForEach-Object -Parallel {
+    Start-Sleep -Seconds 1
+    $using:message -f $_
+}
+
+1..20 | ForEach-Object -Parallel { Start-Sleep 1; $_ } -ThrottleLimit 4 -TimeoutSeconds 5
+
+#endregion
+
 #endregion
 
 
