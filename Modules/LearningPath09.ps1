@@ -47,7 +47,9 @@ Find-PSResource az -Repository PSGallery -IncludeDependencies | Measure-Object
 Find-PSResource -Command Connect-AzAccount -Repository PSGallery
 Find-PSResource Az.Accounts -Repository PSGallery
 
-docker.exe search azuresdk/azure-powershell
+# https://learn.microsoft.com/powershell/azure/azureps-in-docker
+podman search mcr.microsoft.com/azure-powershell
+# https://mcr.microsoft.com/artifact/mar/azure-powershell
 
 # https://learn.microsoft.com/powershell/azure/authenticate-azureps
 Get-Help Connect-AzAccount -ShowWindow
@@ -66,7 +68,7 @@ Find-PSResource Az.Tools.Migration -Repository PSGallery
 
 #endregion
 
-#region What are the Azure Active Directory management modules for PowerShell?
+#region Review Microsoft Graph PowerShell SDK modules
 
 Find-PSResource Az.Resources -Repository PSGallery
 # https://learn.microsoft.com/powershell/module/az.resources#active-directory
@@ -79,6 +81,9 @@ Find-PSResource Microsoft.Graph -Repository PSGallery -IncludeDependencies | Mea
 
 Get-Help Connect-MgGraph -ShowWindow
 # https://learn.microsoft.com/powershell/microsoftgraph/app-only
+
+Find-PSResource Microsoft.Entra -Repository PSGallery
+Find-PSResource Microsoft.Entra -Repository PSGallery -IncludeDependencies | Measure-Object
 
 #endregion
 
@@ -104,7 +109,6 @@ Get-Help Connect-MgGraph -ShowWindow
 # https://learn.microsoft.com/azure/cloud-shell/features
 
 # https://shell.azure.com/powershell
-# https://learn.microsoft.com/learn/modules/introduction-to-powershell/3-exercise-powershell
 
 #endregion
 
