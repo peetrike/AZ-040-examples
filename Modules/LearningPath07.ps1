@@ -161,7 +161,7 @@ Get-Help Language_Modes -ShowWindow
 
 $ExecutionContext.SessionState.LanguageMode
 
-# https://learn.microsoft.com/windows/security/threat-protection/windows-defender-application-control/select-types-of-rules-to-create#windows-defender-application-control-file-rule-levels
+# https://learn.microsoft.com/windows/security/application-security/application-control/app-control-for-business/design/select-types-of-rules-to-create#app-control-for-business-file-rule-levels
 
 #endregion
 
@@ -503,7 +503,7 @@ Get-Help ConvertFrom-Json -Parameter NoEnumerate
     # communicating with Web apps
 $url = 'http://ipinfo.io/json'
 
-$info = Invoke-WebRequest -Uri $url
+$info = Invoke-WebRequest -Uri $url -UseBasicParsing
 $info.Headers.'Content-Type'
 $jsonInfo = $info.Content | ConvertFrom-Json
 $jsonInfo = Invoke-RestMethod -Uri $url
@@ -624,8 +624,8 @@ Get-ADUser -Filter { City -like 'Tallinn' } |
 # https://github.com/peetrike/Examples/blob/master/src/Gui/ToastNotification.ps1
 Find-PSResource burnttoast -Repository PSGallery
 
-    #Requires -Version 6
-Find-PSResource Microsoft.PowerShell.ConsoleGuiTools -Repository PSGallery
+    #Requires -Version 7
+Find-PSResource PSTui -Repository PSGallery
 
 # https://gui-cs.github.io/Terminal.Gui
 
