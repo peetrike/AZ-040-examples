@@ -63,7 +63,7 @@ New-Variable -Name MinuMuutuja -Value 333
 Set-Variable -Name uus -Value 'tere'
 
 Get-Help Assignment -Category HelpFile -ShowWindow
-$kasutaja = Get-ADUser Adrian
+$kasutaja = Get-ADUser Adam
 
 $uus
 Get-Variable -Name MinuMuutuja
@@ -339,7 +339,6 @@ $Sensitive.Password = 'secret'
 $Sensitive.password
 $Sensitive.Password
 
-
 $computers['Sea-Cl1']
 $computers.'Sea-DC1'
 $computers.Server2
@@ -362,23 +361,23 @@ foreach ($u in Get-ADUser -Filter *) {
     $users.$name = $u
     #$users.Add($name, $u)
 }
-$users.administrator
-$users.Marko
-$users.Tomas
+$users.Administrator
+$users.Martin
+$users.Tonia
 
     # array style access
 Measure-Command {
     $users.Keys |
-        Where-Object { $_ -like 'Tina' } |
+        Where-Object { $_ -like 'Teddy' } |
         ForEach-Object { $users.$_ }
 }
     # hashtable access
 Measure-Command {
-    $users['Tina']
+    $users['Teddy']
 }
     # ask always from database
 Measure-Command {
-    Get-ADUser -Identity Tina
+    Get-ADUser -Identity Teddy
 }
 
 #endregion
