@@ -21,9 +21,8 @@
 
 #region Benefits of using PowerShell for Microsoft 365
 
-# https://learn.microsoft.com/powershell/azure/active-directory/overview
 # https://learn.microsoft.com/powershell/microsoftgraph/overview
-
+# https://learn.microsoft.com/powershell/entra-powershell/overview
 
 #endregion
 
@@ -33,50 +32,47 @@
 # https://learn.microsoft.com/powershell/microsoftgraph/migration-steps
 # https://graphpowershell.merill.net/
 
-Find-Module AzureAD -Repository PSGallery
-Find-Module AzureADPreview -Repository PSGallery
-Find-Module MSOnline -Repository PSGallery
-Find-Module Microsoft.Graph -Repository PSGallery -IncludeDependencies | Measure-Object
+Find-PSResource Microsoft.Graph -Repository PSGallery -IncludeDependencies | Measure-Object
+Find-PSResource Microsoft.Entra -Repository PSGallery -IncludeDependencies | Measure-Object
 
-Get-Help Connect-MgGraph
+Get-Help Connect-Entra
+Get-Help Get-EntraContext
 
 #endregion
 
 #region Managing users in Microsoft 365 with PowerShell
 
-# https://learn.microsoft.com/powershell/module/microsoft.graph.users/
-Find-PSResource Microsoft.Graph.Users -Repository PSGallery
+# https://learn.microsoft.com/powershell/module/microsoft.entra.users
+Find-PSResource Microsoft.Entra.Users -Repository PSGallery
 
-Get-Command -Noun MgUser
-Get-Help Get-MgUser -Online
+Get-Command -Noun EntraUser
+Get-Help Get-EntraUser -Online
 # https://learn.microsoft.com/graph/api/user-list?tabs=powershell
 
 $userId = 'mina@kuskil.ee'
-Get-MgUser -UserId $userId
+Get-EntraUser -UserId $userId
 
-Get-Help New-MgUser
+Get-Help New-EntraUser
 # https://learn.microsoft.com/graph/api/user-post-users?tabs=powershell
 
-Get-Help Update-MgUser
+Get-Help Set-EntraUser
 # https://learn.microsoft.com/graph/api/user-update?tabs=powershell
 
-Find-PSResource -CommandName Update-MgUserPassword -Repository PSGallery
-Find-PSResource Microsoft.Graph.Users.Actions -Repository PSGallery
 # https://learn.microsoft.com/graph/api/user-changepassword?tabs=powershell
-Get-Help Update-MgUserPassword
+Get-Help Set-EntraUserPassword
 
 #endregion
 
 #region Managing groups in Microsoft 365 with PowerShell
 
-Get-Command -Noun MgGroup, MgGroupMember, MgGroupOwner
-Get-Help Get-MgGroup
+Get-Command -Noun EntraGroup, EntraGroupMember, EntraGroupOwner
+Get-Help Get-EntraGroup
 # https://learn.microsoft.com/graph/api/group-list?tabs=powershell
 
-Get-Help Get-MgGroupMember
+Get-Help Get-EntraGroupMember
 # https://learn.microsoft.com/graph/api/group-list-members?tabs=powershell
 
-Get-Help Get-MgGroupOwner
+Get-Help Get-EntraGroupOwner
 # https://learn.microsoft.com/graph/api/group-list-owners?tabs=powershell
 
 Find-PSResource ExchangeOnlineManagement -Repository PSGallery
@@ -90,47 +86,34 @@ Get-Help Get-UnifiedGroup
 
 #region Managing roles in Microsoft 365 with PowerShell
 
-# https://learn.microsoft.com/graph/tutorial-assign-azureadroles?tabs=powershell
-# https://learn.microsoft.com/powershell/module/microsoft.graph.identity.governance
-Find-PSResource Microsoft.Graph.Identity.Governance -Repository PSGallery
+# https://learn.microsoft.com/powershell/module/microsoft.entra.directorymanagement
+Find-PSResource Microsoft.Entra.DirectoryManagement -Repository PSGallery
 
-# https://learn.microsoft.com/graph/api/resources/rolemanagement
+Get-Command -Noun EntraDirectoryRole*
 
-Get-Help Get-MgRoleManagementDirectoryRoleDefinition
-# https://learn.microsoft.com/powershell/module/microsoft.graph.identity.governance/get-mgrolemanagementdirectoryroledefinition
-# https://learn.microsoft.com/graph/api/rbacapplication-list-roledefinitions?tabs=powershell
+Get-Help Get-EntraDirectoryRole
+# https://learn.microsoft.com/powershell/module/microsoft.entra.directorymanagement/get-entradirectoryrole
+Get-Help Get-EntraDirectoryRoleTemplate
+# https://learn.microsoft.com/powershell/module/microsoft.entra.directorymanagement/get-entradirectoryroletemplate
 
-Get-Help Get-MgRoleManagementDirectoryRoleAssignment
-# https://learn.microsoft.com/powershell/module/microsoft.graph.identity.governance/get-mgrolemanagementdirectoryroleassignment
-# https://learn.microsoft.com/graph/api/rbacapplication-list-roleassignments?tabs=powershell
+Get-Help Add-EntraDirectoryRoleMember
+# https://learn.microsoft.com/powershell/module/microsoft.entra.directorymanagement/add-entradirectoryrolemember
 
-Get-Help New-MgRoleManagementDirectoryRoleAssignment
-# https://learn.microsoft.com/powershell/module/microsoft.graph.identity.governance/new-mgrolemanagementdirectoryroleassignment
-# https://learn.microsoft.com/graph/api/rbacapplication-post-roleassignments?tabs=powershell
-
-# https://learn.microsoft.com/graph/api/resources/privilegedidentitymanagementv3-overview
-
-Get-Help New-MgRoleManagementDirectoryRoleEligibilityScheduleRequest
-# https://learn.microsoft.com/powershell/module/microsoft.graph.identity.governance/new-mgrolemanagementdirectoryroleeligibilityschedulerequest
-# https://learn.microsoft.com/graph/api/rbacapplication-post-roleeligibilityschedulerequests?tabs=powershell
-
-Get-Help New-MgRoleManagementDirectoryRoleAssignmentScheduleRequest
-# https://learn.microsoft.com/powershell/module/microsoft.graph.identity.governance/new-mgrolemanagementdirectoryroleassignmentschedulerequest
-# https://learn.microsoft.com/graph/api/rbacapplication-post-roleassignmentschedulerequests?tabs=powershell
+Get-Help Get-EntraDirectoryRoleMember
 
 #endregion
 
 #region Managing licenses in Microsoft 365 with PowerShell
 
-Get-Command -Noun MgUserLicenseDetail
+Get-Command Get-EntraSubscribedSku
+Get-Command -Noun EntraUserLicense*
 
-Get-MgUser -UserId $userId -Property AssignedLicenses
-Get-MgUserLicenseDetail -UserId $userId
+Get-EntraUser -UserId $userId -Property AssignedLicenses
+Get-EntraUserLicenseDetail -UserId $userId
 # https://learn.microsoft.com/graph/api/user-list-licensedetails?tabs=powershell
 
-Get-Help Set-MgUserLicense
-# https://learn.microsoft.com/powershell/module/microsoft.graph.users.actions/set-mguserlicense
-# https://learn.microsoft.com/graph/api/user-assignlicense?tabs=powershell
+Get-Help Set-EntraUserLicense
+# https://learn.microsoft.com/powershell/module/microsoft.entra.users/set-entrauserlicense
 
 # https://learn.microsoft.com/entra/identity/users/licensing-powershell-graph-examples
 Get-MgGroup -Property AssignedLicenses
@@ -166,21 +149,35 @@ Get-Help Connect-ExchangeOnline -Parameter SkipLoadingFormatData
 
 #region Managing mailboxes in Exchange Online
 
-Get-Command -Noun Mailbox, EXOMailbox
+# https://learn.microsoft.com/exchange/recipients-in-exchange-online/manage-user-mailboxes/manage-user-mailboxes#use-exchange-online-powershell-to-change-user-mailbox-properties
+# https://learn.microsoft.com/powershell/module/exchangepowershell/#mailboxes
+Get-Command -Noun EXOMailbox*
 Get-Help Get-EXOMailbox -Online
-Get-Help Get-Mailbox
 
-Get-Help Set-Mailbox
-Get-Help New-Mailbox
+# https://learn.microsoft.com/powershell/module/exchangepowershell/get-mailbox
+# https://learn.microsoft.com/powershell/module/exchangepowershell/set-mailbox
+# https://learn.microsoft.com/powershell/module/exchangepowershell/new-mailbox
 
-Get-Command -Noun *MailboxPermission
-Get-Command -Noun *MailboxFolderPermission
+Get-Help Get-EXOMailboxPermission
+# https://learn.microsoft.com/powershell/module/exchangepowershell/get-mailboxpermission
+# https://learn.microsoft.com/powershell/module/exchangepowershell/add-mailboxpermission
+# https://learn.microsoft.com/powershell/module/exchangepowershell/set-mailboxpermission
+# https://learn.microsoft.com/powershell/module/exchangepowershell/remove-mailboxpermission
+
+Get-Help Get-EXOMailboxFolderPermission
+# https://learn.microsoft.com/powershell/module/exchangepowershell/add-mailboxfolderpermission
+# https://learn.microsoft.com/powershell/module/exchangepowershell/get-mailboxfolderpermission
+# https://learn.microsoft.com/powershell/module/exchangepowershell/set-mailboxfolderpermission
+# https://learn.microsoft.com/powershell/module/exchangepowershell/remove-mailboxfolderpermission
 
 #endregion
 
 #region Managing resources in Exchange Online
 
-Get-Command -Noun CalendarProcessing
+# https://learn.microsoft.com/exchange/recipients-in-exchange-online/manage-resource-mailboxes#use-exchange-online-powershell-to-modify-resource-mailboxes
+
+# https://learn.microsoft.com/powershell/module/exchangepowershell/set-calendarprocessing
+# https://learn.microsoft.com/powershell/module/exchangepowershell/get-calendarprocessing
 
 # https://learn.microsoft.com/exchange/recipients-in-exchange-online/manage-resource-mailboxes
 
@@ -188,13 +185,11 @@ Get-Command -Noun CalendarProcessing
 
 #region Managing admin roles in Exchange Online
 
-Get-Command -Noun RoleGroup*
+# https://learn.microsoft.com/et-ee/exchange/permissions-exo/role-groups#use-exchange-online-powershell-to-manage-role-groups
 
-Get-RoleGroup | Select-Object Name
-
-Get-RoleGroup Organization* | Get-RoleGroupMember
-
-# https://learn.microsoft.com/exchange/permissions-exo/permissions-exo
+# https://learn.microsoft.com/powershell/module/exchangepowershell/get-rolegroup
+# https://learn.microsoft.com/powershell/module/exchangepowershell/add-rolegroupmember
+# https://learn.microsoft.com/powershell/module/exchangepowershell/remove-rolegroupmember
 
 #endregion
 
@@ -205,50 +200,50 @@ Get-RoleGroup Organization* | Get-RoleGroupMember
 
 #region SharePoint Online Management Shell overview
 
-Find-PSResource Microsoft.Online.SharePoint.PowerShell -Repository PSGallery
-
 # https://learn.microsoft.com/powershell/sharepoint/sharepoint-online/introduction-sharepoint-online-management-shell
 
-Get-Command -Noun SPOService
-Get-Help Connect-SPOService
-# https://learn.microsoft.com/powershell/module/sharepoint-online/connect-sposervice
+Find-PSResource Microsoft.Online.SharePoint.PowerShell -Repository PSGallery
+
+# https://learn.microsoft.com/powershell/sharepoint/sharepoint-online/connect-sharepoint-online
+
+Find-PSResource -CommandName Connect-SPOService -Repository PSGallery
+# https://learn.microsoft.com/powershell/module/microsoft.online.sharepoint.powershell/connect-sposervice
 
 # https://learn.microsoft.com/powershell/sharepoint/sharepoint-pnp/sharepoint-pnp-cmdlets
 # https://pnp.github.io/powershell/index.html
 
 Find-PSResource PnP.PowerShell -Repository PSGallery
-    #Requires -Version 7.2
-Get-Command -Noun PnPOnline
 
 #endregion
 
 #region Managing SharePoint Online users and groups with PowerShell
 
-Get-Command -Noun SPOSiteGroup
+# https://learn.microsoft.com/powershell/module/microsoft.online.sharepoint.powershell/get-spositegroup
+# https://learn.microsoft.com/powershell/module/microsoft.online.sharepoint.powershell/new-spositegroup
+# https://learn.microsoft.com/powershell/module/microsoft.online.sharepoint.powershell/set-spositegroup
 
-Get-Command -Noun SPOUser
+# https://learn.microsoft.com/powershell/module/microsoft.online.sharepoint.powershell/add-spouser
+# https://learn.microsoft.com/powershell/module/microsoft.online.sharepoint.powershell/remove-spouser
 
 #endregion
 
 #region Managing SharePoint sites with PowerShell
 
-Get-Command -Noun SPOSite
-Get-Command -Noun SPOWebTemplate
-Get-Command -Noun SPODeletedSite
+# https://learn.microsoft.com/powershell/module/microsoft.online.sharepoint.powershell/get-sposite
+# https://learn.microsoft.com/powershell/module/microsoft.online.sharepoint.powershell/new-sposite
+# https://learn.microsoft.com/powershell/module/microsoft.online.sharepoint.powershell/set-sposite
+
+# https://learn.microsoft.com/powershell/module/microsoft.online.sharepoint.powershell/get-spowebtemplate
+
+# https://learn.microsoft.com/powershell/module/microsoft.online.sharepoint.powershell/restore-spodeletedsite
 
 #endregion
 
 #region Managing external user sharing with PowerShell
 
 # https://learn.microsoft.com/powershell/module/sharepoint-online/set-sposite#parameters
-Get-Help Set-SPOSite -Parameter SharingCapability
-Get-Help Set-SPOSite -Parameter SharingDomainRestrictionMode
-Get-Help Set-SPOSite -Parameter DefaultLinkSharingType
-Get-Help Set-SPOSite -Parameter DefaultLinkPermission
 
-Get-Command -noun SPOTenant
-Get-Help Set-SPOTenant
-# https://learn.microsoft.com/powershell/module/sharepoint-online/set-spotenant
+# https://learn.microsoft.com/powershell/module/microsoft.online.sharepoint.powershell/set-spotenant
 
 #endregion
 
@@ -268,7 +263,7 @@ Get-Help Set-SPOTenant
 Find-PSResource MicrosoftTeams -Repository PSGallery
 
 # https://learn.microsoft.com/powershell/module/teams/connect-microsoftteams
-Get-Help Connect-MicrosoftTeams
+Find-PSResource -CommandName Connect-MicrosoftTeams
 
 # https://learn.microsoft.com/microsoftteams/teams-powershell-application-authentication
 
@@ -276,12 +271,22 @@ Get-Help Connect-MicrosoftTeams
 
 #region Managing Teams with the Microsoft Teams PowerShell module
 
-Get-Command -Noun Team
+# https://learn.microsoft.com/powershell/module/microsoftteams/get-team
+# https://learn.microsoft.com/powershell/module/microsoftteams/new-team
+# https://learn.microsoft.com/powershell/module/microsoftteams/set-team
 
-Get-Help Get-CsTeamTemplateList
+# https://learn.microsoft.com/powershell/module/microsoftteams/get-csteamtemplatelist
 
-Get-Command -Noun TeamUser
-Get-Command -Noun TeamChannel*
+# https://learn.microsoft.com/powershell/module/microsoftteams/get-teamchannel
+# https://learn.microsoft.com/powershell/module/microsoftteams/new-teamchannel
+# https://learn.microsoft.com/powershell/module/microsoftteams/set-teamchannel
+
+# https://learn.microsoft.com/powershell/module/microsoftteams/add-teamuser
+# https://learn.microsoft.com/powershell/module/microsoftteams/remove-teamuser
+
+# # https://learn.microsoft.com/powershell/module/microsoftteams/add-teamchanneluser
+# # https://learn.microsoft.com/powershell/module/microsoftteams/remove-teamchanneluser
+
 
 #endregion
 
