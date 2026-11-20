@@ -16,6 +16,7 @@
     throw "You're not supposed to run the entire script"
 #endregion
 
+
 #region Module 1: Understanding the pipeline
 
 #region Review PowerShell pipeline?
