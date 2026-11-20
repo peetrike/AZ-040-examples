@@ -39,11 +39,11 @@ $PROFILE.AllUsersAllHosts
 
 #region Profile script security concerns
 
-# https://docs.microsoft.com/powershell/module/microsoft.powershell.core/about/about_profiles#profiles-and-execution-policy
+# https://learn.microsoft.com/powershell/module/microsoft.powershell.core/about/about_profiles#profiles-and-execution-policy
 
 Get-Help about_Execution_Policies -ShowWindow
 
-# https://docs.microsoft.com/powershell/scripting/learn/remoting/powershell-remoting-faq#where-are-my-profiles-
+# https://learn.microsoft.com/powershell/scripting/learn/remoting/powershell-remoting-faq#where-are-my-profiles-
 
 #endregion
 
@@ -120,8 +120,8 @@ $Matches.user
 
 #region The format operator
 
-# https://docs.microsoft.com/powershell/module/microsoft.powershell.core/about/about_operators#format-operator--f
-# https://docs.microsoft.com/dotnet/standard/base-types/formatting-types
+# https://learn.microsoft.com/powershell/module/microsoft.powershell.core/about/about_operators#format-operator--f
+# https://learn.microsoft.com/dotnet/standard/base-types/formatting-types
 
 'Money: {0:c}' -f 1.24
 'Percent {0:p}' -f 0.36
@@ -146,7 +146,7 @@ get-command ping
 get-command sc.exe
 
 Get-Help about_Parsing -ShowWindow
-# https://docs.microsoft.com/powershell/module/microsoft.powershell.core/about/about_special_characters#stop-parsing-token---
+# https://learn.microsoft.com/powershell/module/microsoft.powershell.core/about/about_special_characters#stop-parsing-token---
 
 bcdedit.exe --% -default {current}
 
@@ -155,20 +155,14 @@ bcdedit.exe --% -default {current}
 #region Logging activity
 
 Get-Help about_Logging -ShowWindow
-    # PowerShell 6+
+    # PowerShell 7
 Get-Help about_Logging_Windows -ShowWindow
 
 $RegPath = 'HKLM:\Software\Policies\Microsoft\Windows\PowerShell\ScriptBlockLogging'
 if (Test-Path -Path $RegPath) {
     Get-ItemProperty -Path $RegPath
 }
-Get-Help Group_Policy -ShowWindow
-
-Get-Command -Noun Transcript
-Get-Help Start-Transcript -ShowWindow
-
-Get-Help about_History -ShowWindow
-Get-Command -Noun History
+Get-Help Group_Policy_settings -ShowWindow
 
 #endregion
 
