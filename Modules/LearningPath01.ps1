@@ -61,6 +61,15 @@ Get-Help _PowerShell -Category HelpFile
 
 # https://learn.microsoft.com/powershell/scripting/install/powershell-support-lifecycle
 
+# https://support.microsoft.com/en-us/servicing/os/windows/docs/2026/11/kb5137172-windows-powershell-5-1-deprecation
+    # Windows Server
+Get-WindowsFeature PowerShell*
+    # Any Windows < Win11 v25H2
+Get-WindowsOptionalFeature -Online -FeatureName MicrosoftWindowsPowershell*
+    # Win11 / Svr22 +
+Get-WindowsCapability -Online -Name *PowerShell*
+
+
 #endregion
 
 #region Extra: PowerShell vs. operating system
