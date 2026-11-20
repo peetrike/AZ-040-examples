@@ -88,7 +88,7 @@ Get-NetFirewallRule -Name WINRM-HTTP-In* | Where-Object Profile -like 'Public' |
 
 Get-Help Enter-PSSession -ShowWindow
 
-$Computer = 'Sea-DC1'
+$Computer = 'Lon-DC1'
 Enter-PSSession -ComputerName $Computer
 exit
 
@@ -112,7 +112,7 @@ Get-Help Invoke-Command -ShowWindow
 Invoke-Command -ComputerName $Computer -ScriptBlock {
     [Security.Principal.WindowsIdentity]::GetCurrent()
 }
-Invoke-Command -ComputerName Sea-DC1, Sea-CL1 -ScriptBlock { $env:COMPUTERNAME }
+Invoke-Command -ComputerName Lon-DC1, Lon-CL1 -ScriptBlock { $env:COMPUTERNAME }
 Invoke-Command -ComputerName (Get-Content servers.txt) -ScriptBlock { $env:COMPUTERNAME }
 
 Get-Help Invoke-Command -Parameter ThrottleLimit
@@ -191,7 +191,7 @@ Get-Help Remote_Variables -ShowWindow
 $credential = Get-Credential
 
 Invoke-Command -ComputerName $Computer -ScriptBlock {
-    Invoke-Command -ComputerName Sea-Svr1 -Credential $using:Credential -ScriptBlock {
+    Invoke-Command -ComputerName Lon-Svr1 -Credential $using:Credential -ScriptBlock {
         'User: {0}, Computer: {1}' -f $env:USERNAME, $env:COMPUTERNAME
     }
 }
@@ -220,7 +220,7 @@ Get-ChildItem -Path WSMan:\localhost\Shell
 
 Get-Help New-PSSession -ShowWindow
 
-New-PSSession -ComputerName Sea-Svr1
+New-PSSession -ComputerName Lon-Svr1
 
 $dc = New-PSSession -ComputerName $Computer
 $dc | Get-Member
@@ -243,7 +243,7 @@ Get-PSSession | ForEach-Object {
 Get-Help Disconnected -ShowWindow
 Get-Command -noun PSSession -Verb *Connect
 
-$DcName = 'Sea-DC1'
+$DcName = 'Lon-DC1'
 $dc = New-PSSession -ComputerName $DcName
 Disconnect-PSSession -Session $dc
 Get-PSSession -ComputerName $DcName
