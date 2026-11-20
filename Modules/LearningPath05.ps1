@@ -21,19 +21,19 @@
 
 #region Architecture and technologies
 
-# CIM - Common Information Model: http://www.dmtf.org/standards/cim/
-# For Linux/Unix: OMI - Open Management Infrastructure: https://github.com/Microsoft/omi
+# Common Information Model (CIM): http://www.dmtf.org/standards/cim
+# For Linux/Unix: Open Management Infrastructure (OMI) - deprecated: https://github.com/Microsoft/omi
+
 # Windows Remote Management (WinRM), based on Web Services Management (WS-Man)
 # - https://learn.microsoft.com/windows/win32/winrm
 # - https://www.dmtf.org/standards/ws-man
 
-# WMI - Windows Management Instrumentation, based on WBEM
-# - https://learn.microsoft.com/windows/win32/wmisdk
+# Windows Management Instrumentation (WMI), based on WBEM: https://learn.microsoft.com/windows/win32/wmisdk
 # Web-Based Enterprise Management (WBEM): https://www.dmtf.org/standards/wbem
-# Desktop Management Interface (DMI): https://www.dmtf.org/standards/dmi
+# Desktop Management Interface (DMI) - historical: https://www.dmtf.org/standards/dmi
 
     # PowerShell < 6
-Get-Command -noun Wmi*
+Get-Command -Noun Wmi* -Module Microsoft.PowerShell.Management
 
     #Requires -Version 3.0
 Get-Module CimCmdlets -ListAvailable
@@ -186,7 +186,6 @@ Get-Help Get-WmiObject -Parameter Credential
 
 # https://learn.microsoft.com/windows/win32/wmisdk/connecting-to-wmi-remotely-starting-with-vista
 
-    #Requires -RunAsAdministrator
 Get-NetFirewallRule -Name wmi*-in-* | Select-Object name, enabled, profile, action
 Get-NetFirewallRule -Name winrm-http* | Select-Object name, enabled, profile, action
 Get-NetFirewallRule -Name WINRM-HTTP-In* | Where-Object Profile -like 'Public' | Get-NetFirewallAddressFilter
