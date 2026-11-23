@@ -76,6 +76,8 @@ Get-WindowsCapability -Online -Name *PowerShell*
 
 # https://support.microsoft.com/windows/fdb690cf-876c-d866-2124-21b6fb29a45f
 
+Get-Module -ListAvailable
+
 # https://learn.microsoft.com/powershell/windows/get-started
 Get-Command Resolve-DnsName
 Get-Command Get-ScheduledTask
@@ -125,6 +127,8 @@ $Host.Version
 
     # Windows PowerShell ( < 6 )
 $PSVersionTable.BuildVersion
+    #Requires -Version 7
+$PSVersionTable.Platform
     #Requires -Version 5.1
 $PSVersionTable.PSEdition
 $PSEdition
@@ -402,7 +406,7 @@ Get-Command ping
 New-Alias -Name ping -Value Test-Connection
 Set-Alias ping Test-Connection
 Get-Command ping
-ping ee.ee
+ping google.com
     # PowerShell < 6.0 does not have Remove-Alias cmdlet
     # https://github.com/peetrike/PWAddins/blob/master/src/Public/remove-alias.ps1
 Remove-Item -Path alias:\ping
