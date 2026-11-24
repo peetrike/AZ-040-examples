@@ -91,14 +91,15 @@ New-ADGroup -Name 'IT' -GroupScope Global
 Get-ADUser -Filter { Department -like 'IT' } |
     Add-ADPrincipalGroupMembership -MemberOf 'IT'
 
-Get-ADGroup IT | Add-ADGroupMember -Members 'Mati'
+Get-ADGroup IT | Add-ADGroupMember -Members 'Mati', 'kati'
 
 Get-ADUser Adam | Get-ADPrincipalGroupMembership | Select-Object Name
+Get-ADUser Adam | Add-ADPrincipalGroupMembership -MemberOf 'IT'
 
 Get-ADUser Adam |
     Get-ADPrincipalGroupMembership |
     Where-Object Name -Like 'Managers' |
-    Get-ADGroup -Properties description
+    Get-ADGroup -Properties Description
 
 #endregion
 
