@@ -70,6 +70,9 @@ Get-ADUser -Identity Administrator -Properties * | Get-Member
 New-ADUser -Name Meelis
 Get-ADUser -Identity Meelis -Properties mail | Get-Member
 
+Set-ADUser -Identity Meelis -EmailAddress 'meelis@kuskil.ee'
+Get-ADUser -Identity Meelis -Properties mail
+
 #endregion
 
 #region Control the formatting of pipeline output
@@ -86,6 +89,10 @@ Get-FormatData -TypeName System.Diagnostics.Process* |
 code -r $PSHOME\DotNetTypes.format.ps1xml
 
 Get-Process p* | Format-Table -View StartTime
+
+Get-ChildItem | Format-List
+
+dir | Format-Wide -Property Name -Column 3
 
 #endregion
 
