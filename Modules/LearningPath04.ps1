@@ -74,6 +74,12 @@ New-SmbMapping -LocalPath 's:' -RemotePath '\\lon-dc1\netlogon' -Persistent $fal
 Get-Help New-SmbMapping -Parameter UserName
 Get-Help New-SmbMapping -Parameter Password
 
+$credential = Get-Credential -Message 'kasutaja võrguketta jaoks'
+$credential = Get-Secret -name kasutaja
+New-PSDrive -Name 's' -Root '\\server\share\folder' -PSProvider FileSystem -Credential $credential -Persist
+
+Get-Command Get-Secret
+
 # https://github.com/peetrike/Examples/blob/main/src/Functions/Get-UnsecureString.ps1
 
 # https://peterwawa.wordpress.com/2010/04/28/powershell-ja-admin-oigused/
