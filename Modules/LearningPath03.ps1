@@ -653,7 +653,7 @@ Get-Help ConvertTo-Html -Parameter CSSUri
 Find-PSResource PSWriteHTML -Repository PSGallery
 Find-PSResource -Tag html -Repository PSGallery
 
-# https://ironmansoftware.com/powershell-universal/
+# https://devolutions.net/powershell-universal
 
 #endregion
 
@@ -739,6 +739,11 @@ Get-Help Restart-Service -Parameter InputObject
 # https://github.com/indented-automation/Indented.Profile/blob/master/Indented.Profile/public/Get-ParameterInfo.ps1
 Get-ParameterInfo -Name Sort-Object | Where-Object PipeLine -NotLike 'None'
 Get-Help Sort-Object -Parameter InputObject
+
+Get-ChildItem | Sort-Object -Property Length -Descending
+    # this does same thing
+$data = Get-ChildItem
+Sort-Object -InputObject $data -Property Length -Descending
 
 Get-Command -ParameterName InputObject | Measure-Object
 Get-Help * -Parameter InputObject | Measure-Object
