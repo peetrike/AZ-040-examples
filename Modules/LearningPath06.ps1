@@ -77,6 +77,11 @@ Clear-Variable -Name uus
 Set-Variable -Name täpi -Value (Get-Content tere.txt)
 $täpi = Get-Content tere.txt
 
+Set-PSDebug -Strict
+$poleOlemas
+Set-PSDebug -Strict:$false
+$poleOlemas
+
 Get-Help numeric -Category HelpFile -ShowWindow
 #endregion
 
@@ -197,6 +202,7 @@ $date2
 
 # https://learn.microsoft.com/dotnet/api/system.timespan
 Get-Help New-TimeSpan -ShowWindow
+
 $aeg = New-TimeSpan -Start (Get-Item .\LearningPath06.ps1).LastWriteTime
 $aeg = Get-Item .\LearningPath06.ps1 | New-TimeSpan
 $aeg | Get-Member
