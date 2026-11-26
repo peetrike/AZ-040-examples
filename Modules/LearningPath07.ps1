@@ -120,7 +120,7 @@ powershell.exe -File käsud.txt
     # but this works
 Copy-Item -Path käsud.txt -Destination käsud.ps1
 powershell.exe -NoProfile -NonInteractive -File käsud.ps1
-pwsh -nop -f käsud.ps1
+pwsh -nop -noni -f käsud.ps1
 
     # on Linux
 pwsh -nop -f ./käsud.txt
@@ -180,6 +180,9 @@ Get-Help New-SelfSignedCertificate -ShowWindow
 
 Get-Command -Noun FileCatalog
 
+    #psconf.eu miniconference 2026 - PowerShell and Authenticode presentation
+# https://www.youtube.com/watch?v=dwQ5nn-Htgs
+
 #endregion
 
 #endregion
@@ -218,7 +221,18 @@ Get-Help about_If -ShowWindow
 $a = 0
 if ($a -gt 1) { 'a is greater' }
 elseif ($null -eq $b) { 'b is not set' }
-else { 'something else' }
+else {
+     'something else'
+}
+    # this does the same
+if ($a -gt 1) {
+    'a is greater'
+} elseif ($null -eq $b) {
+    'b is not set'
+} else {
+     'something else'
+}
+
 
 if (Get-ChildItem -File) { 'there are some files' } else { New-Item uus.txt }
 
@@ -256,9 +270,9 @@ switch -Wildcard ($choice) {
 
 $ip = Get-NetIPAddress -InterfaceAlias wi-fi -AddressFamily IPv4
 switch -WildCard ($ip.IPAddress) {
-    '10.*' { 'This computer is on the internal network' }
-    '10.1.*' { 'This computer is in London' }
-    '10.2.*' { 'This computer is in Vancouver' }
+    '172.*' { 'This computer is on the internal network' }
+    '172.21.*' { 'This computer is in Tallinn' }
+    '172.22.*' { 'This computer is in Vancouver' }
     default { Write-Warning -Message 'This computer is not on the internal network' }
 }
 
@@ -275,14 +289,18 @@ $computer = 'LON-CL1'
 $role = 'unknown role'
 $location = 'unknown location'
 switch -WildCard ($computer) {
-    '*-CL*' { $role = 'client' }
     '*-SVR*' { $role = 'server' }
+    '*-CL*' { $role = 'client' }
     '*-DC*' { $role = 'domain controller' }
     { $_ -like 'L*' } {
         $location = 'London'
     }
     'VAN-*' { $location = 'Vancouver' }
-    default { "$computer is not a valid name" }
+    default {
+        "$computer is not a valid name"
+        $role = 'unknown role'
+        $location = 'unknown location'
+    }
 }
 "$computer is a $role in $location"
 
